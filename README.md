@@ -1,10 +1,30 @@
-> **T07 2단계 현재 상태:** 사용자 소유권 격리와 로컬 검증을 구현했습니다. [개발 기록](STAGE2.md)을 참고하세요. Stage 1만 원격에 커밋/push되었고, Stage 2 변경은 현재 로컬 작업 트리에 있습니다. 원격 D1·배포·실제 자료 이전·5일 사용은 아직 하지 않았습니다. 아래 T06/Stage 1 내용은 계승 기록입니다.
+# T07 플랜두씨 다이어리 — Stage 2.1 로컬 보안 보강
 
-# T07 1단계 · 로컬 인증
+Stage 2는 커밋 `a0a2ba27aebea1ec86d2e28508a951b28c3a9456`으로 origin/codex/t07-auth에 push되었습니다. 로그인 세션에 따른 모든 업무 API 소유권 격리가 구현되어 있습니다. Stage 2.1은 사용자가 전달한 Claude Code 재감사에서 코드/문서 PASS, 체크포인트 commit 가능 YES 판정을 받았으며 사용자 승인에 따른 체크포인트 commit/push 대상입니다. 공개 배포와 실제 5일 기록은 아직 수행하지 않았습니다.
 
-현재 실행·검증·제한은 [STAGE1.md](STAGE1.md)를 확인하세요. 아래 T06 내용은 계승한 역사 자료입니다.
-T07 로컬 주소는 http://127.0.0.1:3007 이며, 원격 생성/배포 명령은 차단되어 있습니다.
-사용자 간 소유권 분리·실제 데이터 이전은 아직 구현하지 않았습니다.
+현재 범위와 보안 한계는 [STAGE2-1.md](STAGE2-1.md), 감사 판정은 [resolution](evidence/t07/stage2-1/claude-audit-resolution.md)을 봅니다. [STAGE2.md](STAGE2.md)와 [STAGE1.md](STAGE1.md)는 당시 구현/검증 기록입니다.
+
+## 현재 T07 실행
+
+Node 24 이상, package-lock.json 고정 버전을 사용합니다. T07 작업 폴더에서 `npm ci`, `npm run dev`로 실행합니다. 개발 화면은 http://127.0.0.1:5177, API는 3007입니다. `npm run build` 후 `npm start`는 http://127.0.0.1:3007 입니다. 기본 DB는 .data/t07.sqlite, 지정 변수는 T07_DB_PATH와 T07_PORT입니다.
+
+BETTER_AUTH_SECRET은 ignored .env.local에만 두며 로컬 loader가 없을 때 랜덤으로 생성합니다. BETTER_AUTH_URL은 인증 출처와 일치해야 하며 개발은 5177, production bundle 로컬 실행은 3007입니다. VITE_*에 인증 secret을 두지 않습니다. 향후 운영에서는 Worker secret을 사용합니다. 로컬 workerd는 ignored .dev.vars와 HTTPS localhost:8787, T07 전용 local D1만 사용합니다.
+
+Worker aleph-t07-auth-diary / D1 aleph-t07-auth-diary-db는 대상 분리용 설정이며 실제 원격 DB는 아직 없습니다. 원격 생성/migration/deploy 명령은 계속 차단합니다. 공개 배포·실제 import·5일 사용·규칙 변경은 수행하지 않았습니다. 자동 fixture는 실제 사용 증거가 아닙니다.
+
+## 현재 정책
+
+- 비로그인 업무 API 401, 타인/없는 리소스 동일 404. 소유자는 서버 세션의 user.id입니다.
+- 사용자별 tag, plans, 실행, review/export 격리. soft-delete된 archived task도 현재 계약상 review/export 범위에 포함됩니다.
+- 로그인 10회/60초, 가입 및 비밀번호 변경 5회/60초. IP별 DB 카운터이며 NAT 공유/분산 IP 공격의 한계는 STAGE2-1에 적었습니다.
+- 서버 이름 trim·1~100자, 새 비밀번호 최소 12자. HttpOnly/Secure(HTTPS)/SameSite=Lax 세션 쿠키, 브라우저 token storage 없음.
+- 현재 이 과제 버전에서는 계정 삭제 기능을 지원하지 않습니다.
+- 이메일 소유 확인/이메일 비밀번호 복구/MFA/OAuth는 미지원입니다. 실제 이메일 소유자를 증명하지 못하고 비밀번호 단일 요소에 의존합니다.
+- Better Auth 정상 token 응답은 유지하지만 로그/evidence는 원문 token을 저장하지 않습니다. 업무 export에 인증/rateLimit 데이터는 없습니다.
+
+## T06 역사 자료 (아래 전체)
+
+아래 포트·환경 변수·공개 URL·명령·숫자는 T06 당시 기록이며 현재 T07 실행 지시가 아닙니다. T06 경로에서 명령을 재실행하지 마세요.
 
 # 계승한 T06 문서
 

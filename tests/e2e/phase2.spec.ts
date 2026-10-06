@@ -32,7 +32,7 @@ test('start is saved immediately and restored after reload; finish records real 
   expect(closed.actual_seconds).toBeGreaterThanOrEqual(1);
   const stored = await (await request.get(`/api/tasks/${task.id}`)).json(); expect(stored.estimated_seconds).toBe(600);
   await page.getByText('실행 기록 (1개)', { exact: true }).click(); await expect(page.getByTestId('execution-record')).toContainText(`${closed.actual_seconds}초`);
-  await page.screenshot({ path: 'evidence/t07/stage2/browser/phase2-execution.png', fullPage: true });
+  await page.screenshot({ path: 'evidence/t07/stage2-1/browser/phase2-execution.png', fullPage: true });
 });
 
 test('twenty immediate UI finish clicks create only one closed log', async ({ page, request }) => {
@@ -73,7 +73,7 @@ test('UI review shows actual DB totals and clicking a number reveals supporting 
   await expect(page.getByTestId('metric-difference')).toContainText(`${review.actual_seconds - 600}초`); await expect(page.getByTestId('plan-estimate')).toContainText('7200초');
   await page.getByTestId('metric-delayed').click(); await expect(page.locator('#evidence-delayed')).toContainText('지연 근거 할 일'); await expect(page.locator('#evidence-delayed')).toBeVisible();
   await page.getByTestId('metric-actual').click(); await expect(page.locator('#evidence-actual')).toContainText(open.id);
-  await page.screenshot({ path: 'evidence/t07/stage2/browser/phase2-review.png', fullPage: true });
+  await page.screenshot({ path: 'evidence/t07/stage2-1/browser/phase2-review.png', fullPage: true });
 });
 
 test('UI copies completed task to new plan with new deadline, new IDs, source link and no execution history', async ({ page, request }) => {

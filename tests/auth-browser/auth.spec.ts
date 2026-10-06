@@ -71,3 +71,10 @@ test('expired server session returns the browser to login after a rejected diary
   expect((await denied).status()).toBe(401);
   await expect(page.getByRole('heading', { name: '로그인', exact: true })).toBeVisible();
 });
+
+test('authenticated account help clearly states account deletion is unsupported', async ({ page, context }) => {
+  const response=await context.request.post('/api/auth/sign-up/email',{data:{email:`notice-${random(8)}@example.invalid`,name:'Temporary notice fixture',password:random(30)}});
+  expect(response.ok()).toBe(true);await page.goto('/');
+  await expect(page.getByText('현재 이 과제 버전에서는 계정 삭제 기능을 지원하지 않습니다.',{exact:true})).toBeVisible();
+  await expect(page.getByRole('button',{name:'계정 삭제',exact:true})).toHaveCount(0);
+});

@@ -14,7 +14,7 @@ const tables = Object.keys(schema['x-database']);
 
 describe('database and JSON schema correspondence', () => {
   it('matches every business table, field, SQL type, nullability, primary key, relation and unique constraint', () => {
-    const business = db.sqlite.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT GLOB '_*' AND name NOT IN ('user','account','session','verification')").all().map(r => r.name).sort();
+    const business = db.sqlite.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT GLOB '_*' AND name NOT IN ('user','account','session','verification','rateLimit')").all().map(r => r.name).sort();
     expect(business).toEqual([...tables].sort());
     for (const table of tables) {
       const metadata = schema['x-database'][table];

@@ -14,7 +14,7 @@ const email = 'fixture@example.invalid';
 const random = () => Array.from(randomBytes(40), b => b.toString(16).padStart(2, '0')).join('');
 beforeEach(() => {
   db = new LocalDatabase(':memory:');
-  auth = createAuth(db.sqlite, random(), base);
+  auth = createAuth(db.sqlite, random(), base, 'isolated-test');
   app = createApp(db, auth);
   password = random();
 });

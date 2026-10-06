@@ -62,6 +62,7 @@ export default function AuthGate() {
   if (loading) return <main><p role="status">로그인 상태 확인 중…</p></main>;
   if (identity) return <>
     <section className="panel" aria-label="로그인 상태"><span>{identity.user.name} · 로그인됨</span> <button disabled={busy} onClick={() => void logout()}>로그아웃</button>
+      <p>현재 이 과제 버전에서는 계정 삭제 기능을 지원하지 않습니다.</p>
       <p>로컬 2단계 테스트 환경: 현재 로그인한 계정의 자료만 표시합니다. 테스트 기록은 실제 5일 사용 증거가 아닙니다.</p>
       {error ? <p role="alert">{error}</p> : null}
     </section><App key={identity.user.id} />
@@ -71,7 +72,7 @@ export default function AuthGate() {
     <form onSubmit={submit}><fieldset disabled={busy}>
       {signup ? <label>표시 이름<input required maxLength={100} autoComplete="nickname" value={name} onChange={e => setName(e.target.value)} /></label> : null}
       <label>이메일<input type="email" required autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} /></label>
-      <label>비밀번호<input type="password" required minLength={8} maxLength={128} autoComplete={signup ? 'new-password' : 'current-password'} value={password} onChange={e => setPassword(e.target.value)} /></label>
+      <label>비밀번호<input type="password" required minLength={signup ? 12 : 8} maxLength={128} autoComplete={signup ? 'new-password' : 'current-password'} value={password} onChange={e => setPassword(e.target.value)} /></label>
       <button type="submit">{busy ? '처리 중…' : signup ? '가입하기' : '로그인하기'}</button>
       <button type="button" onClick={() => { setSignup(!signup); setPassword(''); setError(''); }}>{signup ? '로그인으로' : '가입 화면으로'}</button>
     </fieldset></form>{error ? <p role="alert">{error}</p> : null}

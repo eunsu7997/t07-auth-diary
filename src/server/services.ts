@@ -7,6 +7,7 @@ export class AppError extends Error {
   constructor(readonly status: 404 | 409 | 400, message: string) { super(message); }
 }
 const statement = (sql: string, params: Parameter[] = []): Statement => ({ sql, params });
+export const REQUEST_CONFLICT = '요청을 처리할 수 없습니다. 새 요청 ID로 다시 시도하세요.';
 const planSelect = `SELECT p.*, v.* FROM plans p JOIN plan_versions v ON v.plan_id = p.id AND v.version = p.current_version`;
 
 export class Diary {
@@ -142,9 +143,10 @@ export class Diary {
     await this.task(taskId);
     const [used] = await this.db.all<ExecutionLog>(`SELECT * FROM execution_logs WHERE start_request_id = ? AND ${this.logScope}`, [requestId, this.userId]);
     if (used) {
-      if (used.task_id !== taskId) throw new AppError(409, '이 시작 요청 ID는 다른 할 일에 사용되었습니다.');
+      if (used.task_id !== taskId) throw new AppError(409, REQUEST_CONFLICT);
       return used;
     }
+    if ((await this.db.all('SELECT 1 AS used FROM execution_logs WHERE start_request_id = ? AND task_id <> ?', [requestId, taskId])).length) throw new AppError(409, REQUEST_CONFLICT);
     const result = await this.db.batch([
       statement(`INSERT INTO execution_logs (id, task_id, started_at, estimated_seconds_at_start, start_request_id)
         SELECT ?, id, ?, estimated_seconds, ? FROM tasks
@@ -152,11 +154,12 @@ export class Diary {
           AND NOT EXISTS (SELECT 1 FROM execution_logs WHERE task_id = ? AND ended_at IS NULL)
         ON CONFLICT DO NOTHING`, [crypto.randomUUID(), this.now(), requestId, taskId, this.userId, taskId]),
       statement(`SELECT * FROM execution_logs WHERE (start_request_id = ? OR (task_id = ? AND ended_at IS NULL)) AND ${this.logScope}
-        ORDER BY CASE WHEN start_request_id = ? THEN 0 ELSE 1 END LIMIT 1`, [requestId, taskId, this.userId, requestId]),
+        AND NOT EXISTS(SELECT 1 FROM execution_logs collision WHERE collision.start_request_id = ? AND collision.task_id <> ?)
+        ORDER BY CASE WHEN start_request_id = ? THEN 0 ELSE 1 END LIMIT 1`, [requestId, taskId, this.userId, requestId, taskId, requestId]),
     ]);
     const log = result[1].results[0] as unknown as ExecutionLog | undefined;
-    if (!log) throw new AppError(409, '완료한 할 일은 진행 중으로 되돌린 후 시작하세요.');
-    if (log.task_id !== taskId) throw new AppError(409, '이 시작 요청 ID는 다른 할 일에 사용되었습니다.');
+    if (!log) throw new AppError(409, REQUEST_CONFLICT);
+    if (log.task_id !== taskId) throw new AppError(409, REQUEST_CONFLICT);
     return log;
   }
   async finish(taskId: string, logId: string, requestId: string): Promise<ExecutionLog> {
@@ -164,7 +167,8 @@ export class Diary {
     const [log] = await this.db.all<ExecutionLog>(`SELECT * FROM execution_logs WHERE id = ? AND task_id = ? AND ${this.logScope}`, [logId, taskId, this.userId]);
     if (!log) throw new AppError(404, '해당 할 일의 실행 기록을 찾을 수 없습니다.');
     const [used] = await this.db.all<ExecutionLog>(`SELECT * FROM execution_logs WHERE finish_request_id = ? AND ${this.logScope}`, [requestId, this.userId]);
-    if (used && used.id !== logId) throw new AppError(409, '이 완료 요청 ID는 다른 실행에 사용되었습니다.');
+    if (used && used.id !== logId) throw new AppError(409, REQUEST_CONFLICT);
+    if ((await this.db.all('SELECT 1 AS used FROM execution_logs WHERE finish_request_id = ? AND id <> ?', [requestId, logId])).length) throw new AppError(409, REQUEST_CONFLICT);
     // A stale finish request always refers to its original log, never to a later execution.
     if (log.ended_at !== null) return log;
     const ended = this.now();
@@ -178,7 +182,7 @@ export class Diary {
       statement(`SELECT * FROM execution_logs WHERE id = ? AND task_id = ? AND ${this.logScope}`, [logId, taskId, this.userId]),
     ]);
     const closed = result[1].results[0] as unknown as ExecutionLog;
-    if (closed.ended_at === null) throw new AppError(409, '이 완료 요청 ID는 다른 실행에 사용되었습니다.');
+    if (closed.ended_at === null) throw new AppError(409, REQUEST_CONFLICT);
     return closed;
   }
   async reopen(taskId: string): Promise<Task> {

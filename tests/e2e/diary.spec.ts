@@ -31,7 +31,7 @@ test('browser creates plan, edits with stable ID, and displays original history'
   await expect(page.getByTestId('version-2')).toContainText('수정 성공 기준');
   await page.reload();
   await expect(page.getByRole('heading', { level: 2, name: '수정한 브라우저 계획', exact: true })).toBeVisible();
-  await page.screenshot({ path: 'evidence/t07/stage2/browser/phase1-desktop.png', fullPage: true });
+  await page.screenshot({ path: 'evidence/t07/stage2-1/browser/phase1-desktop.png', fullPage: true });
 });
 
 test('browser adds five tasks, edits attributes, deletes, and re-reads from DB', async ({ page, request }) => {
@@ -148,5 +148,5 @@ test('mobile layout loads without runtime errors or horizontal overflow', async 
   await expect(page.locator('.plan-detail')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(errors).toEqual([]);
-  await page.screenshot({ path: 'evidence/t07/stage2/browser/phase1-mobile.png', fullPage: true });
+  await page.screenshot({ path: 'evidence/t07/stage2-1/browser/phase1-mobile.png', fullPage: true });
 });

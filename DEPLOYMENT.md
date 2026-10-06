@@ -1,6 +1,12 @@
-# T06 역사 기록 — T07 배포 지시가 아닙니다
+# T07 현재 배포 계획 — 아직 공개 배포하지 않음
 
-T07 1단계는 로컬만 실행합니다. 아래 T06 명령은 재실행하지 마세요. 현재 범위는 STAGE1.md에 있습니다.
+Stage 2.1 로컬 검증과 Claude Code 재감사가 완료되어 사용자 승인에 따른 체크포인트 commit/push 대상입니다. Stage 2 기준 커밋은 a0a2ba27aebea1ec86d2e28508a951b28c3a9456입니다. 공개 배포는 아직 수행하지 않았습니다. 대상 이름은 aleph-t07-auth-diary / aleph-t07-auth-diary-db, database_id는 LOCAL_ONLY_NOT_PROVISIONED입니다. 원격 생성/migration/deploy는 차단되어 있습니다. T06 운영 DB와 Worker는 보존합니다.
+
+향후 별도 승인 단계에서는 T07 전용 D1, 0001~0005 migration, HTTPS 출처의 BETTER_AUTH_URL, Worker BETTER_AUTH_SECRET, Static Assets run_worker_first=true 및 보안 헤더, cf-connecting-ip 기반 database rate limit을 재검증합니다. 운영 Worker는 테스트 프로필을 선택하지 않습니다. 현재 실제 import/5일 사용은 하지 않았습니다. 자세한 현재 설정은 [STAGE2-1.md](STAGE2-1.md)를 봅니다.
+
+# T06 역사 배포 기록 — 아래 명령을 T07에서 재실행하지 마세요
+
+아래 '현재'와 숫자는 2026-10-02 T06 당시 상태이며 현재 T07 배포 상태가 아닙니다.
 
 ## 현재 최종 운영 상태 (2026-10-02)
 

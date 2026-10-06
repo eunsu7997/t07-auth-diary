@@ -1,0 +1,180 @@
+{
+  "passed": true,
+  "environment": "HTTPS localhost workerd + local D1; production auth profile; no remote resources",
+  "loginThreshold": 10,
+  "windowSeconds": 60,
+  "checks": [
+    {
+      "label": "HTML 200",
+      "passed": true
+    },
+    {
+      "label": "HTML nosniff",
+      "passed": true
+    },
+    {
+      "label": "HTML referrer",
+      "passed": true
+    },
+    {
+      "label": "HTML CSP",
+      "passed": true
+    },
+    {
+      "label": "HTML frame ancestors",
+      "passed": true
+    },
+    {
+      "label": "HTML no-store",
+      "passed": true
+    },
+    {
+      "label": "bundled assets present",
+      "passed": true
+    },
+    {
+      "label": "JS 200",
+      "passed": true
+    },
+    {
+      "label": "JS nosniff",
+      "passed": true
+    },
+    {
+      "label": "JS referrer",
+      "passed": true
+    },
+    {
+      "label": "JS CSP",
+      "passed": true
+    },
+    {
+      "label": "JS frame ancestors",
+      "passed": true
+    },
+    {
+      "label": "JS no-store",
+      "passed": true
+    },
+    {
+      "label": "CSS 200",
+      "passed": true
+    },
+    {
+      "label": "CSS nosniff",
+      "passed": true
+    },
+    {
+      "label": "CSS referrer",
+      "passed": true
+    },
+    {
+      "label": "CSS CSP",
+      "passed": true
+    },
+    {
+      "label": "CSS frame ancestors",
+      "passed": true
+    },
+    {
+      "label": "CSS no-store",
+      "passed": true
+    },
+    {
+      "label": "unauthenticated API 401",
+      "passed": true
+    },
+    {
+      "label": "API nosniff",
+      "passed": true
+    },
+    {
+      "label": "API referrer",
+      "passed": true
+    },
+    {
+      "label": "API CSP",
+      "passed": true
+    },
+    {
+      "label": "API frame ancestors",
+      "passed": true
+    },
+    {
+      "label": "API no-store",
+      "passed": true
+    },
+    {
+      "label": "SPA deep link 200",
+      "passed": true
+    },
+    {
+      "label": "SPA nosniff",
+      "passed": true
+    },
+    {
+      "label": "SPA referrer",
+      "passed": true
+    },
+    {
+      "label": "SPA CSP",
+      "passed": true
+    },
+    {
+      "label": "SPA frame ancestors",
+      "passed": true
+    },
+    {
+      "label": "SPA no-store",
+      "passed": true
+    },
+    {
+      "label": "signup trims name",
+      "passed": true
+    },
+    {
+      "label": "normal login succeeds",
+      "passed": true
+    },
+    {
+      "label": "10 failures followed by actual 429",
+      "passed": true
+    },
+    {
+      "label": "different trusted client can still log in",
+      "passed": true
+    },
+    {
+      "label": "wrong/absent responses identical",
+      "passed": true
+    },
+    {
+      "label": "server refuses blank name",
+      "passed": true
+    },
+    {
+      "label": "server refuses 101 character name",
+      "passed": true
+    },
+    {
+      "label": "server refuses short password",
+      "passed": true
+    },
+    {
+      "label": "12 character password accepted",
+      "passed": true
+    },
+    {
+      "label": "sanitized token not retained",
+      "passed": true
+    },
+    {
+      "label": "no auth/rate data in export",
+      "passed": true
+    },
+    {
+      "label": "Worker SPA browser renders without script error",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "environment": "temporary local fixture only",
+  "status": 200,
+  "body": {
+    "token": "[REDACTED]",
+    "user": {
+      "name": "Local security fixture",
+      "email": "20a26614-01e6-4c85-9dfc-8fda00d82848@example.invalid",
+      "emailVerified": false,
+      "image": null,
+      "createdAt": "2026-10-06T02:01:10.110Z",
+      "updatedAt": "2026-10-06T02:01:10.110Z",
+      "id": "0uCjfjZYjJ3avrDx6L2M1qzMPWWhYtlJ"
+    }
+  },
+  "headers": [
+    {
+      "name": "Set-Cookie",
+      "value": "[REDACTED]"
+    }
+  ]
+}

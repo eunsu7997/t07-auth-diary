@@ -1,6 +1,8 @@
+> **Stage 2 historical implementation/results:** checkpoint commit/push is complete. Current security configuration is in STAGE2-1.md; evidence/t07/stage2 is immutable historical evidence.
+
 # T07 Stage 2 — local implementation notes (not final submission)
 
-Scope: T07 only. Stage 1 commit `91b20dda051e45e88b569acee8053d9267d3bf74` was pushed to `origin/codex/t07-auth`. T06 base `d5a386e343c204a7ed5abb914e54b75e679eb2fd` remains an ancestor. Stage 2 changes currently remain local and uncommitted. `t06-source` push URL remains disabled.
+Scope: T07 only. Stage 1 commit `91b20dda051e45e88b569acee8053d9267d3bf74` was pushed to `origin/codex/t07-auth`. T06 base `d5a386e343c204a7ed5abb914e54b75e679eb2fd` remains an ancestor. Stage 2 was committed as `a0a2ba27aebea1ec86d2e28508a951b28c3a9456` and pushed to origin/codex/t07-auth. `t06-source` push URL remains disabled.
 
 ## Ownership
 
@@ -32,4 +34,4 @@ Evidence in `evidence/t07/stage2`: final JSON reports, initial attempt report, s
 
 ## Remaining
 
-Independent Claude Code audit has not run. Remote T07 D1 provisioning, migration, public deployment, real T06 JSON import, real five-day usage, Day 2 rule change and final submission documents have not run. Workers distributed rate limiting and deployment-specific secrets/origins remain items for the deployment/security audit. No T06 working tree, remote, Worker or operating DB was changed.
+The user supplied a completed independent Claude Code audit (critical/high findings: 0). It confirmed ownership/auth regressions but identified real workerd rate-limit/static-header issues; these are addressed in Stage 2.1, whose current limits and results are documented in STAGE2-1.md. Remote T07 D1 provisioning, migration, public deployment, real T06 JSON import, real five-day usage, Day 2 rule change and final submission documents have not run. Stage 2 relied on NODE_ENV defaults, which did not reliably protect workerd; Stage 2.1 explicitly enables database-backed limiting. Deployment-specific secrets/origins remain pending. The user reported completion of the Stage 2.1 Claude Code re-audit: code PASS, documentation PASS, checkpoint commit allowed YES, and critical/high/medium findings each 0. Low findings remain documented as future improvements in evidence/t07/stage2-1/claude-audit-resolution.md. No T06 working tree, remote, Worker or operating DB was changed.

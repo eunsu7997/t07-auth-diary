@@ -23,7 +23,7 @@ export function createApp(database: Database | ((bindings: Bindings) => Database
     c.header('Referrer-Policy', 'no-referrer');
     c.header('Cache-Control', 'no-store');
     // Production UI uses external bundled scripts. Vite development adds its own script handling.
-    if (!processEnvironmentIsDev()) c.header('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
+    if (c.env?.DB || !processEnvironmentIsDev()) c.header('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
     // Do not permit browser writes originating on unrelated sites. No account or password is involved.
     const origin = c.req.header('Origin');
     const configuredBaseURL = origin ? authFor(c.env)?.options.baseURL : undefined;
@@ -35,6 +35,11 @@ export function createApp(database: Database | ((bindings: Bindings) => Database
       return c.json({ error: 'application/json 형식으로 요청하세요.' }, 415);
     }
     await next();
+    // ASSETS.fetch returns its own Response; attach headers to the final response too.
+    c.header('X-Content-Type-Options', 'nosniff');
+    c.header('Referrer-Policy', 'no-referrer');
+    c.header('Cache-Control', 'no-store');
+    if (c.env?.DB || !processEnvironmentIsDev()) c.header('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
   });
   const authFor = (bindings: Bindings) => typeof authentication === 'function' ? authentication(bindings) : authentication;
   app.all('/api/auth/*', c => {

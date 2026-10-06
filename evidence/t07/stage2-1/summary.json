@@ -1,0 +1,119 @@
+{
+  "stage": "2.1",
+  "baseline": "a0a2ba27aebea1ec86d2e28508a951b28c3a9456",
+  "fixtureNotice": "All generated accounts/records are automated test fixtures, not actual five-day usage",
+  "betterAuth": "1.7.7",
+  "audit": "Stage 2.1 Claude Code re-audit completed and PASS, as reported by user",
+  "changes": {
+    "M1": {
+      "enabled": true,
+      "storage": "database",
+      "ipHeader": "cf-connecting-ip",
+      "loginMax": 10,
+      "signupChangePasswordMax": 5,
+      "otherAuthMax": 100,
+      "windowSeconds": 60,
+      "actual429": true,
+      "concurrentThresholdTest": true,
+      "fixtureProfile": "explicit test mode + loopback only; Worker always protected"
+    },
+    "M2": {
+      "workerFirst": true,
+      "finalResponseHeaders": true,
+      "HTML": true,
+      "JS": true,
+      "CSS": true,
+      "API": true,
+      "SPA": true
+    },
+    "M3": "review/export includes archived tasks; unchanged policy",
+    "L1": "generic 409; same-task/log/key retry preserved; whole business DB invariant",
+    "L2": {
+      "nameTrim": true,
+      "nameMin": 1,
+      "nameMax": 100,
+      "passwordMin": 12,
+      "passwordMax": 128
+    },
+    "L3": "Account deletion notice displayed; email ownership/recovery/MFA/OAuth unsupported",
+    "L4": "Native Better Auth token response retained; structured evidence secrets removed; no auth/rate table in export",
+    "D": "README/STAGE/DEPLOYMENT synchronized; Stage2 evidence preserved"
+  },
+  "tests": {
+    "auth.test.ts": {
+      "pass": 13,
+      "fail": 0
+    },
+    "contract.test.ts": {
+      "pass": 3,
+      "fail": 0
+    },
+    "database.test.ts": {
+      "pass": 17,
+      "fail": 0
+    },
+    "ownership.test.ts": {
+      "pass": 48,
+      "fail": 0
+    },
+    "phase2.test.ts": {
+      "pass": 27,
+      "fail": 0
+    },
+    "security.test.ts": {
+      "pass": 15,
+      "fail": 0
+    }
+  },
+  "regression": 61,
+  "browser": {
+    "regression": 14,
+    "auth": 5
+  },
+  "totals": {
+    "unitAPI": 123,
+    "browser": 19,
+    "pass": 142,
+    "fail": 0
+  },
+  "workerd": {
+    "ownershipAssertions": 64,
+    "securityAssertions": 43,
+    "passed": true,
+    "assertionsSeparateFromTestTotal": true
+  },
+  "typecheck": true,
+  "productionBuild": true,
+  "devBrowser": {
+    "loginScreen": true,
+    "errors": 0
+  },
+  "historicalStage2EvidenceUnchanged": true,
+  "previousMigrationsUnchanged": true,
+  "t06WorkingTreeClean": true,
+  "remoteD1OrDeploy": false,
+  "actualImportOrFiveDaysOrRuleRecords": false,
+  "limitations": [
+    "NAT users share an IP/path quota",
+    "No account-level/global bot or distributed-IP prevention",
+    "Email ownership/recovery/MFA/OAuth absent",
+    "Structured redactor does not certify arbitrary prose"
+  ],
+  "checkpoint": "Claude re-audit passed; user authorized Stage 2.1 checkpoint commit/push",
+  "reAudit": {
+    "code": "PASS",
+    "documentation": "PASS",
+    "checkpointCommitAllowed": "YES",
+    "critical": 0,
+    "high": 0,
+    "medium": 0,
+    "source": "User-reported Claude Code final re-audit judgment"
+  },
+  "remainingLowFindings": [
+    "Request-id status code distinctions remain",
+    "Additional automated signup/change-password rate-limit coverage is a future improvement",
+    "IP-based rate-limit keys may constitute personal information",
+    "All static assets traversing Worker may affect invocation cost and caching",
+    "Some historical documentation retains older wording"
+  ]
+}
