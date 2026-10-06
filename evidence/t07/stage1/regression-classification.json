@@ -1,0 +1,377 @@
+{
+  "total": 61,
+  "counts": {
+    "requirements-change": 4,
+    "unchanged-pass": 26,
+    "auth-fixture-needed": 31
+  },
+  "explanation": "Original T06 test bodies unchanged. Failure classification is an implementation plan, not proof those tests pass with authenticated fixtures.",
+  "cases": [
+    {
+      "group": "unit-api-contract",
+      "name": "database and JSON schema correspondence matches every business table, field, SQL type, nullability, primary key, relation and unique constraint",
+      "actual": "failed",
+      "classification": "requirements-change"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "database and JSON schema correspondence validates actual DB rows, including all plan versions and task-tag joins, against the contract",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "database and JSON schema correspondence DB enforces execution foreign keys, active-log uniqueness and completion consistency",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API starts with an empty DB and exposes no fixture as real data",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API creates a plan with server ID and initial version containing every input field",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API preserves original and intermediate versions and keeps the plan ID on two edits",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API DB itself prevents update and delete of preserved versions",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API rejects a stale plan edit without creating another version",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API rolls back the complete batch when creating a version fails",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API stores at least five tasks, all attributes, and normalized tag relationships",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API edits task attributes and replaces tag relations without changing task or plan ID",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API removes a task from the list but preserves its DB row and tag relationships",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API separates tasks by plan and refuses tasks with a missing parent plan",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API reads identical data after fresh app initialization and DB close/reopen",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API searches literal text, filters tags/priority/due dates, and combines criteria",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API sorts due dates (null last), priority, estimates, and creation time deterministically",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API rejects invalid dates, reversed periods, negative estimates and unknown secret fields",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API uses binding for SQL-like content and returns script-like strings as JSON text",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API allows unauthenticated use and rejects unrelated browser-origin writes",
+      "actual": "failed",
+      "classification": "requirements-change"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "T06 phase 1: actual SQLite and API returns useful errors for malformed JSON, oversized requests, and missing records",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency start creates one linked open log immediately with server time and a separate estimate snapshot",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency same start request and simultaneous different start requests return the one open log",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency open execution survives new app instances and closing/reopening the server DB",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency finish stores precise start/end, floors elapsed milliseconds, and never changes task or plan estimates",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency zero/sub-second execution is valid and does not round up",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency twenty finish clicks with different request IDs close the same log exactly once",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency same finish request retry preserves the first end time, duration, and finish key",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency reopen preserves every previous execution and actual duration; next start has a new ID",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency delayed old finish retry never finishes a new execution or re-completes a reopened task",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency request IDs cannot be reused across unrelated tasks/executions",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency rejects finishing an unrelated/missing log and starting a completed task",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency DB refuses closed log updates/deletes and active log identity changes",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency DB duration mismatch rolls back both the log and task status",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency backwards server clock is rejected without corrupting the open log",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "execution state, durability and idempotency open tasks cannot be deleted; archived completed tasks retain logs and remain in review",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "review counts, sums and Korean date boundaries returns zero metrics for an empty database",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "review counts, sums and Korean date boundaries aggregates DB evidence exactly and separates plan estimates from task estimates",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "review counts, sums and Korean date boundaries completion before Korean midnight is on time, while midnight of the next day is late",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "review counts, sums and Korean date boundaries due day is inclusive for unfinished tasks and null/future dates never count as delayed",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "review counts, sums and Korean date boundaries reopening changes completion counts without losing actual time and uses current overdue rule",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "copy and full JSON export creates new plan/task IDs, copies required attributes/tags, sets new deadline and source link, and copies no logs",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "copy and full JSON export rejects non-completed/deleted/wrong-plan copy sources without leaving a partial new plan",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "copy and full JSON export copy is atomic if a source is reopened between validation and the write transaction",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "copy and full JSON export one JSON contains every table/version/archived row/log, validates against schema, and round-trips without loss",
+      "actual": "passed",
+      "classification": "unchanged-pass"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "copy and full JSON export API supports start/finish/reopen/review/copy/export with input validation and download headers",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "copy and full JSON export duplicate copy selections and invalid due dates are rejected by the API",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "unit-api-contract",
+      "name": "copy and full JSON export upgrading an existing phase-1 database retains its plans, versions and tasks",
+      "actual": "failed",
+      "classification": "requirements-change"
+    },
+    {
+      "group": "browser",
+      "name": "browser creates plan, edits with stable ID, and displays original history",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "browser",
+      "name": "browser adds five tasks, edits attributes, deletes, and re-reads from DB",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "browser",
+      "name": "browser filters and sorts actual server query results",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "browser",
+      "name": "script-like inputs remain visible text in plan, history, tasks and tags without executing",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "browser",
+      "name": "a fresh browser context with empty storage reads the same server data",
+      "actual": "failed",
+      "classification": "requirements-change"
+    },
+    {
+      "group": "browser",
+      "name": "failed save preserves draft and allows retry",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "browser",
+      "name": "mobile layout loads without runtime errors or horizontal overflow",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "browser",
+      "name": "start is saved immediately and restored after reload; finish records real elapsed time and keeps estimate",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "browser",
+      "name": "twenty immediate UI finish clicks create only one closed log",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "browser",
+      "name": "reopen and rerun preserve both execution histories and one completed task count",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "browser",
+      "name": "UI review shows actual DB totals and clicking a number reveals supporting records",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "browser",
+      "name": "UI copies completed task to new plan with new deadline, new IDs, source link and no execution history",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "browser",
+      "name": "one downloaded JSON contains the whole DB and retains IDs/relations/timestamps after reading",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    },
+    {
+      "group": "browser",
+      "name": "lost start/finish responses can be retried with identical request IDs without duplicate DB changes",
+      "actual": "failed",
+      "classification": "auth-fixture-needed"
+    }
+  ]
+}

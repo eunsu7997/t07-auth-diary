@@ -1,3 +1,4 @@
+import './block-remote.mjs';
 // Production is read-only here. Users create their own real records.
 import assert from 'node:assert/strict';
 import { resolve } from 'node:path';

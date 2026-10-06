@@ -146,6 +146,7 @@ export default function App() {
   async function download() {
     await mutate(async () => {
       const response = await fetch('/api/export', { cache: 'no-store' });
+      if (response.status === 401) window.dispatchEvent(new Event('t07-session-expired'));
       if (!response.ok) throw new Error('전체 JSON 내보내기에 실패했습니다. 다시 시도하세요.');
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
@@ -156,9 +157,9 @@ export default function App() {
   }
   const pending = busy || detailLoading;
   return <>
-    <header className="site-header"><div><p className="eyebrow">ALEPH STUDIO · T06</p><h1>플랜두씨 다이어리</h1><p>내 계획을 쓰고, 실제로 한 일을 이어갑니다.</p></div><div className="header-actions"><span className="stage">Plan → Do → See</span><button disabled={busy} onClick={() => void download()}>전체 JSON 다운로드</button></div></header>
+    <header className="site-header"><div><p className="eyebrow">ALEPH STUDIO · T07</p><h1>플랜두씨 다이어리</h1><p>내 계획을 쓰고, 실제로 한 일을 이어갑니다.</p></div><div className="header-actions"><span className="stage">Plan → Do → See</span><button disabled={busy} onClick={() => void download()}>전체 JSON 다운로드</button></div></header>
     <main>
-      <p className="privacy">공개 다이어리입니다. 이름·연락처·비밀번호·API 키 등 개인정보와 민감정보를 입력하지 마세요.</p>
+      <p className="privacy">이름·연락처·비밀번호·API 키 등 개인정보와 민감정보를 다이어리 내용에 입력하지 마세요.</p>
       {error ? <p role="alert" className="error">{error}<button onClick={() => setRefresh(n => n + 1)}>다시 불러오기</button></p> : null}
       {notice ? <p role="status" className="notice">{notice}</p> : null}
       <div className="workspace">

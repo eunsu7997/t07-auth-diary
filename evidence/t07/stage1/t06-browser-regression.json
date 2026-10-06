@@ -1,0 +1,963 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--timeout=8000"
+    ],
+    "configFile": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\playwright.config.ts",
+    "rootDir": "C:/Users/User/Documents/ChatGPT/과제/t07/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/User/Documents/ChatGPT/과제/t07/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "C:/Users/User/Documents/ChatGPT/과제/t07/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 8000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/t07/stage1/t06-browser-regression.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": {
+      "command": "node scripts/e2e-server.mjs",
+      "url": "http://127.0.0.1:3107/api/health",
+      "reuseExistingServer": false,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "diary.spec.ts",
+      "file": "diary.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser creates plan, edits with stable ID, and displays original history",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 8025,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts",
+                        "column": 65,
+                        "line": 12
+                      },
+                      "message": "Error: locator.click: Test timeout of 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '새 계획', exact: true })\u001b[22m\n\n\n  10 | test('browser creates plan, edits with stable ID, and displays original history', async ({ page }) => {\n  11 |   await page.goto('/');\n> 12 |   await page.getByRole('button', { name: '새 계획', exact: true }).click();\n     |                                                                 ^\n  13 |   await page.getByLabel('계획 제목').fill('직접 입력한 브라우저 계획');\n  14 |   await page.getByLabel('시작일', { exact: true }).fill('2026-10-02');\n  15 |   await page.getByLabel('종료일', { exact: true }).fill('2026-10-09');\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts:12:65"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:26:13.677Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\diary-browser-creates-plan-5b591-d-displays-original-history\\error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "94000699dd8015301042-e30b2c46e7514ff429b8",
+          "file": "diary.spec.ts",
+          "line": 10,
+          "column": 1
+        },
+        {
+          "title": "browser adds five tasks, edits attributes, deletes, and re-reads from DB",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 8027,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts",
+                        "column": 54,
+                        "line": 41
+                      },
+                      "message": "Error: locator.fill: Test timeout of 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('할 일 내용', { exact: true })\u001b[22m\n\n\n  39 |   await selectPlan(page, plan.title);\n  40 |   for (let i = 1; i <= 5; i++) {\n> 41 |     await page.getByLabel('할 일 내용', { exact: true }).fill(`실제 입력 UI 테스트 ${i}`);\n     |                                                      ^\n  42 |     await page.getByLabel('우선순위', { exact: true }).selectOption('high');\n  43 |     await page.getByLabel('태그 (쉼표로 구분)').fill('UI, 검증');\n  44 |     await page.getByLabel('마감일', { exact: true }).fill('2026-10-04');\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts:41:54"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:26:22.283Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\diary-browser-adds-five-ta-4ef4e-eletes-and-re-reads-from-DB\\error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "94000699dd8015301042-ef24e1b2c8129f4405c4",
+          "file": "diary.spec.ts",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "browser filters and sorts actual server query results",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 8034,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts",
+                        "column": 34,
+                        "line": 75
+                      },
+                      "message": "Error: locator.fill: Test timeout of 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('내용 검색')\u001b[22m\n\n\n  73 |   ]) await request.post(`/api/plans/${plan.id}/tasks`, { data: task });\n  74 |   await selectPlan(page, plan.title);\n> 75 |   await page.getByLabel('내용 검색').fill('독서');\n     |                                  ^\n  76 |   await page.getByLabel('태그 필터').fill('독서');\n  77 |   await page.getByLabel('우선순위 필터').selectOption('high');\n  78 |   await page.getByLabel('마감일 끝').fill('2026-10-04');\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts:75:34"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:26:30.855Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\diary-browser-filters-and-sorts-actual-server-query-results\\error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "94000699dd8015301042-8ae4eb22bd8ad907eff5",
+          "file": "diary.spec.ts",
+          "line": 67,
+          "column": 1
+        },
+        {
+          "title": "script-like inputs remain visible text in plan, history, tasks and tags without executing",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5236,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('task-card')\nExpected substring: \u001b[32m\"<script>window.__t06Xss=123</script>\"\u001b[39m\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByTestId('task-card') with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('task-card')\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('task-card')\nExpected substring: \u001b[32m\"<script>window.__t06Xss=123</script>\"\u001b[39m\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByTestId('task-card') with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('task-card')\u001b[22m\n\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts:96:47",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts",
+                      "column": 47,
+                      "line": 96
+                    },
+                    "snippet": "  94 |   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));\n  95 |   await selectPlan(page, plan.title);\n> 96 |   await expect(page.getByTestId('task-card')).toContainText(payload);\n     |                                               ^\n  97 |   await expect(page.locator('.plan-detail > .preserve')).toHaveText(payload);\n  98 |   await page.getByText('수정 이력 (1개 버전)', { exact: true }).click();\n  99 |   await expect(page.getByTestId('version-1')).toContainText(payload);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts",
+                        "column": 47,
+                        "line": 96
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('task-card')\nExpected substring: \u001b[32m\"<script>window.__t06Xss=123</script>\"\u001b[39m\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByTestId('task-card') with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('task-card')\u001b[22m\n\n\n  94 |   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));\n  95 |   await selectPlan(page, plan.title);\n> 96 |   await expect(page.getByTestId('task-card')).toContainText(payload);\n     |                                               ^\n  97 |   await expect(page.locator('.plan-detail > .preserve')).toHaveText(payload);\n  98 |   await page.getByText('수정 이력 (1개 버전)', { exact: true }).click();\n  99 |   await expect(page.getByTestId('version-1')).toContainText(payload);\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts:96:47"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:26:39.417Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\diary-script-like-inputs-r-9465e--and-tags-without-executing\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts",
+                    "column": 47,
+                    "line": 96
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "94000699dd8015301042-198ad84dc9c24ed7d7a1",
+          "file": "diary.spec.ts",
+          "line": 90,
+          "column": 1
+        },
+        {
+          "title": "a fresh browser context with empty storage reads the same server data",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5230,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('task-card')\nExpected substring: \u001b[32m\"서버에 남은 할 일\"\u001b[39m\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByTestId('task-card') with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('task-card')\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('task-card')\nExpected substring: \u001b[32m\"서버에 남은 할 일\"\u001b[39m\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByTestId('task-card') with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('task-card')\u001b[22m\n\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts:110:47",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts",
+                      "column": 47,
+                      "line": 110
+                    },
+                    "snippet": "  108 |   let context = await browser.newContext(); let page = await context.newPage();\n  109 |   await selectPlan(page, plan.title);\n> 110 |   await expect(page.getByTestId('task-card')).toContainText('서버에 남은 할 일');\n      |                                               ^\n  111 |   expect(await page.evaluate(() => localStorage.length)).toBe(0);\n  112 |   await context.close();\n  113 |   context = await browser.newContext(); page = await context.newPage();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts",
+                        "column": 47,
+                        "line": 110
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('task-card')\nExpected substring: \u001b[32m\"서버에 남은 할 일\"\u001b[39m\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByTestId('task-card') with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('task-card')\u001b[22m\n\n\n  108 |   let context = await browser.newContext(); let page = await context.newPage();\n  109 |   await selectPlan(page, plan.title);\n> 110 |   await expect(page.getByTestId('task-card')).toContainText('서버에 남은 할 일');\n      |                                               ^\n  111 |   expect(await page.evaluate(() => localStorage.length)).toBe(0);\n  112 |   await context.close();\n  113 |   context = await browser.newContext(); page = await context.newPage();\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts:110:47"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:26:45.178Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\diary-a-fresh-browser-cont-08f69--reads-the-same-server-data\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts",
+                    "column": 47,
+                    "line": 110
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "94000699dd8015301042-098f9e4df24c4dab527b",
+          "file": "diary.spec.ts",
+          "line": 105,
+          "column": 1
+        },
+        {
+          "title": "failed save preserves draft and allows retry",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 8030,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts",
+                        "column": 52,
+                        "line": 123
+                      },
+                      "message": "Error: locator.fill: Test timeout of 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('할 일 내용', { exact: true })\u001b[22m\n\n\n  121 |   const plan = await (await request.post('/api/plans', { data: { ...input, title: '실패 처리 테스트' } })).json();\n  122 |   await selectPlan(page, plan.title);\n> 123 |   await page.getByLabel('할 일 내용', { exact: true }).fill('실패해도 남는 초안');\n      |                                                    ^\n  124 |   await page.route(`**/api/plans/${plan.id}/tasks`, async route => {\n  125 |     if (route.request().method() === 'POST') await route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: '테스트용 저장 실패' }) });\n  126 |     else await route.continue();\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts:123:52"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:26:50.985Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\diary-failed-save-preserves-draft-and-allows-retry\\error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "94000699dd8015301042-913e8630b2cb7e66be9f",
+          "file": "diary.spec.ts",
+          "line": 120,
+          "column": 1
+        },
+        {
+          "title": "mobile layout loads without runtime errors or horizontal overflow",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5149,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"플랜두씨 다이어리\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mT07 \u001b[27m플랜두씨 다이어리\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    14 × locator resolved to <h1>T07 플랜두씨 다이어리</h1>\u001b[22m\n\u001b[2m       - unexpected value \"T07 플랜두씨 다이어리\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"플랜두씨 다이어리\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mT07 \u001b[27m플랜두씨 다이어리\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    14 × locator resolved to <h1>T07 플랜두씨 다이어리</h1>\u001b[22m\n\u001b[2m       - unexpected value \"T07 플랜두씨 다이어리\"\u001b[22m\n\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts:140:57",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts",
+                      "column": 57,
+                      "line": 140
+                    },
+                    "snippet": "  138 |   await page.setViewportSize({ width: 390, height: 844 });\n  139 |   await page.goto('/');\n> 140 |   await expect(page.getByRole('heading', { level: 1 })).toHaveText('플랜두씨 다이어리');\n      |                                                         ^\n  141 |   await expect(page.getByRole('button', { name: '새 계획', exact: true })).toBeVisible();\n  142 |   await expect(page.locator('.plan-detail')).toBeVisible();\n  143 |   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts",
+                        "column": 57,
+                        "line": 140
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"플랜두씨 다이어리\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mT07 \u001b[27m플랜두씨 다이어리\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    14 × locator resolved to <h1>T07 플랜두씨 다이어리</h1>\u001b[22m\n\u001b[2m       - unexpected value \"T07 플랜두씨 다이어리\"\u001b[22m\n\n\n  138 |   await page.setViewportSize({ width: 390, height: 844 });\n  139 |   await page.goto('/');\n> 140 |   await expect(page.getByRole('heading', { level: 1 })).toHaveText('플랜두씨 다이어리');\n      |                                                         ^\n  141 |   await expect(page.getByRole('button', { name: '새 계획', exact: true })).toBeVisible();\n  142 |   await expect(page.locator('.plan-detail')).toBeVisible();\n  143 |   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts:140:57"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:26:59.550Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\diary-mobile-layout-loads--e5c85-rors-or-horizontal-overflow\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\diary.spec.ts",
+                    "column": 57,
+                    "line": 140
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "94000699dd8015301042-09c9a526ae0a9428c473",
+          "file": "diary.spec.ts",
+          "line": 136,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "phase2.spec.ts",
+      "file": "phase2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "start is saved immediately and restored after reload; finish records real elapsed time and keeps estimate",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 250,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n\n    at select (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:15:49)\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:21:67",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                      "column": 49,
+                      "line": 15
+                    },
+                    "snippet": "  13 | async function select(page: Page, title: string) {\n  14 |   await page.goto('/'); await page.getByRole('button').filter({ hasText: title }).first().click();\n> 15 |   await expect(page.locator('.plan-detail h2')).toHaveText(title);\n     |                                                 ^\n  16 |   await expect(page.getByTestId('task-card')).toHaveCount(1);\n  17 | }\n  18 | const logs = async (request: APIRequestContext, taskId: string): Promise<ExecutionLog[]> => await (await request.get(`/api/tasks/${taskId}/executions`)).json();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                        "column": 49,
+                        "line": 15
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n\n\n  13 | async function select(page: Page, title: string) {\n  14 |   await page.goto('/'); await page.getByRole('button').filter({ hasText: title }).first().click();\n> 15 |   await expect(page.locator('.plan-detail h2')).toHaveText(title);\n     |                                                 ^\n  16 |   await expect(page.getByTestId('task-card')).toHaveCount(1);\n  17 | }\n  18 | const logs = async (request: APIRequestContext, taskId: string): Promise<ExecutionLog[]> => await (await request.get(`/api/tasks/${taskId}/executions`)).json();\n    at select (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:15:49)\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:21:67"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:27:05.266Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-start-is-saved-imme-9c3e2-sed-time-and-keeps-estimate\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                    "column": 49,
+                    "line": 15
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-31cc2ae91e36cd67e4ce",
+          "file": "phase2.spec.ts",
+          "line": 20,
+          "column": 1
+        },
+        {
+          "title": "twenty immediate UI finish clicks create only one closed log",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 233,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n\n    at select (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:15:49)\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:38:65",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                      "column": 49,
+                      "line": 15
+                    },
+                    "snippet": "  13 | async function select(page: Page, title: string) {\n  14 |   await page.goto('/'); await page.getByRole('button').filter({ hasText: title }).first().click();\n> 15 |   await expect(page.locator('.plan-detail h2')).toHaveText(title);\n     |                                                 ^\n  16 |   await expect(page.getByTestId('task-card')).toHaveCount(1);\n  17 | }\n  18 | const logs = async (request: APIRequestContext, taskId: string): Promise<ExecutionLog[]> => await (await request.get(`/api/tasks/${taskId}/executions`)).json();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                        "column": 49,
+                        "line": 15
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n\n\n  13 | async function select(page: Page, title: string) {\n  14 |   await page.goto('/'); await page.getByRole('button').filter({ hasText: title }).first().click();\n> 15 |   await expect(page.locator('.plan-detail h2')).toHaveText(title);\n     |                                                 ^\n  16 |   await expect(page.getByTestId('task-card')).toHaveCount(1);\n  17 | }\n  18 | const logs = async (request: APIRequestContext, taskId: string): Promise<ExecutionLog[]> => await (await request.get(`/api/tasks/${taskId}/executions`)).json();\n    at select (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:15:49)\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:38:65"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:27:06.141Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-twenty-immediate-UI-c912b--create-only-one-closed-log\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                    "column": 49,
+                    "line": 15
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-e3fce2f2a82ef2ea8753",
+          "file": "phase2.spec.ts",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "reopen and rerun preserve both execution histories and one completed task count",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 238,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n\n    at select (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:15:49)\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:49:68",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                      "column": 49,
+                      "line": 15
+                    },
+                    "snippet": "  13 | async function select(page: Page, title: string) {\n  14 |   await page.goto('/'); await page.getByRole('button').filter({ hasText: title }).first().click();\n> 15 |   await expect(page.locator('.plan-detail h2')).toHaveText(title);\n     |                                                 ^\n  16 |   await expect(page.getByTestId('task-card')).toHaveCount(1);\n  17 | }\n  18 | const logs = async (request: APIRequestContext, taskId: string): Promise<ExecutionLog[]> => await (await request.get(`/api/tasks/${taskId}/executions`)).json();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                        "column": 49,
+                        "line": 15
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n\n\n  13 | async function select(page: Page, title: string) {\n  14 |   await page.goto('/'); await page.getByRole('button').filter({ hasText: title }).first().click();\n> 15 |   await expect(page.locator('.plan-detail h2')).toHaveText(title);\n     |                                                 ^\n  16 |   await expect(page.getByTestId('task-card')).toHaveCount(1);\n  17 | }\n  18 | const logs = async (request: APIRequestContext, taskId: string): Promise<ExecutionLog[]> => await (await request.get(`/api/tasks/${taskId}/executions`)).json();\n    at select (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:15:49)\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:49:68"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:27:07.008Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-reopen-and-rerun-pr-b470e-nd-one-completed-task-count\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                    "column": 49,
+                    "line": 15
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-398c7c6fccc8f69c698f",
+          "file": "phase2.spec.ts",
+          "line": 48,
+          "column": 1
+        },
+        {
+          "title": "UI review shows actual DB totals and clicking a number reveals supporting records",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 133,
+                  "error": {
+                    "message": "TypeError: (intermediate value) is not iterable",
+                    "stack": "TypeError: (intermediate value) is not iterable\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:66:18",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                      "column": 18,
+                      "line": 66
+                    },
+                    "snippet": "  64 |   const { plan, task } = await create(request, 'UI 돌아보기 근거 테스트', '지연 근거 할 일', '2000-01-01');\n  65 |   await request.post(`/api/tasks/${task.id}/start`, { data: { request_id: crypto.randomUUID() } });\n> 66 |   const [open] = await logs(request, task.id);\n     |                  ^\n  67 |   await request.post(`/api/tasks/${task.id}/executions/${open.id}/finish`, { data: { request_id: crypto.randomUUID() } });\n  68 |   const review = await (await request.get(`/api/review?plan_id=${plan.id}`)).json();\n  69 |   await select(page, plan.title); await page.getByLabel('돌아보기 범위').selectOption('selected');"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                        "column": 18,
+                        "line": 66
+                      },
+                      "message": "TypeError: (intermediate value) is not iterable\n\n  64 |   const { plan, task } = await create(request, 'UI 돌아보기 근거 테스트', '지연 근거 할 일', '2000-01-01');\n  65 |   await request.post(`/api/tasks/${task.id}/start`, { data: { request_id: crypto.randomUUID() } });\n> 66 |   const [open] = await logs(request, task.id);\n     |                  ^\n  67 |   await request.post(`/api/tasks/${task.id}/executions/${open.id}/finish`, { data: { request_id: crypto.randomUUID() } });\n  68 |   const review = await (await request.get(`/api/review?plan_id=${plan.id}`)).json();\n  69 |   await select(page, plan.title); await page.getByLabel('돌아보기 범위').selectOption('selected');\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:66:18"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:27:07.902Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-UI-review-shows-act-38ef4--reveals-supporting-records\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                    "column": 18,
+                    "line": 66
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-dba55f640e7b1c82283c",
+          "file": "phase2.spec.ts",
+          "line": 63,
+          "column": 1
+        },
+        {
+          "title": "UI copies completed task to new plan with new deadline, new IDs, source link and no execution history",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 256,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n\n    at select (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:15:49)\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:84:3",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                      "column": 49,
+                      "line": 15
+                    },
+                    "snippet": "  13 | async function select(page: Page, title: string) {\n  14 |   await page.goto('/'); await page.getByRole('button').filter({ hasText: title }).first().click();\n> 15 |   await expect(page.locator('.plan-detail h2')).toHaveText(title);\n     |                                                 ^\n  16 |   await expect(page.getByTestId('task-card')).toHaveCount(1);\n  17 | }\n  18 | const logs = async (request: APIRequestContext, taskId: string): Promise<ExecutionLog[]> => await (await request.get(`/api/tasks/${taskId}/executions`)).json();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                        "column": 49,
+                        "line": 15
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n\n\n  13 | async function select(page: Page, title: string) {\n  14 |   await page.goto('/'); await page.getByRole('button').filter({ hasText: title }).first().click();\n> 15 |   await expect(page.locator('.plan-detail h2')).toHaveText(title);\n     |                                                 ^\n  16 |   await expect(page.getByTestId('task-card')).toHaveCount(1);\n  17 | }\n  18 | const logs = async (request: APIRequestContext, taskId: string): Promise<ExecutionLog[]> => await (await request.get(`/api/tasks/${taskId}/executions`)).json();\n    at select (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:15:49)\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:84:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:27:08.668Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-UI-copies-completed-2d5b0-nk-and-no-execution-history\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                    "column": 49,
+                    "line": 15
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-a4cc26765b03bbb4cfa2",
+          "file": "phase2.spec.ts",
+          "line": 78,
+          "column": 1
+        },
+        {
+          "title": "one downloaded JSON contains the whole DB and retains IDs/relations/timestamps after reading",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 8039,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 8000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                        "column": 24,
+                        "line": 101
+                      },
+                      "message": "Error: page.waitForEvent: Test timeout of 8000ms exceeded.\n=========================== logs ===========================\nwaiting for event \"download\"\n============================================================\n\n   99 |   await request.post(`/api/tasks/${task.id}/executions/${open.id}/finish`, { data: { request_id: crypto.randomUUID() } });\n  100 |   await page.goto('/'); const downloads: string[] = []; page.on('download', d => downloads.push(d.suggestedFilename()));\n> 101 |   const pending = page.waitForEvent('download'); await page.getByRole('button', { name: '전체 JSON 다운로드' }).click(); const download = await pending;\n      |                        ^\n  102 |   expect(download.suggestedFilename()).toBe('t06-diary.json');\n  103 |   const path = await download.path(); const data: DatabaseExport = JSON.parse(await readFile(path!, 'utf8'));\n  104 |   expect(downloads).toEqual(['t06-diary.json']); expect(data.plans.some(p => p.id === plan.id)).toBe(true); expect(data.tasks.some(t => t.id === task.id && t.plan_id === plan.id)).toBe(true);\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:101:24"
+                    },
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                        "column": 107,
+                        "line": 101
+                      },
+                      "message": "Error: locator.click: Test timeout of 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '전체 JSON 다운로드' })\u001b[22m\n\n\n   99 |   await request.post(`/api/tasks/${task.id}/executions/${open.id}/finish`, { data: { request_id: crypto.randomUUID() } });\n  100 |   await page.goto('/'); const downloads: string[] = []; page.on('download', d => downloads.push(d.suggestedFilename()));\n> 101 |   const pending = page.waitForEvent('download'); await page.getByRole('button', { name: '전체 JSON 다운로드' }).click(); const download = await pending;\n      |                                                                                                           ^\n  102 |   expect(download.suggestedFilename()).toBe('t06-diary.json');\n  103 |   const path = await download.path(); const data: DatabaseExport = JSON.parse(await readFile(path!, 'utf8'));\n  104 |   expect(downloads).toEqual(['t06-diary.json']); expect(data.plans.some(p => p.id === plan.id)).toBe(true); expect(data.tasks.some(t => t.id === task.id && t.plan_id === plan.id)).toBe(true);\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:101:107"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:27:09.547Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-one-downloaded-JSON-08e6b-ns-timestamps-after-reading\\error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-03c9f5b1c870e255970f",
+          "file": "phase2.spec.ts",
+          "line": 96,
+          "column": 1
+        },
+        {
+          "title": "lost start/finish responses can be retried with identical request IDs without duplicate DB changes",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 8000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 13,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 217,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n\n    at select (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:15:49)\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:116:66",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                      "column": 49,
+                      "line": 15
+                    },
+                    "snippet": "  13 | async function select(page: Page, title: string) {\n  14 |   await page.goto('/'); await page.getByRole('button').filter({ hasText: title }).first().click();\n> 15 |   await expect(page.locator('.plan-detail h2')).toHaveText(title);\n     |                                                 ^\n  16 |   await expect(page.getByTestId('task-card')).toHaveCount(1);\n  17 | }\n  18 | const logs = async (request: APIRequestContext, taskId: string): Promise<ExecutionLog[]> => await (await request.get(`/api/tasks/${taskId}/executions`)).json();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                        "column": 49,
+                        "line": 15
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.plan-detail h2')\nError: \u001b[32mexpected\u001b[39m value must be a string or regular expression\nExpected has value: \u001b[32mundefined\u001b[39m\n\n\n  13 | async function select(page: Page, title: string) {\n  14 |   await page.goto('/'); await page.getByRole('button').filter({ hasText: title }).first().click();\n> 15 |   await expect(page.locator('.plan-detail h2')).toHaveText(title);\n     |                                                 ^\n  16 |   await expect(page.getByTestId('task-card')).toHaveCount(1);\n  17 | }\n  18 | const logs = async (request: APIRequestContext, taskId: string): Promise<ExecutionLog[]> => await (await request.get(`/api/tasks/${taskId}/executions`)).json();\n    at select (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:15:49)\n    at C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts:116:66"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:27:18.156Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-lost-start-finish-r-c01db-ithout-duplicate-DB-changes\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\phase2.spec.ts",
+                    "column": 49,
+                    "line": 15
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-0f04088dc6e0d66045f7",
+          "file": "phase2.spec.ts",
+          "line": 115,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-06T00:26:12.204Z",
+    "duration": 66506.977,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 14,
+    "flaky": 0
+  }
+}

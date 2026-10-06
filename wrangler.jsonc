@@ -1,25 +1,26 @@
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "aleph-t06-pds-diary",
-	"main": "src/server/worker.ts",
-	"compatibility_date": "2026-10-02",
-	"workers_dev": true,
-	"assets": {
-		"directory": "./dist",
-		"binding": "ASSETS",
-		"not_found_handling": "single-page-application",
-		"run_worker_first": [
-			"/api/*"
-		]
-	},
-	// T06 전용으로 생성한 운영 D1 바인딩입니다.
-	// T05 DB와 배포 설정은 사용하거나 수정하지 않습니다.
-	"d1_databases": [
-		{
-			"binding": "DB",
-			"database_name": "aleph-t06-pds-diary-db",
-			"database_id": "fc496fd3-08e1-4494-b74d-904126717f98",
-			"migrations_dir": "migrations"
-		}
-	]
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "compatibility_date": "2026-10-02",
+  "workers_dev": false,
+  "main": "src/server/worker.ts",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "d1_databases": [
+    {
+      "database_name": "aleph-t07-auth-diary-db",
+      "database_id": "LOCAL_ONLY_NOT_PROVISIONED",
+      "migrations_dir": "migrations",
+      "binding": "DB"
+    }
+  ],
+  "name": "aleph-t07-auth-diary",
+  "assets": {
+    "not_found_handling": "single-page-application",
+    "directory": "./dist",
+    "run_worker_first": [
+      "/api/*"
+    ],
+    "binding": "ASSETS"
+  }
 }

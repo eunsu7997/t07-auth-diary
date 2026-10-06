@@ -1,3 +1,4 @@
+import './block-remote.mjs';
 // Read-only production verification. Never create fixture data in remote D1.
 import { resolve } from 'node:path';
 import { readFile, writeFile } from 'node:fs/promises';

@@ -4,9 +4,10 @@ import { ZodError, type ZodType } from 'zod';
 import { planSchema, planUpdateSchema, taskSchema, taskQuerySchema, requestIdSchema, emptySchema, reviewQuerySchema, copySchema } from '../shared/validation.ts';
 import { AppError, Diary } from './services.ts';
 import type { Database } from './db.ts';
+import type { Auth } from './auth.ts';
 
-export type Bindings = { DB?: D1Database; ASSETS?: Fetcher };
-export type Environment = { Bindings: Bindings; Variables: { diary: Diary } };
+export type Bindings = { DB?: D1Database; ASSETS?: Fetcher; BETTER_AUTH_SECRET?: string; BETTER_AUTH_URL?: string };
+export type Environment = { Bindings: Bindings; Variables: { diary: Diary; userId: string } };
 
 async function input<T>(request: { json(): Promise<unknown> }, schema: ZodType<T>): Promise<T> {
   let body: unknown;
@@ -14,7 +15,7 @@ async function input<T>(request: { json(): Promise<unknown> }, schema: ZodType<T
   return schema.parse(body);
 }
 
-export function createApp(database: Database | ((bindings: Bindings) => Database)) {
+export function createApp(database: Database | ((bindings: Bindings) => Database), authentication?: Auth | ((bindings: Bindings) => Auth)) {
   const app = new Hono<Environment>();
   app.use('/api/*', bodyLimit({ maxSize: 64 * 1024, onError: c => c.json({ error: '입력 크기가 너무 큽니다.' }, 413) }));
   app.use('*', async (c, next) => {
@@ -25,7 +26,9 @@ export function createApp(database: Database | ((bindings: Bindings) => Database
     if (!processEnvironmentIsDev()) c.header('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
     // Do not permit browser writes originating on unrelated sites. No account or password is involved.
     const origin = c.req.header('Origin');
-    if (!['GET', 'HEAD', 'OPTIONS'].includes(c.req.method) && origin && origin !== new URL(c.req.url).origin) {
+    const configuredBaseURL = origin ? authFor(c.env)?.options.baseURL : undefined;
+    const authOrigin = typeof configuredBaseURL === 'string' ? new URL(configuredBaseURL).origin : undefined;
+    if (!['GET', 'HEAD', 'OPTIONS'].includes(c.req.method) && origin && origin !== new URL(c.req.url).origin && origin !== authOrigin) {
       return c.json({ error: '다른 사이트에서 보낸 변경 요청은 허용하지 않습니다.' }, 403);
     }
     if (!['GET', 'HEAD', 'OPTIONS'].includes(c.req.method) && c.req.method !== 'DELETE' && !/^application\/json(?:;|$)/i.test(c.req.header('Content-Type') ?? '')) {
@@ -33,6 +36,26 @@ export function createApp(database: Database | ((bindings: Bindings) => Database
     }
     c.set('diary', new Diary(typeof database === 'function' ? database(c.env) : database));
     await next();
+  });
+  const authFor = (bindings: Bindings) => typeof authentication === 'function' ? authentication(bindings) : authentication;
+  app.all('/api/auth/*', c => {
+    const auth = authFor(c.env);
+    if (!auth) return c.json({ error: '인증 설정이 필요합니다.' }, 503);
+    return auth.handler(c.req.raw);
+  });
+  app.use('/api/*', async (c, next) => {
+    if (c.req.path === '/api/health') return next();
+    const auth = authFor(c.env);
+    if (!auth) return c.json({ error: '인증 설정이 필요합니다.' }, 503);
+    const session = await auth.api.getSession({ headers: c.req.raw.headers });
+    if (!session) return c.json({ error: '로그인이 필요합니다.' }, 401);
+    c.set('userId', session.user.id);
+    await next();
+  });
+  app.get('/api/session', async c => {
+    const session = await authFor(c.env)!.api.getSession({ headers: c.req.raw.headers });
+    if (!session) return c.json({ error: '로그인이 필요합니다.' }, 401);
+    return c.json({ user: { id: session.user.id, name: session.user.name, email: session.user.email }, expiresAt: session.session.expiresAt });
   });
   app.get('/api/health', async c => {
     await c.get('diary').db.all('SELECT 1 AS connected');
@@ -80,7 +103,7 @@ export function createApp(database: Database | ((bindings: Bindings) => Database
     if (error instanceof AppError) return c.json({ error: error.message }, error.status);
     if (error instanceof ZodError) return c.json({ error: '입력값을 확인하세요.', details: error.issues.map(i => ({ field: i.path.join('.'), message: i.message })) }, 400);
     if (/task still has an active execution|copy source is no longer completed/.test(error.message)) return c.json({ error: '할 일의 상태가 변경되었습니다. 최신 기록을 확인하세요.' }, 409);
-    console.error('T06 database/API operation failed:', error);
+    console.error('T07 database/API operation failed');
     return c.json({ error: '서버 저장에 실패했습니다. 입력 내용을 유지한 채 다시 시도하세요.' }, 500);
   });
   return app;

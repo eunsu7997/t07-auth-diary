@@ -8,7 +8,7 @@ export const projectRoot = fileURLToPath(new URL('../../', import.meta.url));
 
 export class LocalDatabase implements Database {
   readonly sqlite: DatabaseSync;
-  constructor(path = resolve(projectRoot, '.data/t06.sqlite')) {
+  constructor(path = resolve(projectRoot, '.data/t07.sqlite')) {
     if (path !== ':memory:') mkdirSync(dirname(path), { recursive: true });
     this.sqlite = new DatabaseSync(path, { timeout: 5000 });
     this.sqlite.exec('PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL;');
