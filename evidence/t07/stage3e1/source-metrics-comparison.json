@@ -1,0 +1,17 @@
+{
+  "syntheticFixture": {
+    "measurement": "local candidate generator",
+    "statements": 24,
+    "maxBinds": 60,
+    "maxSqlBytes": 869,
+    "totalSqlBytes": 7519
+  },
+  "actualSource": {
+    "measurement": "user-supplied independent audit dry-run result; not re-executed by Codex in repair turn",
+    "statements": 23,
+    "maxBinds": 60,
+    "maxSqlBytes": 869,
+    "totalSqlBytes": 7440
+  },
+  "actualImportExecutedDuringRepair": false
+}

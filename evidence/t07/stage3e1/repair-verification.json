@@ -1,0 +1,178 @@
+{
+  "baseline": "fe1fc2807f2ff6572344b04573de58fe45546afa",
+  "status": "M1-M4 repaired awaiting Claude re-audit",
+  "stage3dPassed": 60,
+  "originalStage3e1Passed": 41,
+  "newSupplementPassed": 38,
+  "totalPassed": 139,
+  "failed": 0,
+  "typecheck": "PASS",
+  "build": "PASS",
+  "legacyUnitApi136": "not rerun: no runtime behavior change; Stage3D edit is deprecated JSDoc only",
+  "browser19": "not rerun: app/UI/config unchanged",
+  "remoteFactProducerImplemented": false,
+  "remoteEligibility": false,
+  "actualSignup": 0,
+  "actualImport": 0,
+  "disposableCreated": 0,
+  "deploy": 0,
+  "commitOrPush": false,
+  "tests": [
+    {
+      "name": "Stage3E1 supplement target rejects empty expected database",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement target rejects blank expected database",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement target rejects empty observed database",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement target rejects empty expected account",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement target rejects empty observed account",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement target rejects empty denylist",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement target rejects missing denylist",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement target rejects blank denylist entry",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement target rejects invalid UUID",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement target rejects invalid account format",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement canonical trims/case normalizes valid IDs and denies case-only matches",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement provenance FAKE_TEST plus all human approvals cannot authorize remote execution",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement provenance LOCAL_SIMULATION plus all human approvals cannot authorize remote execution",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement provenance REMOTE_OBSERVED plus all human approvals cannot authorize remote execution",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement provenance UNKNOWN plus all human approvals cannot authorize remote execution",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement rate baseline rejects excessive rows",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement rate baseline rejects control key",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement rate baseline rejects long key",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement rate baseline rejects negative count",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement rate baseline rejects huge count",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement rate baseline rejects fractional count",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement rate baseline rejects invalid timestamp",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement rate baseline rejects future timestamp",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement rate baseline rejects stale timestamp",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement rate baseline rejects extra column",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement rate baseline rejects missing column",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement rate baseline rejects unknown path",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement baseline detects remove mutation",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement baseline detects count mutation",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement baseline detects timestamp mutation",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement bootstrap is explicitly fake and email match is computed",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement planned middle failure causes complete local rollback",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement planned postcondition failure causes complete local rollback",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement planned duplicate rejects second submission with unchanged data",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement canonical recovery NOT_EXECUTED requires correct human approval",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement canonical recovery COMPLETED requires correct human approval",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement canonical recovery UNEXPECTED_PARTIAL_OR_UNKNOWN requires correct human approval",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 supplement fake or forged remote bootstrap cannot become remote eligible",
+      "status": "passed"
+    }
+  ],
+  "privacy": "PASS",
+  "diffCheck": "PASS including untracked Stage3E1 files",
+  "t06Ancestor": "PASS",
+  "t06WorkingTree": "clean"
+}

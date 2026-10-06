@@ -1,0 +1,9 @@
+{
+  "scope": "Stage3E-1 execution after test hooks: fresh module import, constructors, fake observations, D1 fixture reads/batches, blocked remote attempts",
+  "fetchCalls": 0,
+  "socketConnects": 0,
+  "wranglerRemoteSessions": 0,
+  "cloudflareAccountApiRequests": 0,
+  "realD1Connections": 0,
+  "limitation": "fetch/socket counters instrument test execution only; docs browsing and build tooling are separate. Static module scan also forbids Wrangler imports/remote sessions."
+}

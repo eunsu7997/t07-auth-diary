@@ -1,0 +1,188 @@
+{
+  "baseline": "fe1fc2807f2ff6572344b04573de58fe45546afa",
+  "scope": "local D1-format fixture preparation only",
+  "stage3dPassed": 60,
+  "stage3e1Passed": 41,
+  "existingUnitApiPassed": 136,
+  "currentUnitApiTotalPassed": 237,
+  "failed": 0,
+  "browserRegression": "NOT_RERUN: app/UI/config unchanged; prior Stage3D 19 PASS preserved",
+  "typecheck": "PASS",
+  "build": "PASS",
+  "remoteExecutionApproved": false,
+  "actualTargetIdentity": "UNKNOWN",
+  "actualRateBaseline": "UNKNOWN",
+  "realSignup": 0,
+  "realImport": 0,
+  "disposableD1Created": 0,
+  "previewSessions": 0,
+  "deploy": 0,
+  "actualFiveDayRecords": 0,
+  "commitOrPush": false,
+  "tests": [
+    {
+      "name": "observed post-logout rate baseline with 0 rows passes without fixed zero",
+      "status": "passed"
+    },
+    {
+      "name": "observed post-logout rate baseline with 1 rows passes without fixed zero",
+      "status": "passed"
+    },
+    {
+      "name": "unexpected rate extra row blocks",
+      "status": "passed"
+    },
+    {
+      "name": "unexpected rate blank key blocks",
+      "status": "passed"
+    },
+    {
+      "name": "unexpected rate negative state blocks",
+      "status": "passed"
+    },
+    {
+      "name": "unexpected rate changed key blocks",
+      "status": "passed"
+    },
+    {
+      "name": "unexpected rate unknown baseline blocks",
+      "status": "passed"
+    },
+    {
+      "name": "baseline before logout or without exact owner stays UNKNOWN",
+      "status": "passed"
+    },
+    {
+      "name": "local observer leaves Cloudflare facts Unknown and checks local leak configuration",
+      "status": "passed"
+    },
+    {
+      "name": "observer writers missing cannot become PASS through approval flags",
+      "status": "passed"
+    },
+    {
+      "name": "observer recovery missing cannot become PASS through approval flags",
+      "status": "passed"
+    },
+    {
+      "name": "observer verification missing cannot become PASS through approval flags",
+      "status": "passed"
+    },
+    {
+      "name": "observer proxyAllowed missing cannot become PASS through approval flags",
+      "status": "passed"
+    },
+    {
+      "name": "observer leakSafe missing cannot become PASS through approval flags",
+      "status": "passed"
+    },
+    {
+      "name": "external writer UNKNOWN blocks and forged observation is untrusted",
+      "status": "passed"
+    },
+    {
+      "name": "D1 registry fixture and direct small PRAGMA reads exclude local registry/table-valued functions",
+      "status": "passed"
+    },
+    {
+      "name": "schema and trigger fingerprints normalize line endings/formatting/order, preserving literal semantics",
+      "status": "passed"
+    },
+    {
+      "name": "target policy target mismatch refuses eligibility",
+      "status": "passed"
+    },
+    {
+      "name": "target policy T06 deny refuses eligibility",
+      "status": "passed"
+    },
+    {
+      "name": "target policy confirmation false refuses eligibility",
+      "status": "passed"
+    },
+    {
+      "name": "target policy expected unknown refuses eligibility",
+      "status": "passed"
+    },
+    {
+      "name": "target policy observation unknown refuses eligibility",
+      "status": "passed"
+    },
+    {
+      "name": "target policy account mismatch refuses eligibility",
+      "status": "passed"
+    },
+    {
+      "name": "target policy production target refuses eligibility",
+      "status": "passed"
+    },
+    {
+      "name": "prepared D1 candidate uses observed rates and simple task UPDATE, preserving fields/triggers in SQLite",
+      "status": "passed"
+    },
+    {
+      "name": "D1 candidate forced SQL failure rolls back entire fixture without overflow",
+      "status": "passed"
+    },
+    {
+      "name": "in-batch rate guard catches an unexpected row after preparation and rolls back",
+      "status": "passed"
+    },
+    {
+      "name": "unsupported SQL is detected: UPDATE tasks SET content=? FROM other",
+      "status": "passed"
+    },
+    {
+      "name": "unsupported SQL is detected: SELECT abs(-9223372036854775808)",
+      "status": "passed"
+    },
+    {
+      "name": "unsupported SQL is detected: SELECT * FROM pragma_foreign_key_list(?)",
+      "status": "passed"
+    },
+    {
+      "name": "unsupported SQL is detected: BEGIN",
+      "status": "passed"
+    },
+    {
+      "name": "unsupported SQL is detected: DROP TRIGGER guard",
+      "status": "passed"
+    },
+    {
+      "name": "remote recovery meaning NOT_EXECUTED never retries",
+      "status": "passed"
+    },
+    {
+      "name": "remote recovery meaning COMPLETED never retries",
+      "status": "passed"
+    },
+    {
+      "name": "remote recovery meaning UNEXPECTED_PARTIAL_OR_UNKNOWN never retries",
+      "status": "passed"
+    },
+    {
+      "name": "bootstrap reports exact owner relationships, masked match and post-logout rate summary",
+      "status": "passed"
+    },
+    {
+      "name": "provider import/constructor/unconnected reads and confirmed remote attempt perform no network",
+      "status": "passed"
+    },
+    {
+      "name": "new modules cannot import Wrangler or open sockets/fetch",
+      "status": "passed"
+    },
+    {
+      "name": "fake factory rejects an arbitrary provider before its getDatabase can attempt network",
+      "status": "passed"
+    },
+    {
+      "name": "caller PASS cannot override observed UNKNOWN/FAIL in 37-check preparation",
+      "status": "passed"
+    },
+    {
+      "name": "fresh module import and constructor under network tripwires have no fetch/socket calls",
+      "status": "passed"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "scope": "rateLimit elapsed-time defect only",
+  "baselineHead": "fe1fc2807f2ff6572344b04573de58fe45546afa",
+  "captureRecency": "past 10 minutes / future 5 seconds",
+  "comparison": "shape and privately branded HMAC; no current-clock recency",
+  "stage3dPassed": 60,
+  "stage3e1OriginalPassed": 41,
+  "priorSupplementPassed": 38,
+  "newTestsPassed": 11,
+  "totalPassed": 150,
+  "failed": 0,
+  "typecheck": "PASS",
+  "build": "PASS",
+  "commitPush": false,
+  "actualRemoteActivity": 0,
+  "tests": [
+    {
+      "name": "Stage3E1 rate baseline elapsed-time regression identical rows pass after 0 minutes",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 rate baseline elapsed-time regression identical rows pass after 5 minutes",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 rate baseline elapsed-time regression identical rows pass after 11 minutes",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 rate baseline elapsed-time regression identical rows pass after 60 minutes",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 rate baseline elapsed-time regression rejects add mutation after 60 minutes",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 rate baseline elapsed-time regression rejects delete mutation after 60 minutes",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 rate baseline elapsed-time regression rejects key mutation after 60 minutes",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 rate baseline elapsed-time regression rejects count mutation after 60 minutes",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 rate baseline elapsed-time regression rejects timestamp mutation after 60 minutes",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 rate baseline elapsed-time regression rejects capture timestamp offset -660000 ms",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E1 rate baseline elapsed-time regression rejects capture timestamp offset 6000 ms",
+      "status": "passed"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "pass": true,
+  "filesChecked": 18,
+  "sourceTextMatches": 0,
+  "prohibitedEvidenceKeys": 0,
+  "secrets": 0,
+  "networkImplementation": 0,
+  "distToolMatches": 0,
+  "limitation": "Exact actual source strings >=6 chars and known patterns; not all encodings or every possible secret."
+}

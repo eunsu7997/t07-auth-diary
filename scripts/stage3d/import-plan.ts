@@ -101,6 +101,7 @@ export function classifyOutcome(snapshot: Inspection, before: Inspection, source
     t === 'plans' || t === 'tags' ? { ...r, owner_user_id: owner } : r)));
   return complete ? 'COMPLETED' : 'UNEXPECTED_PARTIAL_OR_UNKNOWN';
 }
+/** @deprecated Historical local-only API. Remote preparation must use stage3e1/safety.recoveryMeaning. */
 export function recoveryDecision(outcome: Outcome) {
   return { outcome, automaticRetry: false as const, humanInterventionRequired: outcome === 'UNEXPECTED_PARTIAL_OR_UNKNOWN' };
 }

@@ -1,0 +1,168 @@
+{
+  "scope": "synthetic fixture candidate only; not executed remotely",
+  "executionApproved": false,
+  "sourceSha256": "3fae986b605415996e3568ae3fdb767d6c8415272a7a23b0820539ae9263c52b",
+  "generator": {
+    "statements": 24,
+    "maxBinds": 60,
+    "maxSqlBytes": 869,
+    "totalSqlBytes": 7519,
+    "boundBytes": 58848,
+    "perStatement": [
+      {
+        "binds": 4,
+        "sqlBytes": 646
+      },
+      {
+        "binds": 2,
+        "sqlBytes": 243
+      },
+      {
+        "binds": 2,
+        "sqlBytes": 479
+      },
+      {
+        "binds": 2,
+        "sqlBytes": 391
+      },
+      {
+        "binds": 10,
+        "sqlBytes": 105
+      },
+      {
+        "binds": 24,
+        "sqlBytes": 181
+      },
+      {
+        "binds": 27,
+        "sqlBytes": 119
+      },
+      {
+        "binds": 60,
+        "sqlBytes": 284
+      },
+      {
+        "binds": 12,
+        "sqlBytes": 180
+      },
+      {
+        "binds": 24,
+        "sqlBytes": 117
+      },
+      {
+        "binds": 4,
+        "sqlBytes": 93
+      },
+      {
+        "binds": 32,
+        "sqlBytes": 215
+      },
+      {
+        "binds": 5,
+        "sqlBytes": 77
+      },
+      {
+        "binds": 5,
+        "sqlBytes": 77
+      },
+      {
+        "binds": 5,
+        "sqlBytes": 77
+      },
+      {
+        "binds": 5,
+        "sqlBytes": 77
+      },
+      {
+        "binds": 3,
+        "sqlBytes": 437
+      },
+      {
+        "binds": 2,
+        "sqlBytes": 675
+      },
+      {
+        "binds": 2,
+        "sqlBytes": 869
+      },
+      {
+        "binds": 3,
+        "sqlBytes": 299
+      },
+      {
+        "binds": 2,
+        "sqlBytes": 301
+      },
+      {
+        "binds": 2,
+        "sqlBytes": 707
+      },
+      {
+        "binds": 2,
+        "sqlBytes": 391
+      },
+      {
+        "binds": 2,
+        "sqlBytes": 479
+      }
+    ]
+  },
+  "steps": [
+    "disposable D1 creation (separate approval)",
+    "migrations",
+    "schema/trigger/target/source SHA checks",
+    "synthetic owner and rateLimit baseline",
+    "normal batch commit",
+    "result verification",
+    "reset or new disposable state",
+    "forced middle failure",
+    "middle rollback verification",
+    "forced postcondition failure",
+    "postcondition rollback verification",
+    "normal import",
+    "duplicate rejection and unchanged-state check",
+    "unknown outcome readback",
+    "disposable cleanup (separate approval)"
+  ],
+  "unresolvedChecks": [
+    {
+      "id": "P01",
+      "state": "UNKNOWN"
+    },
+    {
+      "id": "P02",
+      "state": "UNKNOWN"
+    },
+    {
+      "id": "P05",
+      "state": "UNKNOWN"
+    },
+    {
+      "id": "P16",
+      "state": "UNKNOWN"
+    },
+    {
+      "id": "P19",
+      "state": "UNKNOWN"
+    },
+    {
+      "id": "P20",
+      "state": "UNKNOWN"
+    },
+    {
+      "id": "P23",
+      "state": "UNKNOWN"
+    },
+    {
+      "id": "P24",
+      "state": "UNKNOWN"
+    },
+    {
+      "id": "P37",
+      "state": "UNKNOWN"
+    }
+  ],
+  "forcedFailureStatements": 25,
+  "targetIdentity": "UNKNOWN for actual Cloudflare target; opaque synthetic identity used in tests",
+  "rateBaseline": "post-fake-logout captured; keys/values omitted"
+}
