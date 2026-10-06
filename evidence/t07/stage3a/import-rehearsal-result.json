@@ -1,0 +1,40 @@
+{
+  "baseline": "d06412a0fb706423e7418de00c1fd1fb58b0c664",
+  "fixtureOnly": true,
+  "localIgnoredDatabase": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\.data\\stage3a\\rehearsal-1711d3c8-9f04-46c5-8944-9a435c244266.sqlite",
+  "signupSuccess": true,
+  "userIdExists": true,
+  "migrations": [
+    "0001_initial.sql",
+    "0002_execution_guards.sql",
+    "0003_auth.sql",
+    "0004_ownership.sql",
+    "0005_auth_rate_limit.sql"
+  ],
+  "success": true,
+  "rows": {
+    "plans": 2,
+    "plan_versions": 3,
+    "tasks": 6,
+    "tags": 9,
+    "task_tags": 12,
+    "execution_logs": 4
+  },
+  "temporaryTriggerBypass": [
+    "execution_start_guard",
+    "task_copy_source_guard",
+    "copied_task_owner"
+  ],
+  "triggerCount": 17,
+  "triggerSqlSha256": "202a0553e6363634d4ca2786b516460be27aea644b6ab34b0b9668d7dae3021e",
+  "triggersRestored": true,
+  "foreignKeyCheck": true,
+  "roundtripSchema": "3.0.0",
+  "roundtripPassed": true,
+  "duplicateRejected": true,
+  "duplicateBusinessAndTriggersUnchanged": true,
+  "passed": true,
+  "remoteD1": false,
+  "publicDeploy": false,
+  "actualFiveDays": false
+}

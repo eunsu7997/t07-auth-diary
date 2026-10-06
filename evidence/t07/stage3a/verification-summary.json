@@ -1,0 +1,14 @@
+{
+  "typecheck": true,
+  "build": true,
+  "historicalEvidenceUnchanged": true,
+  "originalSourceUnchanged": true,
+  "commitOrPush": false,
+  "firstBrowserAttempt": {
+    "cause": "Temporary copied browser tests could not resolve relative contract JSON",
+    "rawFirstAttemptReport": "Not retained; final run replaced temporary report",
+    "pass": 18,
+    "resolution": "Copied unchanged contracts into temporary tree; reran all 19 tests",
+    "fail": 1
+  }
+}

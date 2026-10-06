@@ -1,0 +1,16 @@
+{
+  "sourceSchemaValid": true,
+  "sourceRelationshipsValid": true,
+  "currentVersionsValid": true,
+  "foreignKeyCheckPass": true,
+  "triggerSqlIdentical": true,
+  "missingTriggers": 0,
+  "allBusinessFieldsIdentical": {
+    "plans": true,
+    "plan_versions": true,
+    "tasks": true,
+    "tags": true,
+    "task_tags": true,
+    "execution_logs": true
+  }
+}

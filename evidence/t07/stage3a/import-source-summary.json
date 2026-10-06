@@ -1,0 +1,13 @@
+{
+  "path": "C:\\Users\\User\\Downloads\\t06-diary.json",
+  "sha256": "85ffe223f09c99d781e39aa631d213a2997bfacffb96d0e18df964c5f4faf9d3",
+  "schema_version": "2.0.0",
+  "rows": {
+    "plans": 2,
+    "plan_versions": 3,
+    "tasks": 6,
+    "tags": 9,
+    "task_tags": 12,
+    "execution_logs": 4
+  }
+}

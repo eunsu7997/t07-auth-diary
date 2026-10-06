@@ -1,0 +1,20 @@
+{
+  "userACreated": true,
+  "userBCreated": true,
+  "userIdsExist": true,
+  "aPlanGetsPassed": 2,
+  "aActiveTaskGetsPassed": 6,
+  "aArchivedTasksPreservedInReviewAndExport": true,
+  "bDirectRequests": 10,
+  "bDirect404": 10,
+  "bReviewEmpty": true,
+  "bExportCounts": {
+    "plans": 0,
+    "plan_versions": 0,
+    "tasks": 0,
+    "tags": 0,
+    "task_tags": 0,
+    "execution_logs": 0
+  },
+  "passed": true
+}
