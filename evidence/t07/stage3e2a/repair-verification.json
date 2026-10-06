@@ -1,0 +1,161 @@
+{
+  "baseline": "1226d899e10bb085327ce8ff68a187999e8091fa",
+  "status": "repair complete awaiting Claude re-audit",
+  "existingStage3dE1": 150,
+  "originalStage3e2a": 58,
+  "newRepairPassed": 35,
+  "totalPassed": 243,
+  "failed": 0,
+  "typecheck": "PASS",
+  "build": "PASS",
+  "browser": "not rerun: app runtime/config unchanged",
+  "stateMachine": "CREATED -> CONNECTING -> CONNECTED -> CLOSED; terminal failure",
+  "arbitraryReadApiRemoved": true,
+  "automaticRebaseline": false,
+  "actualApprovalIssuer": false,
+  "actualControlPlaneIssuer": false,
+  "actualRemoteActivity": 0,
+  "commitPush": false,
+  "tests": [
+    {
+      "name": "Stage3E2A repair concurrent connect allows exactly one winner",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair connected connect and closed reconnect are rejected permanently",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair failed connect is terminal",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair disconnect during CONNECTING cannot resurrect connection",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair CLOSED blocks fixed reads info and retained batch handles",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair old session observation never reactivates with a new provider connection",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair transport termination invalidates its provider session and observations",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair approved fixed query passes and results exclude injected sensitive fields",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair fixed query result rejects nested payloads instead of exposing extra sensitive data",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair batch results expose success only even if fake transport supplies sensitive payload",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair query registry rejects SELECT password FROM account",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair query registry rejects SELECT * FROM account",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair query registry rejects SELECT * FROM user",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair query registry rejects SELECT credential FROM account",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair query registry rejects SELECT 42",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair query registry rejects PRAGMA database_list",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair bigint bind rejects before JSON measurement with a fixed error",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair transport origin is distinct from observation provenance before connection",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair stored logout baseline passes unchanged after 11 minutes without recapture",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair stored logout baseline passes unchanged after 60 minutes without recapture",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair 60 minute stored baseline detects add mutation",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair 60 minute stored baseline detects delete mutation",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair 60 minute stored baseline detects key mutation",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair 60 minute stored baseline detects count mutation",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair 60 minute stored baseline detects timestamp mutation",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair auth observation without explicit logout capture stays UNKNOWN",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair control-plane UNKNOWN opens no actual proxy",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair control-plane fake opens no actual proxy",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair control-plane approval-shaped opens no actual proxy",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair approval missing cannot authorize execute",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair approval forged cannot authorize execute",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair approval copied cannot authorize execute",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair approval reused cannot authorize execute",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair automatic production protection denies repository bindings even if caller denylist omits them",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A repair missing production binding file fails closed without logging its contents",
+      "status": "passed"
+    }
+  ]
+}

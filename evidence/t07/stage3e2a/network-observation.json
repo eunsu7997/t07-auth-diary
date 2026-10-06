@@ -1,0 +1,12 @@
+{
+  "scope": "Stage3E2A test hooks including fresh module import, constructors, blocked real connect, fake transport queries/batches",
+  "fetch": 0,
+  "socket": 0,
+  "cloudflare": 0,
+  "preview": 0,
+  "remoteD1": 0,
+  "deploy": 0,
+  "actualSignup": 0,
+  "actualImport": 0,
+  "limitation": "Counters cover test execution, not build child-process pipes. Fake memory SQLite is not remote activity."
+}

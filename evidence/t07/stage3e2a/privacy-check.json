@@ -1,0 +1,9 @@
+{
+  "pass": true,
+  "filesChecked": 16,
+  "privateMatches": 0,
+  "credentialPatterns": 0,
+  "prohibitedEvidenceFields": 0,
+  "distToolMatches": 0,
+  "limitation": "Exact private source strings >=6 characters, configured production IDs and known credential patterns; not every possible encoding."
+}

@@ -1,0 +1,253 @@
+{
+  "baseline": "1226d899e10bb085327ce8ff68a187999e8091fa",
+  "existingStage3d": 60,
+  "existingStage3e1": 90,
+  "existingCombined": 150,
+  "newTests": 58,
+  "passed": 208,
+  "failed": 0,
+  "typecheck": "PASS",
+  "build": "PASS",
+  "browser": "not rerun: runtime/config unchanged",
+  "provenance": "fake success is test-only; no actual remote observations",
+  "approvalProducer": false,
+  "actualControlPlaneProbes": "UNKNOWN / not implemented",
+  "actualRemoteActivity": 0,
+  "actualSignup": 0,
+  "actualImport": 0,
+  "commitPush": false,
+  "tests": [
+    {
+      "name": "Stage3E2A provider and target fresh import and constructors have no network activity",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target refuses query and database before connect and observations stay UNKNOWN",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects target production",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects target unknown id",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects target unknown account",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects target empty denylist",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects target missing denylist",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects target malformed denylist",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects target denied",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects target name",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects target confirmation",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects observed mismatch database",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects observed mismatch account",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects observed mismatch purpose",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects observed mismatch name",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target rejects observed mismatch unknown",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target normalizes IDs without mutating caller policy",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target untrusted transport object cannot issue observations",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target caller cannot replace provider/real transport methods or spoof connection state",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target real connect remains locked even with approval-shaped input and env flags",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target execute without real approval always refuses including fake test transports",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A provider and target disconnect invalidates observations and retained database handles",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations valid fake identity is immutable test-only PASS and cannot satisfy old remote brand",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations rejects remote eligibility forged",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations rejects remote eligibility copied",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations rejects remote eligibility LOCAL_SIMULATION",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations rejects remote eligibility FAKE_TEST",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations rejects remote eligibility UNKNOWN",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations schema registry fingerprints seventeen triggers counts and FK are independently queried",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations writer workerDeployment UNKNOWN fails closed",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations writer routes UNKNOWN fails closed",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations writer scheduledWriters UNKNOWN fails closed",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations writer otherBindings UNKNOWN fails closed",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations writer workerDeployment present FAIL",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations writer routes present FAIL",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations writer scheduledWriters present FAIL",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations writer otherBindings present FAIL",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations no writer and zero active sessions passes only in test",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations recovery timeTravelAvailable UNKNOWN fails closed",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations recovery retentionDays UNKNOWN fails closed",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations recovery bookmarkReadable UNKNOWN fails closed",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations recovery restorePermission UNKNOWN fails closed",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations recovery capability all confirmed is test-only PASS",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations recovery permission failure FAIL",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations recovery bookmark failure FAIL",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations recovery retention failure FAIL",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations verification and proxy are test-only PASS",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations verification UNKNOWN cannot be replaced by human approval",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations auth bootstrap queries exact owner credential relations session zero and rate baseline without signup",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A observations empty auth database fails and cannot mint approved baseline",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A D1 batch preparation Stage3E1 plan converts without losing any field and executes only fake memory D1",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A D1 batch preparation normalizes malformed D1 response {}",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A D1 batch preparation normalizes malformed D1 response {\"success\":false,\"results\":[]}",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A D1 batch preparation normalizes malformed D1 response {\"success\":true,\"results\":null}",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A D1 batch preparation D1 error normalization never exposes raw SQL or bound values",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A D1 batch preparation batch failure rolls back and returns only normalized error",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A D1 batch preparation rejects unsupported SQL before transport submission",
+      "status": "passed"
+    },
+    {
+      "name": "Stage3E2A D1 batch preparation cannot use read to submit writes",
+      "status": "passed"
+    }
+  ]
+}
