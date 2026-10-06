@@ -1,0 +1,177 @@
+{
+  "stage": "3C-design",
+  "status": "revised-design-awaiting-Claude-re-audit",
+  "baseline": "dbb70a0b37f15a082b1403308a4bdff0b81ef4d5",
+  "remoteExecutionApproved": false,
+  "databaseName": "aleph-t07-auth-diary-db",
+  "databaseIdAllowlist": [
+    "349229de-18bc-4543-ae96-86be096246fb"
+  ],
+  "sourceSha256Allowlist": [
+    "85ffe223f09c99d781e39aa631d213a2997bfacffb96d0e18df964c5f4faf9d3"
+  ],
+  "schemaVersion": "2.0.0",
+  "sourceCounts": {
+    "plans": 2,
+    "plan_versions": 3,
+    "tasks": 6,
+    "tags": 9,
+    "task_tags": 12,
+    "execution_logs": 4
+  },
+  "checkCount": 37,
+  "checks": [
+    {
+      "id": "P01",
+      "require": "Approved design, independent audit and separate human authorization for actual import"
+    },
+    {
+      "id": "P02",
+      "require": "Reviewed implementation commit and clean worktree; no unreviewed SQL templates"
+    },
+    {
+      "id": "P03",
+      "require": "Explicit --confirm-remote-import plus --execute; default dry-run has no remote binding"
+    },
+    {
+      "id": "P04",
+      "require": "Cloudflare account and exact database ID/name verified; every other ID rejected, including T06"
+    },
+    {
+      "id": "P05",
+      "require": "Node management process + explicitly configured getPlatformProxy env.DB; loopback auth only; no production import route; proxy lifecycle disposed"
+    },
+    {
+      "id": "P06",
+      "require": "Original source file read-only; exact source SHA allowlist verified before parsing and before submission"
+    },
+    {
+      "id": "P07",
+      "require": "v2 JSON contract valid; source row counts match approved snapshot"
+    },
+    {
+      "id": "P08",
+      "require": "Source PK/unique/request keys/FK/current_version/completion/duration checks valid"
+    },
+    {
+      "id": "P09",
+      "require": "Approved exact-source trigger strategy: acyclic copies, referenced sources completed/non-archived, no open logs"
+    },
+    {
+      "id": "P10",
+      "require": "Remote migrations 0001~0005 once each; unchanged migration hashes"
+    },
+    {
+      "id": "P11",
+      "require": "All business/auth columns, FK, indexes and CHECK SQL match approved normalized schema"
+    },
+    {
+      "id": "P12",
+      "require": "Exactly 17 approved trigger names and normalized SQL; no disabled or extra guards"
+    },
+    {
+      "id": "P13",
+      "require": "Six remote business tables empty; verified once in preflight and again atomically in first batch write"
+    },
+    {
+      "id": "P14",
+      "require": "Exactly one user; explicit owner ID plus expected email pair, personally signed up through existing Better Auth"
+    },
+    {
+      "id": "P15",
+      "require": "Exactly one account, providerId=credential, userId=owner, accountId=owner; credential non-null checked without printing value"
+    },
+    {
+      "id": "P16",
+      "require": "Immediate normal logout, sessions zero; local auth listener stopped and in-flight requests drained before batch"
+    },
+    {
+      "id": "P17",
+      "require": "PRAGMA foreign_key_check zero violations; FK enforcement enabled, never toggled off"
+    },
+    {
+      "id": "P18",
+      "require": "Final production Worker absent; no public routes/aliases/preview business write path; only scoped binding proxy may exist"
+    },
+    {
+      "id": "P19",
+      "require": "Single operator; no concurrent Wrangler/API/admin writer; tools locked locally during execution"
+    },
+    {
+      "id": "P20",
+      "require": "After signup/logout and absence of external writers: record pre-import Time Travel bookmark, account/DB ID and UTC time"
+    },
+    {
+      "id": "P21",
+      "require": "Actual plan retention and destructive restore permission confirmed; restore is not executed during design/test stages"
+    },
+    {
+      "id": "P22",
+      "require": "Measure exact statements/binds/SQL/body size; query duration limit 30s, selected proxy whole-batch wall-clock limit not confirmed"
+    },
+    {
+      "id": "P23",
+      "require": "Mandatory disposable remote D1 proof of exact proxy batch commit, rollback, postcondition failure, duplicate, network/crash handling and bind/trigger behavior; no T07 write path before PASS"
+    },
+    {
+      "id": "P24",
+      "require": "Internal SQL guards and external schema/FK/raw-review/API-review/export/A-B verification separated; permission for each verified"
+    },
+    {
+      "id": "P25",
+      "require": "account.accountId = user.id, providerId credential, exactly one account and no additional users/credential accounts"
+    },
+    {
+      "id": "P26",
+      "require": "Explicit owner user.id AND expected email pair verified; never select owner by email alone; email masked in logs"
+    },
+    {
+      "id": "P27",
+      "require": "Session count zero immediately before batch and in first atomic guard"
+    },
+    {
+      "id": "P28",
+      "require": "verification zero for this email/password flow; account/session/rateLimit expected baseline, no orphan or unexpected auth state"
+    },
+    {
+      "id": "P29",
+      "require": "Permissions for remote binding/edge-preview proxy startup and use confirmed without revealing credentials"
+    },
+    {
+      "id": "P30",
+      "require": "Permissions and local connection plan for post-import full verification, auth API/export and A/B tests confirmed"
+    },
+    {
+      "id": "P31",
+      "require": "Source text and secret leak preflight covers CLI/history/stdout/stderr/logs/temp/Git; no bind debug output"
+    },
+    {
+      "id": "P32",
+      "require": "Fresh read-only remote DB state immediately before batch; single operator and no other writer"
+    },
+    {
+      "id": "P33",
+      "require": "Schema fingerprint immediately before batch and matching SQL predicates in first guard; no unverified pragma table-valued functions"
+    },
+    {
+      "id": "P34",
+      "require": "Seventeen trigger names/fingerprint immediately before batch and matching SQL predicates in first guard"
+    },
+    {
+      "id": "P35",
+      "require": "Six business tables empty immediately before batch; atomically recheck empty in first guard"
+    },
+    {
+      "id": "P36",
+      "require": "Actual account Time Travel retention and bookmark still within retention at execution"
+    },
+    {
+      "id": "P37",
+      "require": "Recovery command execution permission and separate restore approval procedure confirmed; no restore during design/test"
+    }
+  ],
+  "failurePolicy": "Any unmet or unknown check means zero import attempts; no warning-only bypass",
+  "atomicGuard": "First single-batch guard rechecks owner ID/email/accountId/provider/userId, session0, business empty, migrations and schema/trigger SQL fingerprints; same bound source bytes SHA/count plan checked before constructing batch. SQL cannot hash the local file; source SHA is a local invariant, never represented as remotely verified file access. Final SQL-failure guards enforce counts/IDs/owner/restored source fields within tested supported scope.",
+  "duplicatePolicy": "Reject non-empty business DB; no overwrite/upsert; no checksum marker implemented",
+  "delayedPolicy": "Compute at verified asOfKoreanDate; never assert fixed delayed=0"
+}
