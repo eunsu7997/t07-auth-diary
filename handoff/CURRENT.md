@@ -1,23 +1,22 @@
 # T07 Current Handoff
 
-Status: READY_FOR_CHECKPOINT
+Status: NEEDS_AUDIT
 
 ## Current state
-- Base checkpoint: `b77611161a464aa408f88528edd8a07f613c5271`.
-- Approval/control-plane delta independently audited; see CLAUDE-AUDIT.md for source attribution.
-- Checkpoint verification on 2026-10-06: 269 PASS / 0 FAIL; TypeScript/build/privacy/diff check PASS.
-- Checkpoint commit and push are authorized. This document is included in that checkpoint; use Git HEAD for its resulting SHA.
-- No code changes during checkpoint preparation.
-- M-1: global fetch trust root must be hardened before resolving UNKNOWN; does not block this checkpoint.
-- Recovery/verification remain UNKNOWN; actual remote positive approval not demonstrated.
+- Checkpoint: 9503be6cc5eb1fe79b2c32acae8ee5b4f2d9b56e.
+- Local capability implementation complete; evidence/t07/capability-local/IMPLEMENTATION.md describes scope and limits.
+- Existing 269 + new 37 = 306 PASS / 0 FAIL; TypeScript/build PASS.
+- Privacy and tracked/untracked diff checks PASS; T06 clean and ancestor preserved.
+- Actual HTTPS is not exercised. Remote runner/supervisor activation remains hard-blocked; positive remote receipt/approval not implemented in this local-only step.
+- Existing recovery/verification/writer UNKNOWN still unresolved as actual evidence.
+- CLAUDE-AUDIT.md covers the prior design; new code has not yet been independently audited.
 
-## Next action after checkpoint
-Design resolution of UNKNOWN recovery/verification capability, including M-1 trust-root hardening without dependency on global fetch. Do not repeat the completed audit of this delta.
+## Single next action
+One narrow Claude independent audit of latest CODEX-RESULT code delta: D-1 method/body, D-2 trust base/env/origin, D-3 recovery planning vs execution, fixture receipt isolation, legacy global-fetch path removal. Do not repeat old audits or run remote operations.
 
 ## Permissions
-- Save and push this audited checkpoint to origin/codex/t07-auth: allowed.
-- Next step: local design only.
-- Disposable D1 create/test: NOT allowed.
-- Cloudflare/D1/proxy remote access: NOT allowed.
-- Production T07 access/import/deploy, actual signup/import, five-day records: forbidden.
-- T06 must remain unchanged and its final commit an ancestor; t06-source push stays blocked.
+- Local audit only for next action.
+- Standing user authorization (2026-10-06): at the end of every Codex/Claude task, automatically commit/push ONLY CURRENT.md, CODEX-RESULT.md and CLAUDE-AUDIT.md in handoff/ to origin/codex/t07-auth as a separate status commit. No code/evidence/config/rule files may be included. This is independent of implementation checkpoint readiness; outgoing implementation commits require separate authorization.
+- No checkpoint commit/push until new code audit marks ready; no further code changes unless must-fix audit finding.
+- Disposable D1 creation/test and all Cloudflare/D1/proxy/deploy/signup/import activity forbidden.
+- Production T07 and T06 unchanged; no actual five-day records.

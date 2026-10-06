@@ -1,29 +1,33 @@
 # Latest Claude Audit
 
-Status: AUDIT_PASS
+Status: AUDIT_PASS (design only; conditions below carry into implementation)
 
-Scope: approval/control-plane delta described in `handoff/CODEX-RESULT.md` (uncommitted, on top of `b776111`).
-Source: prior completed audit result supplied by the user on 2026-10-06; recorded as-is, not re-audited.
-
-## Test result
-- 269 PASS / 0 FAIL (reported for this delta; not re-run during recording).
+Scope: `evidence/t07/capability-design/DESIGN.md` + handoff updates only (uncommitted, on top of `9503be6`).
+Not re-audited: prior 269-PASS implementation delta. No tests run (document-only delta; none claimed).
 
 ## Critical/high findings
 - None.
 
-## Blocking medium findings
-- None blocking checkpoint.
-- M-1 (non-blocking for checkpoint, must address before resolving UNKNOWN): the real `REMOTE_CONTROL_PLANE` trust root depends on the global `fetch`. Design hardening is required before the UNKNOWN recovery/verification capability can be marked resolved.
+## Medium findings (must be addressed in the implementation step, not a design re-audit)
+- D-1 Observation/write separation — runner allowlist binds host/path/query only. D1 `/query` is a POST that can execute writes, so path allowlisting alone does not make a session read-only. Bind HTTP method + exact body (fixed query registry SQL text/hash, no string-built SQL, no mutating PRAGMA) per operation; add a test that an observation lease cannot send a mutating statement through the read path.
+- D-2 Trust-root consistency — design rejects "save fetch at import time" yet the parent supervisor relies on in-process `node:child_process`/streams, which are equally patchable before load (a forged ChildProcess could emit success JSON). State explicitly that in-process code is in the trusted base (threat = accidental/test injection mislabeling origin, not hostile in-process code), and keep the guarantee that only the real runner kind can yield REMOTE_CONTROL_PLANE; fake/test runners must be structurally unable to (no caller-supplied runner kind). Spawn with `spawn(process.execPath, [fixedEntry], { env: <allowlist>, shell:false })`, not `fork` (inherits execArgv); use an env allowlist rather than a denylist (covers NODE_EXTRA_CA_CERTS, SSL_CERT_FILE, NODE_USE_ENV_PROXY/HTTPS_PROXY, NODE_TLS_REJECT_UNAUTHORIZED, --use-system-ca etc.).
+- D-3 Bootstrap ordering — §3 says unreadable restore policy => UNKNOWN, and §4.5 requires permission policy confirmed before TEST_RECOVERY. If the policy read fails, the probe that would empirically resolve it is blocked (soft circularity). Specify: on an approved disposable only, policy UNKNOWN does not block TEST_RECOVERY; probe success proves restore for that credential + disposable only and never upgrades production policy evidence.
 
-## Low notes
-- Several low findings; none block the checkpoint. Recorded only, no action required now.
+## Low notes (record only)
+- §5 "gate permits some unknowns if the approval doc says so": type accepted unknowns as ACCEPTED_RISK, never as PASS/REMOTE_OBSERVED.
+- 30s control-plane freshness vs 10s timeout + pagination: ensure freshness is measured from receipt completion, and multi-page reads fail closed if they exceed it.
+- Retention 7-day floor is documentation-derived; fine as labeled. Keep it out of REMOTE_OBSERVED fields.
+
+## Checked OK
+- No global fetch / caller-injected transport; origin derived from runner kind; FAKE_CONTROL_PLANE cannot create remote approval.
+- Bootstrap steps 1→7 otherwise non-circular; INITIALIZE/TEST_RECOVERY are separate one-time purposes and cannot be used for IMPORT or production.
+- Human writer confirmation and doc-derived retention kept distinct from remote observation; empty inventory ≠ false.
+- Production denylist at every stage; production T07 not added to disposable path.
+- No secrets/IDs/diary text in the design document.
 
 ## Decisions
-- Checkpoint commit: YES
-- Disposable D1 create/test: NO
-- Production T07 remote access: FORBIDDEN
-- Real import: FORBIDDEN
-
-## Exact next action
-1. Save the current 269-PASS delta as a checkpoint commit (tests, TypeScript, build, privacy check, `git diff --check` first).
-2. Then design resolution of the UNKNOWN recovery/verification capability, including the M-1 trust-root fix (no reliance on global `fetch`).
+- Design: PASS with D-1..D-3 folded into implementation.
+- Local implementation of design §4 step 1 (zero remote I/O): may proceed.
+- Checkpoint commit of this design delta: optional, not required.
+- Disposable D1 create/test, Cloudflare/D1/proxy access: NO.
+- Production T07 remote access / real import / deploy: FORBIDDEN.
