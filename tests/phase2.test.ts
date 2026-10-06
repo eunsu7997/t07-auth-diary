@@ -1,3 +1,4 @@
+import { account } from './fixtures.ts';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -14,12 +15,12 @@ import type { DatabaseExport, ExecutionLog, PlanInput, TaskInput } from '../src/
 // Every fixture lives only in this test's temporary SQLite database.
 const planInput: PlanInput = { title: '2차 테스트 전용', period_start: '2026-10-01', period_end: '2026-10-09', success_criteria: '자동 검증 전용', estimated_seconds: 9999 };
 const taskInput: TaskInput = { content: '2차 테스트 할 일', priority: 'high', due_date: '2026-10-02', estimated_seconds: 600, tags: ['테스트', '학습'] };
-let db: LocalDatabase; let diary: Diary; let directory: string; let clock: string;
+let fixture: Awaited<ReturnType<typeof account>>; let db: LocalDatabase; let diary: Diary; let directory: string; let clock: string;
 const id = () => crypto.randomUUID();
-beforeEach(() => {
+beforeEach(async () => {
   directory = mkdtempSync(join(tmpdir(), 't06-phase2-'));
-  db = new LocalDatabase(join(directory, 'test.sqlite'));
-  clock = '2026-10-02T03:00:00.500Z'; diary = new Diary(db, () => clock);
+  db = new LocalDatabase(join(directory, 'test.sqlite')); fixture = await account(db);
+  clock = '2026-10-02T03:00:00.500Z'; diary = new Diary(db, fixture.userId, () => clock);
 });
 afterEach(() => { db.close(); rmSync(directory, { recursive: true, force: true }); });
 async function makeTask(input: Partial<TaskInput> = {}, planId?: string) {
@@ -47,9 +48,9 @@ describe('execution state, durability and idempotency', () => {
   });
   it('open execution survives new app instances and closing/reopening the server DB', async () => {
     const task = await makeTask(); const log = await diary.start(task.id, id());
-    const app = createApp(db);
+    const app = fixture.authenticatedApp(db);
     expect(await (await app.request(`/api/tasks/${task.id}/executions`)).json()).toEqual([log]);
-    db.close(); db = new LocalDatabase(join(directory, 'test.sqlite')); diary = new Diary(db, () => clock);
+    db.close(); db = new LocalDatabase(join(directory, 'test.sqlite')); diary = new Diary(db, fixture.userId, () => clock);
     expect(await diary.executions(task.id)).toEqual([log]);
     expect((await diary.task(task.id)).status).toBe('in_progress');
   });
@@ -212,7 +213,7 @@ describe('copy and full JSON export', () => {
         return db.batch(statements);
       },
     };
-    await expect(new Diary(wrapped, () => clock).copyCompleted(source.plan_id, { plan: planInput, tasks: [{ task_id: source.id, due_date: null }] })).rejects.toThrow('copy source');
+    await expect(new Diary(wrapped, fixture.userId, () => clock).copyCompleted(source.plan_id, { plan: planInput, tasks: [{ task_id: source.id, due_date: null }] })).rejects.toThrow('copy source');
     expect(await diary.plans()).toHaveLength(1); expect(await db.all('SELECT * FROM tasks')).toHaveLength(1);
   });
   it('one JSON contains every table/version/archived row/log, validates against schema, and round-trips without loss', async () => {
@@ -229,7 +230,7 @@ describe('copy and full JSON export', () => {
       expect(parsed[name]).toEqual(expect.arrayContaining(rows)); expect(parsed[name].length).toBe(rows.length);
     }
     const ajv = new Ajv2020({ strict: false }); addFormats(ajv);
-    const validate = ajv.compile(JSON.parse(readFileSync(new URL('../contracts/pds-schema-v2.json', import.meta.url), 'utf8')));
+    const validate = ajv.compile(JSON.parse(readFileSync(new URL('../contracts/pds-schema-v3.json', import.meta.url), 'utf8')));
     expect(validate(parsed), JSON.stringify(validate.errors)).toBe(true);
     const planIds = new Set(parsed.plans.map(p => p.id)); const taskIds = new Set(parsed.tasks.map(t => t.id)); const tagIds = new Set(parsed.tags.map(t => t.id));
     expect(parsed.plan_versions.every(v => planIds.has(v.plan_id))).toBe(true);
@@ -242,7 +243,7 @@ describe('copy and full JSON export', () => {
     expect(JSON.stringify(parsed)).not.toMatch(/password|api_key|authentication|_migrations|process\.env|cloudflare.*token/i);
   });
   it('API supports start/finish/reopen/review/copy/export with input validation and download headers', async () => {
-    const task = await makeTask(); const app = createApp(db);
+    const task = await makeTask(); const app = fixture.authenticatedApp(db);
     const post = (path: string, body: unknown) => app.request(`/api${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     expect((await post(`/tasks/${task.id}/start`, { request_id: 'bad' })).status).toBe(400);
     const started = await (await post(`/tasks/${task.id}/start`, { request_id: id() })).json() as ExecutionLog;
@@ -253,18 +254,18 @@ describe('copy and full JSON export', () => {
     expect((await post(`/tasks/${task.id}/reopen`, {})).status).toBe(200);
     expect((await post(`/tasks/${task.id}/reopen`, { password: 'no' })).status).toBe(400);
     const response = await app.request('/api/export'); expect(response.status).toBe(200);
-    expect(response.headers.get('content-disposition')).toBe('attachment; filename="t06-diary.json"'); expect(response.headers.get('content-type')).toContain('application/json');
+    expect(response.headers.get('content-disposition')).toBe('attachment; filename="t07-diary.json"'); expect(response.headers.get('content-type')).toContain('application/json');
     expect((await response.json() as DatabaseExport).plans).toHaveLength(2);
   });
   it('duplicate copy selections and invalid due dates are rejected by the API', async () => {
-    const source = await makeTask(); await complete(source.id); const app = createApp(db);
+    const source = await makeTask(); await complete(source.id); const app = fixture.authenticatedApp(db);
     for (const tasks of [[{ task_id: source.id, due_date: null }, { task_id: source.id, due_date: null }], [{ task_id: source.id, due_date: '2026-02-30' }]]) {
       const response = await app.request(`/api/plans/${source.plan_id}/copy-completed`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ plan: planInput, tasks }) });
       expect(response.status).toBe(400);
     }
     expect(await diary.plans()).toHaveLength(1);
   });
-  it('upgrading an existing phase-1 database retains its plans, versions and tasks', () => {
+  it('ownerless phase-1 upgrade fails closed and retains plans, versions and tasks', () => {
     const path = join(directory, 'old.sqlite'); const old = new DatabaseSync(path);
     old.exec(readFileSync(new URL('../migrations/0001_initial.sql', import.meta.url), 'utf8'));
     old.exec('CREATE TABLE _migrations (name TEXT PRIMARY KEY NOT NULL, applied_at TEXT NOT NULL)');
@@ -272,12 +273,12 @@ describe('copy and full JSON export', () => {
     old.prepare('INSERT INTO plans VALUES (?, ?, ?, ?)').run('old-plan', 1, clock, clock);
     old.prepare('INSERT INTO plan_versions VALUES (?, ?, ?, ?, ?, ?, ?, ?)').run('old-plan', 1, '이전 계획', '2026-10-01', '2026-10-09', '보존', 600, clock);
     old.prepare('INSERT INTO tasks (id, plan_id, content, priority, estimated_seconds, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)').run('old-task', 'old-plan', '이전 할 일', 'low', 300, clock, clock); old.close();
-    const migrated = new LocalDatabase(path);
+    expect(() => new LocalDatabase(path)).toThrow('CHECK constraint');
+    const preserved = new DatabaseSync(path);
     try {
-      expect(migrated.sqlite.prepare('SELECT title FROM plan_versions').get()?.title).toBe('이전 계획');
-      expect(migrated.sqlite.prepare('SELECT content FROM tasks').get()?.content).toBe('이전 할 일');
-      expect(migrated.sqlite.prepare('SELECT * FROM _migrations').all()).toHaveLength(2);
-      expect(migrated.sqlite.prepare("SELECT name FROM sqlite_master WHERE name = 'execution_closed_immutable'").get()).toBeTruthy();
-    } finally { migrated.close(); }
+      expect(preserved.prepare('SELECT title FROM plan_versions').get()?.title).toBe('이전 계획');
+      expect(preserved.prepare('SELECT content FROM tasks').get()?.content).toBe('이전 할 일');
+      expect(preserved.prepare("SELECT name FROM _migrations WHERE name='0004_ownership.sql'").get()).toBeUndefined();
+    } finally { preserved.close(); }
   });
 });

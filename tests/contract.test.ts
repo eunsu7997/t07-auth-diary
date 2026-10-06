@@ -1,3 +1,4 @@
+import { account } from './fixtures.ts';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import Ajv2020 from 'ajv/dist/2020.js';
@@ -5,15 +6,15 @@ import addFormats from 'ajv-formats';
 import { LocalDatabase } from '../src/server/local-db.ts';
 import { Diary } from '../src/server/services.ts';
 
-const schema = JSON.parse(readFileSync(new URL('../contracts/pds-schema-v2.json', import.meta.url), 'utf8'));
-let db: LocalDatabase;
-beforeEach(() => { db = new LocalDatabase(':memory:'); });
+const schema = JSON.parse(readFileSync(new URL('../contracts/pds-schema-v3.json', import.meta.url), 'utf8'));
+let fixture: Awaited<ReturnType<typeof account>>; let db: LocalDatabase;
+beforeEach(async () => { db = new LocalDatabase(':memory:'); fixture = await account(db); });
 afterEach(() => db.close());
 const tables = Object.keys(schema['x-database']);
 
 describe('database and JSON schema correspondence', () => {
   it('matches every business table, field, SQL type, nullability, primary key, relation and unique constraint', () => {
-    const business = db.sqlite.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT GLOB '_*'").all().map(r => r.name).sort();
+    const business = db.sqlite.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT GLOB '_*' AND name NOT IN ('user','account','session','verification')").all().map(r => r.name).sort();
     expect(business).toEqual([...tables].sort());
     for (const table of tables) {
       const metadata = schema['x-database'][table];
@@ -40,7 +41,7 @@ describe('database and JSON schema correspondence', () => {
     expect(index?.sql).toContain(partial.predicate);
   });
   it('validates actual DB rows, including all plan versions and task-tag joins, against the contract', async () => {
-    const diary = new Diary(db);
+    const diary = new Diary(db, fixture.userId);
     const original = { title: '계약 테스트', period_start: '2026-10-02', period_end: '2026-10-04', success_criteria: '계약 검증', estimated_seconds: 1800 };
     const plan = await diary.createPlan(original);
     await diary.updatePlan(plan.id, { ...original, title: '수정된 계약 테스트' }, 1);
@@ -56,7 +57,7 @@ describe('database and JSON schema correspondence', () => {
     expect(validate(data)).toBe(false);
   });
   it('DB enforces execution foreign keys, active-log uniqueness and completion consistency', async () => {
-    const diary = new Diary(db);
+    const diary = new Diary(db, fixture.userId);
     const plan = await diary.createPlan({ title: '제약 테스트', period_start: '2026-10-02', period_end: '2026-10-04', success_criteria: 'DB 제약', estimated_seconds: 120 });
     const task = await diary.createTask(plan.id, { content: '제약 할 일', priority: 'low', due_date: null, estimated_seconds: 60, tags: [] });
     const insert = db.sqlite.prepare('INSERT INTO execution_logs (id, task_id, started_at, estimated_seconds_at_start, start_request_id) VALUES (?, ?, ?, ?, ?)');

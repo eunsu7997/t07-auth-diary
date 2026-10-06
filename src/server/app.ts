@@ -34,7 +34,6 @@ export function createApp(database: Database | ((bindings: Bindings) => Database
     if (!['GET', 'HEAD', 'OPTIONS'].includes(c.req.method) && c.req.method !== 'DELETE' && !/^application\/json(?:;|$)/i.test(c.req.header('Content-Type') ?? '')) {
       return c.json({ error: 'application/json 형식으로 요청하세요.' }, 415);
     }
-    c.set('diary', new Diary(typeof database === 'function' ? database(c.env) : database));
     await next();
   });
   const authFor = (bindings: Bindings) => typeof authentication === 'function' ? authentication(bindings) : authentication;
@@ -50,6 +49,9 @@ export function createApp(database: Database | ((bindings: Bindings) => Database
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
     if (!session) return c.json({ error: '로그인이 필요합니다.' }, 401);
     c.set('userId', session.user.id);
+    c.set('diary', new Diary(typeof database === 'function' ? database(c.env) : database, session.user.id));
+    if (['owner_user_id','user_id','owner','userId'].some(key => key in c.req.query())) return c.json({ error: '사용자 지정 쿼리는 허용하지 않습니다.' }, 400);
+    if (c.req.header('X-User-ID') || c.req.header('X-Owner-ID')) return c.json({ error: '사용자 지정 헤더는 허용하지 않습니다.' }, 400);
     await next();
   });
   app.get('/api/session', async c => {
@@ -58,10 +60,10 @@ export function createApp(database: Database | ((bindings: Bindings) => Database
     return c.json({ user: { id: session.user.id, name: session.user.name, email: session.user.email }, expiresAt: session.session.expiresAt });
   });
   app.get('/api/health', async c => {
-    await c.get('diary').db.all('SELECT 1 AS connected');
+    await (typeof database === 'function' ? database(c.env) : database).all('SELECT 1 AS connected');
     return c.json({ ok: true, stage: 2, storage: c.env?.DB ? 'cloudflare-d1' : 'server-sqlite', timezone: 'Asia/Seoul' });
   });
-  app.get('/api/plans', async c => c.json(await c.get('diary').plans()));
+  app.get('/api/plans', async c => { emptySchema.parse(c.req.query()); return c.json(await c.get('diary').plans()); });
   app.post('/api/plans', async c => c.json(await c.get('diary').createPlan(await input(c.req, planSchema)), 201));
   app.get('/api/plans/:id', async c => c.json(await c.get('diary').plan(c.req.param('id'))));
   app.put('/api/plans/:id', async c => {
@@ -94,8 +96,9 @@ export function createApp(database: Database | ((bindings: Bindings) => Database
   });
   app.post('/api/plans/:id/copy-completed', async c => c.json(await c.get('diary').copyCompleted(c.req.param('id'), await input(c.req, copySchema)), 201));
   app.get('/api/export', async c => {
+    emptySchema.parse(c.req.query());
     const data = await c.get('diary').exportAll();
-    c.header('Content-Disposition', 'attachment; filename="t06-diary.json"');
+    c.header('Content-Disposition', 'attachment; filename="t07-diary.json"');
     return c.json(data);
   });
   app.notFound(c => c.json({ error: '요청한 경로가 없습니다.' }, 404));

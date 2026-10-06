@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test';
+import { type Page } from '@playwright/test';
+import { test, expect } from './fixtures';
 const input = { title: '브라우저 테스트 전용', period_start: '2026-10-02', period_end: '2026-10-09', success_criteria: '테스트 기준', estimated_seconds: 3600 };
 
 async function selectPlan(page: Page, title: string) {
@@ -30,7 +31,7 @@ test('browser creates plan, edits with stable ID, and displays original history'
   await expect(page.getByTestId('version-2')).toContainText('수정 성공 기준');
   await page.reload();
   await expect(page.getByRole('heading', { level: 2, name: '수정한 브라우저 계획', exact: true })).toBeVisible();
-  await page.screenshot({ path: 'evidence/phase1-desktop.png', fullPage: true });
+  await page.screenshot({ path: 'evidence/t07/stage2/browser/phase1-desktop.png', fullPage: true });
 });
 
 test('browser adds five tasks, edits attributes, deletes, and re-reads from DB', async ({ page, request }) => {
@@ -102,18 +103,22 @@ test('script-like inputs remain visible text in plan, history, tasks and tags wi
   expect(errors).toEqual([]);
 });
 
-test('a fresh browser context with empty storage reads the same server data', async ({ browser, request }) => {
+test('fresh anonymous browser rejects data; authenticated browser persists and another user is isolated', async ({ browser, request, context: original }) => {
   const plan = await (await request.post('/api/plans', { data: { ...input, title: '브라우저 종료 후 유지 테스트' } })).json();
   await request.post(`/api/plans/${plan.id}/tasks`, { data: { content: '서버에 남은 할 일', priority: 'low', tags: [], due_date: null, estimated_seconds: 60 } });
-  let context = await browser.newContext(); let page = await context.newPage();
-  await selectPlan(page, plan.title);
-  await expect(page.getByTestId('task-card')).toContainText('서버에 남은 할 일');
-  expect(await page.evaluate(() => localStorage.length)).toBe(0);
-  await context.close();
-  context = await browser.newContext(); page = await context.newPage();
-  await selectPlan(page, plan.title);
-  await expect(page.getByTestId('task-card')).toContainText('서버에 남은 할 일');
-  expect(await page.evaluate(() => localStorage.length)).toBe(0);
+  const context = await browser.newContext(); const page = await context.newPage();
+  await page.goto('/'); await expect(page.getByRole('button',{name:'로그인하기',exact:true})).toBeVisible();
+  expect((await context.request.get('/api/plans')).status()).toBe(401);
+  await context.addCookies(await original.cookies());
+  await selectPlan(page,plan.title); await expect(page.getByTestId('task-card')).toContainText('서버에 남은 할 일');
+  expect(await page.evaluate(()=>localStorage.length+sessionStorage.length)).toBe(0);
+  await page.reload();await expect(page.getByTestId('task-card')).toContainText('서버에 남은 할 일');
+  await context.clearCookies();
+  const password = crypto.randomUUID()+crypto.randomUUID();
+  expect((await context.request.post('/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Other fixture',password}})).ok()).toBe(true);
+  expect(await (await context.request.get('/api/plans')).json()).toEqual([]);
+  expect((await context.request.get(`/api/plans/${plan.id}`)).status()).toBe(404);
+  await page.reload();await expect(page.getByRole('button').filter({hasText:plan.title})).toHaveCount(0);
   await context.close();
 });
 
@@ -133,8 +138,9 @@ test('failed save preserves draft and allows retry', async ({ page, request }) =
   await expect(page.getByTestId('task-card')).toContainText('실패해도 남는 초안');
 });
 
-test('mobile layout loads without runtime errors or horizontal overflow', async ({ page }) => {
+test('mobile layout loads without runtime errors or horizontal overflow', async ({ page, request }) => {
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
+  await request.post('/api/plans',{data:{...input,title:'Mobile fixture'}});
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('플랜두씨 다이어리');
@@ -142,5 +148,5 @@ test('mobile layout loads without runtime errors or horizontal overflow', async 
   await expect(page.locator('.plan-detail')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(errors).toEqual([]);
-  await page.screenshot({ path: 'evidence/phase1-mobile.png', fullPage: true });
+  await page.screenshot({ path: 'evidence/t07/stage2/browser/phase1-mobile.png', fullPage: true });
 });

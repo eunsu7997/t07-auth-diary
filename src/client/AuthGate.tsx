@@ -62,7 +62,7 @@ export default function AuthGate() {
   if (loading) return <main><p role="status">로그인 상태 확인 중…</p></main>;
   if (identity) return <>
     <section className="panel" aria-label="로그인 상태"><span>{identity.user.name} · 로그인됨</span> <button disabled={busy} onClick={() => void logout()}>로그아웃</button>
-      <p>로컬 1단계: 로그인한 계정끼리의 자료 소유권 분리는 아직 구현하지 않았습니다. 실제 자료를 입력하지 마세요.</p>
+      <p>로컬 2단계 테스트 환경: 현재 로그인한 계정의 자료만 표시합니다. 테스트 기록은 실제 5일 사용 증거가 아닙니다.</p>
       {error ? <p role="alert">{error}</p> : null}
     </section><App key={identity.user.id} />
   </>;

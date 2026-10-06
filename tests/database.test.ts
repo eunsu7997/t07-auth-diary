@@ -1,3 +1,4 @@
+import { account } from './fixtures.ts';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -9,7 +10,7 @@ import type { Plan, Task, PlanVersion, TaskInput } from '../src/shared/types.ts'
 
 export const planInput = { title: '테스트 전용 계획', period_start: '2026-10-02', period_end: '2026-10-09', success_criteria: '테스트에서만 사용하는 기준', estimated_seconds: 3600 };
 const taskInput: TaskInput = { content: '테스트 전용 할 일', priority: 'medium', due_date: '2026-10-03', estimated_seconds: 600, tags: ['학습', '테스트'] };
-let db: LocalDatabase;
+let fixture: Awaited<ReturnType<typeof account>>; let db: LocalDatabase;
 let app: ReturnType<typeof createApp>;
 let directory: string;
 
@@ -27,10 +28,10 @@ async function createTask(planId: string, input: TaskInput = taskInput) {
   return await response.json() as Task;
 }
 
-beforeEach(() => {
+beforeEach(async () => {
   directory = mkdtempSync(join(tmpdir(), 't06-unit-'));
-  db = new LocalDatabase(join(directory, 'test.sqlite'));
-  app = createApp(db);
+  db = new LocalDatabase(join(directory, 'test.sqlite')); fixture = await account(db);
+  app = fixture.authenticatedApp(db);
 });
 afterEach(() => { db.close(); rmSync(directory, { recursive: true, force: true }); });
 
@@ -64,18 +65,18 @@ describe('T06 phase 1: actual SQLite and API', () => {
     const plan = await createPlan();
     expect(() => db.sqlite.prepare('UPDATE plan_versions SET title = ? WHERE plan_id = ?').run('덮어쓰기', plan.id)).toThrow('immutable');
     expect(() => db.sqlite.prepare('DELETE FROM plan_versions WHERE plan_id = ?').run(plan.id)).toThrow('immutable');
-    expect((await new Diary(db).history(plan.id))[0].title).toBe(planInput.title);
+    expect((await new Diary(db, fixture.userId).history(plan.id))[0].title).toBe(planInput.title);
   });
   it('rejects a stale plan edit without creating another version', async () => {
     const plan = await createPlan();
     expect((await request(`/plans/${plan.id}`, 'PUT', { ...planInput, title: '먼저 저장', expected_version: 1 })).status).toBe(200);
     expect((await request(`/plans/${plan.id}`, 'PUT', { ...planInput, title: '오래된 화면', expected_version: 1 })).status).toBe(409);
     expect(await db.all('SELECT * FROM plan_versions')).toHaveLength(2);
-    expect((await new Diary(db).plan(plan.id)).title).toBe('먼저 저장');
+    expect((await new Diary(db, fixture.userId).plan(plan.id)).title).toBe('먼저 저장');
   });
   it('rolls back the complete batch when creating a version fails', async () => {
     await expect(db.batch([
-      { sql: 'INSERT INTO plans (id, current_version, created_at, updated_at) VALUES (?, 1, ?, ?)', params: ['rollback', '2026-10-02T00:00:00.000Z', '2026-10-02T00:00:00.000Z'] },
+      { sql: 'INSERT INTO plans (id, owner_user_id, current_version, created_at, updated_at) VALUES (?, ?, 1, ?, ?)', params: ['rollback', fixture.userId, '2026-10-02T00:00:00.000Z', '2026-10-02T00:00:00.000Z'] },
       { sql: 'INSERT INTO plan_versions (plan_id, version, title, period_start, period_end, success_criteria, estimated_seconds, recorded_at) VALUES (?, 1, ?, ?, ?, ?, ?, ?)', params: ['rollback', '', '2026-10-02', '2026-10-03', '기준', 60, '2026-10-02T00:00:00.000Z'] },
     ])).rejects.toThrow();
     expect(await db.all('SELECT * FROM plans')).toHaveLength(0);
@@ -117,12 +118,12 @@ describe('T06 phase 1: actual SQLite and API', () => {
   });
   it('reads identical data after fresh app initialization and DB close/reopen', async () => {
     const plan = await createPlan(); const task = await createTask(plan.id);
-    app = createApp(db);
+    app = fixture.authenticatedApp(db);
     expect(await (await request(`/tasks/${task.id}`)).json()).toEqual(task);
-    db.close(); db = new LocalDatabase(join(directory, 'test.sqlite')); app = createApp(db);
+    db.close(); db = new LocalDatabase(join(directory, 'test.sqlite')); app = fixture.authenticatedApp(db);
     expect(await (await request(`/plans/${plan.id}`)).json()).toEqual(plan);
     expect(await (await request(`/tasks/${task.id}`)).json()).toEqual(task);
-    expect(await db.all('SELECT * FROM _migrations')).toHaveLength(2);
+    expect((await db.all<{name:string}>('SELECT name FROM _migrations')).map(r=>r.name)).toContain('0004_ownership.sql');
   });
   it('searches literal text, filters tags/priority/due dates, and combines criteria', async () => {
     const plan = await createPlan();
@@ -139,7 +140,7 @@ describe('T06 phase 1: actual SQLite and API', () => {
   it('sorts due dates (null last), priority, estimates, and creation time deterministically', async () => {
     const plan = await createPlan();
     let tick = 0;
-    const diary = new Diary(db, () => new Date(Date.UTC(2026, 9, 2, 0, 0, tick++)).toISOString());
+    const diary = new Diary(db, fixture.userId, () => new Date(Date.UTC(2026, 9, 2, 0, 0, tick++)).toISOString());
     const a = await diary.createTask(plan.id, { ...taskInput, content: 'a', priority: 'low', due_date: null, estimated_seconds: 300 });
     const b = await diary.createTask(plan.id, { ...taskInput, content: 'b', priority: 'high', due_date: '2026-10-05', estimated_seconds: 100 });
     const c = await diary.createTask(plan.id, { ...taskInput, content: 'c', priority: 'medium', due_date: '2026-10-03', estimated_seconds: 200 });
@@ -176,8 +177,8 @@ describe('T06 phase 1: actual SQLite and API', () => {
     expect(response.headers.get('Content-Type')).toContain('application/json');
     expect(response.headers.get('X-Content-Type-Options')).toBe('nosniff');
   });
-  it('allows unauthenticated use and rejects unrelated browser-origin writes', async () => {
-    expect((await request('/health')).status).toBe(200); await createPlan();
+  it('requires authentication and rejects unrelated browser-origin writes', async () => {
+    expect((await createApp(db, fixture.auth).request('/api/plans')).status).toBe(401); expect((await request('/health')).status).toBe(200); await createPlan();
     const response = await app.request('/api/plans', { method: 'POST', headers: { Origin: 'https://other.invalid', 'Content-Type': 'application/json' }, body: JSON.stringify(planInput) });
     expect(response.status).toBe(403);
     expect((await app.request('/api/plans', { method: 'POST', body: '{}' })).status).toBe(415);

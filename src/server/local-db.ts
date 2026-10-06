@@ -12,7 +12,7 @@ export class LocalDatabase implements Database {
     if (path !== ':memory:') mkdirSync(dirname(path), { recursive: true });
     this.sqlite = new DatabaseSync(path, { timeout: 5000 });
     this.sqlite.exec('PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL;');
-    this.migrate();
+    try { this.migrate(); } catch (error) { this.sqlite.close(); throw error; }
   }
   private migrate() {
     this.sqlite.exec('CREATE TABLE IF NOT EXISTS _migrations (name TEXT PRIMARY KEY NOT NULL, applied_at TEXT NOT NULL)');

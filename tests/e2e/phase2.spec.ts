@@ -1,4 +1,5 @@
-import { test, expect, type APIRequestContext, type Page } from '@playwright/test';
+import { type APIRequestContext, type Page } from '@playwright/test';
+import { test, expect } from './fixtures';
 import { readFile } from 'node:fs/promises';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
@@ -31,7 +32,7 @@ test('start is saved immediately and restored after reload; finish records real 
   expect(closed.actual_seconds).toBeGreaterThanOrEqual(1);
   const stored = await (await request.get(`/api/tasks/${task.id}`)).json(); expect(stored.estimated_seconds).toBe(600);
   await page.getByText('실행 기록 (1개)', { exact: true }).click(); await expect(page.getByTestId('execution-record')).toContainText(`${closed.actual_seconds}초`);
-  await page.screenshot({ path: 'evidence/phase2-execution.png', fullPage: true });
+  await page.screenshot({ path: 'evidence/t07/stage2/browser/phase2-execution.png', fullPage: true });
 });
 
 test('twenty immediate UI finish clicks create only one closed log', async ({ page, request }) => {
@@ -72,7 +73,7 @@ test('UI review shows actual DB totals and clicking a number reveals supporting 
   await expect(page.getByTestId('metric-difference')).toContainText(`${review.actual_seconds - 600}초`); await expect(page.getByTestId('plan-estimate')).toContainText('7200초');
   await page.getByTestId('metric-delayed').click(); await expect(page.locator('#evidence-delayed')).toContainText('지연 근거 할 일'); await expect(page.locator('#evidence-delayed')).toBeVisible();
   await page.getByTestId('metric-actual').click(); await expect(page.locator('#evidence-actual')).toContainText(open.id);
-  await page.screenshot({ path: 'evidence/phase2-review.png', fullPage: true });
+  await page.screenshot({ path: 'evidence/t07/stage2/browser/phase2-review.png', fullPage: true });
 });
 
 test('UI copies completed task to new plan with new deadline, new IDs, source link and no execution history', async ({ page, request }) => {
@@ -99,12 +100,12 @@ test('one downloaded JSON contains the whole DB and retains IDs/relations/timest
   await request.post(`/api/tasks/${task.id}/executions/${open.id}/finish`, { data: { request_id: crypto.randomUUID() } });
   await page.goto('/'); const downloads: string[] = []; page.on('download', d => downloads.push(d.suggestedFilename()));
   const pending = page.waitForEvent('download'); await page.getByRole('button', { name: '전체 JSON 다운로드' }).click(); const download = await pending;
-  expect(download.suggestedFilename()).toBe('t06-diary.json');
+  expect(download.suggestedFilename()).toBe('t07-diary.json');
   const path = await download.path(); const data: DatabaseExport = JSON.parse(await readFile(path!, 'utf8'));
-  expect(downloads).toEqual(['t06-diary.json']); expect(data.plans.some(p => p.id === plan.id)).toBe(true); expect(data.tasks.some(t => t.id === task.id && t.plan_id === plan.id)).toBe(true);
+  expect(downloads).toEqual(['t07-diary.json']); expect(data.plans.some(p => p.id === plan.id)).toBe(true); expect(data.tasks.some(t => t.id === task.id && t.plan_id === plan.id)).toBe(true);
   expect(data.execution_logs.find(log => log.id === open.id)?.started_at).toBe(open.started_at);
   expect(data.export_metadata.table_counts.execution_logs).toBe(data.execution_logs.length);
-  const schema = JSON.parse(await readFile(new URL('../../contracts/pds-schema-v2.json', import.meta.url), 'utf8'));
+  const schema = JSON.parse(await readFile(new URL('../../contracts/pds-schema-v3.json', import.meta.url), 'utf8'));
   const ajv = new Ajv2020({ strict: false }); addFormats(ajv); const validate = ajv.compile(schema);
   expect(validate(data), JSON.stringify(validate.errors)).toBe(true);
   const taskIds = new Set(data.tasks.map(t => t.id)); const planIds = new Set(data.plans.map(p => p.id)); const tagIds = new Set(data.tags.map(t => t.id));

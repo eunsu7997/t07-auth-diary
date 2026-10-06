@@ -1,0 +1,52 @@
+{
+  "stage": 2,
+  "fixtures": "Automated temporary accounts only; not real five-day evidence",
+  "stage1_commit": "91b20dda051e45e88b569acee8053d9267d3bf74",
+  "origin": "https://github.com/eunsu7997/t07-auth-diary",
+  "branch": "codex/t07-auth",
+  "stage2_changes": "local uncommitted",
+  "t06_base": "d5a386e343c204a7ed5abb914e54b75e679eb2fd",
+  "ancestor_exit": 0,
+  "t06_worktree_clean": true,
+  "t06_remote_worker_db_mutations": false,
+  "remote_t07_d1_or_deployment": false,
+  "migration": "0004_ownership.sql",
+  "previous_migrations_unchanged": true,
+  "protected_business_routes": 18,
+  "unauthenticated": 401,
+  "foreign_and_missing": 404,
+  "regression": {
+    "unit_api": 47,
+    "browser": 14,
+    "preserved_intents": 57,
+    "changed_intents": 4
+  },
+  "new_tests": {
+    "auth_unit": 13,
+    "auth_browser": 4,
+    "ownership": 48
+  },
+  "totals": {
+    "unit_api": 108,
+    "browser": 18,
+    "pass": 126,
+    "fail": 0
+  },
+  "local_worker": {
+    "passed": true,
+    "assertions": 60,
+    "not_in_test_count": true
+  },
+  "typecheck": true,
+  "production_build": true,
+  "manual_dev_browser": {
+    "login_screen": true,
+    "errors": 0
+  },
+  "limitations": [
+    "Independent Claude Code audit not performed",
+    "Ownerless legacy business data migration deliberately fails without loss; separate real JSON import pending",
+    "Test server NODE_ENV=test avoids fixture signup rate limit; production defaults unchanged",
+    "Production distributed rate limiting and deployment-specific secrets/origins need later audit"
+  ]
+}

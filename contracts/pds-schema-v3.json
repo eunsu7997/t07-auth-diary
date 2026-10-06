@@ -1,0 +1,654 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aleph:t06:pds-schema:2.0.0",
+  "title": "ALEPH T06 Plan Do See database and export contract",
+  "description": "업무 테이블의 원시 DB 레코드 및 전체 JSON 내보내기 계약. 모든 업무 테이블을 동일한 DB 트랜잭션에서 읽습니다. 마이그레이션 관리용 _migrations 테이블과 배포 자격증명은 내보내지 않습니다.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "exported_at",
+    "timezone",
+    "export_metadata",
+    "plans",
+    "plan_versions",
+    "tasks",
+    "tags",
+    "task_tags",
+    "execution_logs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "3.0.0"
+    },
+    "exported_at": {
+      "$ref": "#/$defs/utc"
+    },
+    "timezone": {
+      "const": "Asia/Seoul"
+    },
+    "export_metadata": {
+      "$ref": "#/$defs/export_metadata"
+    },
+    "plans": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/plans"
+      }
+    },
+    "plan_versions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/plan_versions"
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tasks"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tags"
+      }
+    },
+    "task_tags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/task_tags"
+      }
+    },
+    "execution_logs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/execution_logs"
+      }
+    }
+  },
+  "x-rules": {
+    "time_unit": "integer seconds; UI displays minutes",
+    "timestamps": "UTC RFC3339 strings ending in Z, server generated; display Asia/Seoul",
+    "dates": "valid Gregorian YYYY-MM-DD date, interpreted as Asia/Seoul calendar date; due date inclusive until end of day",
+    "plan_versions": "immutable version 1 is the original; editing appends the next version without changing plan ID",
+    "current_version": "plans.current_version identifies the current plan_versions row with the same plan_id",
+    "task_deletion": "soft deletion sets deleted_at; row and relationships are preserved; active API queries exclude it; review and export include archived rows; deleting a task with an open execution is rejected",
+    "actual_seconds": "on completion, floor((ended_at - started_at) / 1000); active execution has null ended_at and actual_seconds",
+    "estimates": "plan and task estimates are distinct; execution must not update them",
+    "see_expected_seconds": "sum tasks.estimated_seconds in the selected plan scope; plan estimate shown separately",
+    "see_actual_seconds": "sum closed execution_logs.actual_seconds in the selected plan scope",
+    "see_difference_seconds": "actual_seconds_total minus task_estimated_seconds_total",
+    "see_scope": "all plans by default or the specified plan_id; task search filters do not affect review; archived tasks and logs are included",
+    "see_delayed": "due_date is not null AND ((status=in_progress AND current Asia/Seoul date > due_date) OR (status=completed AND Asia/Seoul completed_at date > due_date)); due day is inclusive",
+    "reopen": "sets task status=in_progress and completed_at=null; all execution logs and actual_seconds remain unchanged; later start creates a new log",
+    "idempotency": "start_request_id and finish_request_id are globally unique within each field; one open log per task; finish is guarded by log ID and ended_at IS NULL; closed logs are immutable",
+    "copy": "only non-deleted completed tasks can be copied; new plan/task IDs, copied_from_task_id references source task; content/priority/tags/estimate from DB; new due date explicitly provided; no execution logs copied",
+    "no_auth_data": "no account, password, API key or authentication fields; free-text input must not contain sensitive data"
+  },
+  "x-database": {
+    "plans": {
+      "primary_key": [
+        "id"
+      ],
+      "foreign_keys": [
+        {
+          "column": "owner_user_id",
+          "table": "user",
+          "target": "id"
+        }
+      ],
+      "unique": [],
+      "nullable": [],
+      "integer_columns": [
+        "current_version"
+      ]
+    },
+    "plan_versions": {
+      "primary_key": [
+        "plan_id",
+        "version"
+      ],
+      "foreign_keys": [
+        {
+          "column": "plan_id",
+          "table": "plans",
+          "target": "id"
+        }
+      ],
+      "unique": [],
+      "nullable": [],
+      "integer_columns": [
+        "version",
+        "estimated_seconds"
+      ]
+    },
+    "tasks": {
+      "primary_key": [
+        "id"
+      ],
+      "foreign_keys": [
+        {
+          "column": "plan_id",
+          "table": "plans",
+          "target": "id"
+        },
+        {
+          "column": "copied_from_task_id",
+          "table": "tasks",
+          "target": "id"
+        }
+      ],
+      "unique": [],
+      "nullable": [
+        "due_date",
+        "completed_at",
+        "copied_from_task_id",
+        "deleted_at"
+      ],
+      "integer_columns": [
+        "estimated_seconds"
+      ]
+    },
+    "tags": {
+      "primary_key": [
+        "id"
+      ],
+      "foreign_keys": [
+        {
+          "column": "owner_user_id",
+          "table": "user",
+          "target": "id"
+        }
+      ],
+      "unique": [
+        [
+          "owner_user_id",
+          "name"
+        ]
+      ],
+      "nullable": [],
+      "integer_columns": []
+    },
+    "task_tags": {
+      "primary_key": [
+        "task_id",
+        "tag_id"
+      ],
+      "foreign_keys": [
+        {
+          "column": "task_id",
+          "table": "tasks",
+          "target": "id"
+        },
+        {
+          "column": "tag_id",
+          "table": "tags",
+          "target": "id"
+        }
+      ],
+      "unique": [],
+      "nullable": [],
+      "integer_columns": []
+    },
+    "execution_logs": {
+      "primary_key": [
+        "id"
+      ],
+      "foreign_keys": [
+        {
+          "column": "task_id",
+          "table": "tasks",
+          "target": "id"
+        }
+      ],
+      "unique": [
+        [
+          "start_request_id"
+        ],
+        [
+          "finish_request_id"
+        ]
+      ],
+      "partial_unique": [
+        {
+          "name": "execution_one_active_per_task",
+          "columns": [
+            "task_id"
+          ],
+          "predicate": "ended_at IS NULL"
+        }
+      ],
+      "nullable": [
+        "ended_at",
+        "actual_seconds",
+        "finish_request_id"
+      ],
+      "integer_columns": [
+        "actual_seconds",
+        "estimated_seconds_at_start"
+      ]
+    }
+  },
+  "x-triggers": [
+    "plan_versions_immutable_update",
+    "plan_versions_immutable_delete",
+    "execution_closed_immutable",
+    "execution_identity_immutable",
+    "execution_preserve_delete",
+    "execution_start_guard",
+    "execution_duration_guard",
+    "execution_complete_task",
+    "task_complete_guard",
+    "task_delete_active_guard",
+    "task_copy_source_guard",
+    "plan_owner_immutable",
+    "tag_owner_immutable",
+    "task_identity_immutable",
+    "task_tag_owner_insert",
+    "task_tag_owner_update",
+    "copied_task_owner"
+  ],
+  "$defs": {
+    "export_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "application",
+        "time_unit",
+        "consistency",
+        "table_counts"
+      ],
+      "properties": {
+        "application": {
+          "const": "aleph-t07-auth-diary"
+        },
+        "time_unit": {
+          "const": "seconds"
+        },
+        "consistency": {
+          "const": "transaction"
+        },
+        "table_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "plans",
+            "plan_versions",
+            "tasks",
+            "tags",
+            "task_tags",
+            "execution_logs"
+          ],
+          "properties": {
+            "plans": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "plan_versions": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "tasks": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "tags": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "task_tags": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "execution_logs": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "seconds": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 31536000
+    },
+    "plans": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "current_version",
+        "created_at",
+        "updated_at",
+        "owner_user_id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "current_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "created_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "owner_user_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "plan_versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan_id",
+        "version",
+        "title",
+        "period_start",
+        "period_end",
+        "success_criteria",
+        "estimated_seconds",
+        "recorded_at"
+      ],
+      "properties": {
+        "plan_id": {
+          "$ref": "#/$defs/id"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "period_start": {
+          "$ref": "#/$defs/date"
+        },
+        "period_end": {
+          "$ref": "#/$defs/date"
+        },
+        "success_criteria": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "estimated_seconds": {
+          "$ref": "#/$defs/seconds"
+        },
+        "recorded_at": {
+          "$ref": "#/$defs/utc"
+        }
+      }
+    },
+    "tasks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "plan_id",
+        "content",
+        "priority",
+        "due_date",
+        "estimated_seconds",
+        "status",
+        "completed_at",
+        "copied_from_task_id",
+        "created_at",
+        "updated_at",
+        "deleted_at"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "plan_id": {
+          "$ref": "#/$defs/id"
+        },
+        "content": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "priority": {
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "due_date": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "estimated_seconds": {
+          "$ref": "#/$defs/seconds"
+        },
+        "status": {
+          "enum": [
+            "in_progress",
+            "completed"
+          ]
+        },
+        "completed_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/utc"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "copied_from_task_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "deleted_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/utc"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "completed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "completed_at": {
+                "$ref": "#/$defs/utc"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "completed_at": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "tags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "owner_user_id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "owner_user_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "task_tags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id",
+        "tag_id"
+      ],
+      "properties": {
+        "task_id": {
+          "$ref": "#/$defs/id"
+        },
+        "tag_id": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "execution_logs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "task_id",
+        "started_at",
+        "ended_at",
+        "actual_seconds",
+        "estimated_seconds_at_start",
+        "start_request_id",
+        "finish_request_id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "task_id": {
+          "$ref": "#/$defs/id"
+        },
+        "started_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "ended_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/utc"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actual_seconds": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "estimated_seconds_at_start": {
+          "$ref": "#/$defs/seconds"
+        },
+        "start_request_id": {
+          "$ref": "#/$defs/id"
+        },
+        "finish_request_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "ended_at": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "actual_seconds": {
+                "type": "null"
+              },
+              "finish_request_id": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "actual_seconds": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "finish_request_id": {
+                "$ref": "#/$defs/id"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

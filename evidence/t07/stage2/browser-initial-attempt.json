@@ -1,0 +1,904 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\node_modules\\@playwright\\test\\cli.js",
+      "test"
+    ],
+    "configFile": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\playwright.config.ts",
+    "rootDir": "C:/Users/User/Documents/ChatGPT/과제/t07/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/User/Documents/ChatGPT/과제/t07/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "C:/Users/User/Documents/ChatGPT/과제/t07/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/t07/stage2/t06-browser-regression.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": {
+      "command": "node scripts/e2e-server.mjs",
+      "url": "http://127.0.0.1:3107/api/health",
+      "reuseExistingServer": false,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "diary.spec.ts",
+      "file": "diary.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser creates plan, edits with stable ID, and displays original history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1324,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:05.420Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "94000699dd8015301042-e30b2c46e7514ff429b8",
+          "file": "diary.spec.ts",
+          "line": 11,
+          "column": 1
+        },
+        {
+          "title": "browser adds five tasks, edits attributes, deletes, and re-reads from DB",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1150,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:07.037Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "94000699dd8015301042-ef24e1b2c8129f4405c4",
+          "file": "diary.spec.ts",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "browser filters and sorts actual server query results",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 523,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:08.203Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "94000699dd8015301042-8ae4eb22bd8ad907eff5",
+          "file": "diary.spec.ts",
+          "line": 68,
+          "column": 1
+        },
+        {
+          "title": "script-like inputs remain visible text in plan, history, tasks and tags without executing",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 11,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                      "column": 25,
+                      "line": 8
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                        "column": 25,
+                        "line": 8
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:08.737Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\diary-script-like-inputs-r-9465e--and-tags-without-executing\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                    "column": 25,
+                    "line": 8
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "94000699dd8015301042-198ad84dc9c24ed7d7a1",
+          "file": "diary.spec.ts",
+          "line": 91,
+          "column": 1
+        },
+        {
+          "title": "fresh anonymous browser rejects data; authenticated browser persists and another user is isolated",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 72,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                      "column": 25,
+                      "line": 8
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                        "column": 25,
+                        "line": 8
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:09.174Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\diary-fresh-anonymous-brow-ca826-nd-another-user-is-isolated\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                    "column": 25,
+                    "line": 8
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "94000699dd8015301042-fbdafaf76ca06b1e41c9",
+          "file": "diary.spec.ts",
+          "line": 106,
+          "column": 1
+        },
+        {
+          "title": "failed save preserves draft and allows retry",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 77,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                      "column": 25,
+                      "line": 8
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                        "column": 25,
+                        "line": 8
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:09.801Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\diary-failed-save-preserves-draft-and-allows-retry\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                    "column": 25,
+                    "line": 8
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "94000699dd8015301042-913e8630b2cb7e66be9f",
+          "file": "diary.spec.ts",
+          "line": 125,
+          "column": 1
+        },
+        {
+          "title": "mobile layout loads without runtime errors or horizontal overflow",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 75,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                      "column": 25,
+                      "line": 8
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                        "column": 25,
+                        "line": 8
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:10.402Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\diary-mobile-layout-loads--e5c85-rors-or-horizontal-overflow\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                    "column": 25,
+                    "line": 8
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "94000699dd8015301042-09c9a526ae0a9428c473",
+          "file": "diary.spec.ts",
+          "line": 141,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "phase2.spec.ts",
+      "file": "phase2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "start is saved immediately and restored after reload; finish records real elapsed time and keeps estimate",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 74,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                      "column": 25,
+                      "line": 8
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                        "column": 25,
+                        "line": 8
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:11.072Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-start-is-saved-imme-9c3e2-sed-time-and-keeps-estimate\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                    "column": 25,
+                    "line": 8
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-31cc2ae91e36cd67e4ce",
+          "file": "phase2.spec.ts",
+          "line": 21,
+          "column": 1
+        },
+        {
+          "title": "twenty immediate UI finish clicks create only one closed log",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 73,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                      "column": 25,
+                      "line": 8
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                        "column": 25,
+                        "line": 8
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:11.753Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-twenty-immediate-UI-c912b--create-only-one-closed-log\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                    "column": 25,
+                    "line": 8
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-e3fce2f2a82ef2ea8753",
+          "file": "phase2.spec.ts",
+          "line": 38,
+          "column": 1
+        },
+        {
+          "title": "reopen and rerun preserve both execution histories and one completed task count",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 72,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                      "column": 25,
+                      "line": 8
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                        "column": 25,
+                        "line": 8
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:12.399Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-reopen-and-rerun-pr-b470e-nd-one-completed-task-count\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                    "column": 25,
+                    "line": 8
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-398c7c6fccc8f69c698f",
+          "file": "phase2.spec.ts",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "UI review shows actual DB totals and clicking a number reveals supporting records",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 73,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                      "column": 25,
+                      "line": 8
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                        "column": 25,
+                        "line": 8
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:13.035Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-UI-review-shows-act-38ef4--reveals-supporting-records\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                    "column": 25,
+                    "line": 8
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-dba55f640e7b1c82283c",
+          "file": "phase2.spec.ts",
+          "line": 64,
+          "column": 1
+        },
+        {
+          "title": "UI copies completed task to new plan with new deadline, new IDs, source link and no execution history",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 73,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                      "column": 25,
+                      "line": 8
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                        "column": 25,
+                        "line": 8
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:13.668Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-UI-copies-completed-2d5b0-nk-and-no-execution-history\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                    "column": 25,
+                    "line": 8
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-a4cc26765b03bbb4cfa2",
+          "file": "phase2.spec.ts",
+          "line": 79,
+          "column": 1
+        },
+        {
+          "title": "one downloaded JSON contains the whole DB and retains IDs/relations/timestamps after reading",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 73,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                      "column": 25,
+                      "line": 8
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                        "column": 25,
+                        "line": 8
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:14.302Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-one-downloaded-JSON-08e6b-ns-timestamps-after-reading\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                    "column": 25,
+                    "line": 8
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-03c9f5b1c870e255970f",
+          "file": "phase2.spec.ts",
+          "line": 97,
+          "column": 1
+        },
+        {
+          "title": "lost start/finish responses can be retried with identical request IDs without duplicate DB changes",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 73,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)",
+                    "location": {
+                      "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                      "column": 25,
+                      "line": 8
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                        "column": 25,
+                        "line": 8
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures.ts:8\n\n   6 |  authenticated: [async ({ context, baseURL }, use) => {\n   7 |   const response=await context.request.post(baseURL+'/api/auth/sign-up/email',{data:{email:crypto.randomUUID()+'@example.invalid',name:'Automated browser fixture',password:Array.from(randomBytes(24), b=>b.toString(16).padStart(2,'0')).join('')}});\n>  8 |   expect(response.ok()).toBe(true);await use();\n     |                         ^\n   9 |  },{auto:true}],\n  10 | });\n  11 | export { expect };\n    at Object.base.extend.authenticated.auto (C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts:8:25)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T00:49:14.934Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\test-results\\phase2-lost-start-finish-r-c01db-ithout-duplicate-DB-changes\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\User\\Documents\\ChatGPT\\과제\\t07\\tests\\e2e\\fixtures.ts",
+                    "column": 25,
+                    "line": 8
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4611f7184bd5eaa3983-0f04088dc6e0d66045f7",
+          "file": "phase2.spec.ts",
+          "line": 116,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-06T00:49:02.931Z",
+    "duration": 12489.087,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 11,
+    "flaky": 0
+  }
+}

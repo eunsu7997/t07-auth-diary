@@ -1,0 +1,246 @@
+{
+  "environment": "loopback HTTPS workerd + local D1; temporary fixtures only",
+  "passed": true,
+  "checks": [
+    {
+      "label": "anonymous 401",
+      "passed": true
+    },
+    {
+      "label": "fixture signup 1",
+      "passed": true
+    },
+    {
+      "label": "HTTPS cookie security 1",
+      "passed": true
+    },
+    {
+      "label": "fixture signup 3",
+      "passed": true
+    },
+    {
+      "label": "HTTPS cookie security 3",
+      "passed": true
+    },
+    {
+      "label": "A -> B plan GET",
+      "passed": true
+    },
+    {
+      "label": "A -> B plan PUT",
+      "passed": true
+    },
+    {
+      "label": "A -> B versions",
+      "passed": true
+    },
+    {
+      "label": "A -> B task list",
+      "passed": true
+    },
+    {
+      "label": "A -> B task POST",
+      "passed": true
+    },
+    {
+      "label": "A -> B task GET",
+      "passed": true
+    },
+    {
+      "label": "A -> B task PUT",
+      "passed": true
+    },
+    {
+      "label": "A -> B task DELETE",
+      "passed": true
+    },
+    {
+      "label": "A -> B task executions",
+      "passed": true
+    },
+    {
+      "label": "A -> B plan executions",
+      "passed": true
+    },
+    {
+      "label": "A -> B start",
+      "passed": true
+    },
+    {
+      "label": "A -> B finish",
+      "passed": true
+    },
+    {
+      "label": "A -> B reopen",
+      "passed": true
+    },
+    {
+      "label": "A -> B selected review",
+      "passed": true
+    },
+    {
+      "label": "A -> B copy",
+      "passed": true
+    },
+    {
+      "label": "A -> B mixed copy",
+      "passed": true
+    },
+    {
+      "label": "A -> B mixed finish",
+      "passed": true
+    },
+    {
+      "label": "A -> B isolated /plans",
+      "passed": true
+    },
+    {
+      "label": "A -> B isolated /review",
+      "passed": true
+    },
+    {
+      "label": "A -> B review sums",
+      "passed": true
+    },
+    {
+      "label": "A -> B isolated /export",
+      "passed": true
+    },
+    {
+      "label": "A -> B no auth export",
+      "passed": true
+    },
+    {
+      "label": "A -> B forged body",
+      "passed": true
+    },
+    {
+      "label": "A -> B forged header",
+      "passed": true
+    },
+    {
+      "label": "A -> B finish request collision",
+      "passed": true
+    },
+    {
+      "label": "A -> B equal missing/foreign",
+      "passed": true
+    },
+    {
+      "label": "B -> A plan GET",
+      "passed": true
+    },
+    {
+      "label": "B -> A plan PUT",
+      "passed": true
+    },
+    {
+      "label": "B -> A versions",
+      "passed": true
+    },
+    {
+      "label": "B -> A task list",
+      "passed": true
+    },
+    {
+      "label": "B -> A task POST",
+      "passed": true
+    },
+    {
+      "label": "B -> A task GET",
+      "passed": true
+    },
+    {
+      "label": "B -> A task PUT",
+      "passed": true
+    },
+    {
+      "label": "B -> A task DELETE",
+      "passed": true
+    },
+    {
+      "label": "B -> A task executions",
+      "passed": true
+    },
+    {
+      "label": "B -> A plan executions",
+      "passed": true
+    },
+    {
+      "label": "B -> A start",
+      "passed": true
+    },
+    {
+      "label": "B -> A finish",
+      "passed": true
+    },
+    {
+      "label": "B -> A reopen",
+      "passed": true
+    },
+    {
+      "label": "B -> A selected review",
+      "passed": true
+    },
+    {
+      "label": "B -> A copy",
+      "passed": true
+    },
+    {
+      "label": "B -> A mixed copy",
+      "passed": true
+    },
+    {
+      "label": "B -> A mixed finish",
+      "passed": true
+    },
+    {
+      "label": "B -> A isolated /plans",
+      "passed": true
+    },
+    {
+      "label": "B -> A isolated /review",
+      "passed": true
+    },
+    {
+      "label": "B -> A review sums",
+      "passed": true
+    },
+    {
+      "label": "B -> A isolated /export",
+      "passed": true
+    },
+    {
+      "label": "B -> A no auth export",
+      "passed": true
+    },
+    {
+      "label": "B -> A forged body",
+      "passed": true
+    },
+    {
+      "label": "B -> A forged header",
+      "passed": true
+    },
+    {
+      "label": "B -> A finish request collision",
+      "passed": true
+    },
+    {
+      "label": "B -> A equal missing/foreign",
+      "passed": true
+    },
+    {
+      "label": "same tag name separate IDs",
+      "passed": true
+    },
+    {
+      "label": "logout",
+      "passed": true
+    },
+    {
+      "label": "old session blocked",
+      "passed": true
+    }
+  ]
+}

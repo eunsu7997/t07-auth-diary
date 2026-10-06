@@ -6,7 +6,7 @@ import { randomBytes } from 'node:crypto';
 
 const directory = mkdtempSync(join(tmpdir(), 't06-browser-'));
 const child = spawn(process.execPath, ['--import', 'tsx', 'src/server/local.ts'], {
-  stdio: 'inherit', env: { ...process.env, T07_PORT: '3107', T07_DB_PATH: join(directory, 'test.sqlite'), BETTER_AUTH_SECRET: randomBytes(48).toString('hex'), NODE_ENV: 'production' },
+  stdio: 'inherit', env: { ...process.env, T07_PORT: '3107', T07_DB_PATH: join(directory, 'test.sqlite'), BETTER_AUTH_SECRET: randomBytes(48).toString('hex'), NODE_ENV: 'test' },
 });
 let closing = false;
 function close() { if (!closing) { closing = true; child.kill(); } }

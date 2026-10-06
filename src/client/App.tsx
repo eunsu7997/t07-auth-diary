@@ -150,7 +150,7 @@ export default function App() {
       if (!response.ok) throw new Error('전체 JSON 내보내기에 실패했습니다. 다시 시도하세요.');
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
-      const link = document.createElement('a'); link.href = url; link.download = 't06-diary.json';
+      const link = document.createElement('a'); link.href = url; link.download = 't07-diary.json';
       document.body.appendChild(link); link.click(); link.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     }, '전체 데이터를 JSON 파일 하나로 내보냈습니다.');

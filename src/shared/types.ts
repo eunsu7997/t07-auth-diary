@@ -11,6 +11,7 @@ export interface PlanVersion extends PlanInput {
   recorded_at: string;
 }
 export interface Plan extends PlanVersion {
+  owner_user_id: string;
   id: string;
   current_version: number;
   created_at: string;
@@ -72,19 +73,19 @@ export interface Review {
   };
 }
 export interface ExportTables {
-  plans: Pick<Plan, 'id' | 'current_version' | 'created_at' | 'updated_at'>[];
+  plans: Pick<Plan, 'owner_user_id' | 'id' | 'current_version' | 'created_at' | 'updated_at'>[];
   plan_versions: PlanVersion[];
   tasks: Omit<Task, 'tags'>[];
-  tags: Tag[];
+  tags: (Tag & { owner_user_id: string })[];
   task_tags: { task_id: string; tag_id: string }[];
   execution_logs: ExecutionLog[];
 }
 export interface DatabaseExport extends ExportTables {
-  schema_version: '2.0.0';
+  schema_version: '3.0.0';
   exported_at: string;
   timezone: 'Asia/Seoul';
   export_metadata: {
-    application: 'aleph-t06-pds-diary';
+    application: 'aleph-t07-auth-diary';
     time_unit: 'seconds';
     consistency: 'transaction';
     table_counts: Record<keyof ExportTables, number>;
