@@ -1,0 +1,11 @@
+{
+  "fetch": 0,
+  "socket": 0,
+  "cloudflareApi": 0,
+  "remoteD1": 0,
+  "proxy": 0,
+  "deploy": 0,
+  "actualSignup": 0,
+  "actualImport": 0,
+  "scope": "Local tests; fake HTTP is not real control-plane evidence; official documentation browsing is separate"
+}

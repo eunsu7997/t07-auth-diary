@@ -4,6 +4,7 @@ import { detectUnsupportedSql } from '../stage3e1/prepare-plan.ts';
 import { enforceLimits } from '../stage3d/import-plan.ts';
 import { normalizeTarget, targetMatches, transportKind, transportActive, requireDisposableApproval, type TargetPolicy, type CloudflareD1Transport } from './transport.ts';
 import { observationQuery, observationIdForSql, projectObservationRows, type D1ObservationQuery } from './queries.ts';
+import { createApprovalSession, closeApprovalSession, DisposableApprovalAuthority } from './approval.ts';
 const providers = new WeakSet<object>();
 const sessions = new WeakMap<object, object>();
 const fail = (code: string): never => { throw new Error(code); };
@@ -32,21 +33,24 @@ export class DisposableRemoteD1Provider {
   get transportOrigin() { return transportKind(this.#transport); }
   get state() { void this.connected; return this.#state; }
   get connected() {
-    if (this.#state === 'CONNECTED' && !transportActive(this.#transport)) { this.#state = 'CLOSED'; sessions.delete(this); }
+    if (this.#state === 'CONNECTED' && !transportActive(this.#transport)) { this.#state = 'CLOSED'; closeApprovalSession(sessions.get(this)); sessions.delete(this); }
     return this.#state === 'CONNECTED';
   }
   async connect(approval?: unknown) {
     if (this.#state !== 'CREATED') fail('PROVIDER_STATE_INVALID');
     this.#state = 'CONNECTING'; // Before any await: only one connect may proceed.
-    const session = Object.freeze({}); sessions.set(this, session);
+    const origin = this.transportOrigin; if (origin === 'UNKNOWN') { this.#state = 'CLOSED'; return fail('TRANSPORT_UNTRUSTED'); }
+    const session = createApprovalSession(origin); sessions.set(this, session);
     try {
-      await this.#transport.connect(this.#policy, approval, { policy: this.#policy, session, action: 'CONNECT' });
+      const context = { policy: this.#policy, session, action: 'CONNECT' as const, transportOrigin: origin };
+      if (approval instanceof DisposableApprovalAuthority && Object.getPrototypeOf(approval) === DisposableApprovalAuthority.prototype) approval = await approval.authorize(context);
+      await this.#transport.connect(this.#policy, approval, context);
       if (!targetMatches(this.#policy, await this.#transport.getInfo())) fail('OBSERVED_TARGET_MISMATCH');
       if (this.#state !== 'CONNECTING' || sessions.get(this) !== session) fail('PROVIDER_STATE_INVALID');
       this.#state = 'CONNECTED';
     } catch { await this.disconnect(); fail('PROVIDER_CONNECT_REJECTED'); }
   }
-  async disconnect() { this.#state = 'CLOSED'; sessions.delete(this); await this.#transport.disconnect(); }
+  async disconnect() { this.#state = 'CLOSED'; closeApprovalSession(sessions.get(this)); sessions.delete(this); await this.#transport.disconnect(); }
   async #ready() {
     if (!this.connected) fail('PROVIDER_NOT_CONNECTED');
     const session = sessions.get(this);
@@ -70,7 +74,7 @@ export class DisposableRemoteD1Provider {
     } catch { throw normalizeD1Error(undefined); }
   }
   async #batch(statements: readonly BoundStatement[], approval?: unknown) {
-    const session = await this.#ready(); const context = { policy: this.#policy, session, action: 'BATCH' as const };
+    const session = await this.#ready(); const context = { policy: this.#policy, session, action: 'BATCH' as const, transportOrigin: this.transportOrigin as 'REMOTE_TRANSPORT' | 'FAKE_TRANSPORT' };
     if (this.transportOrigin !== 'FAKE_TRANSPORT') requireDisposableApproval(approval, context);
     const converted = convertPlan(statements);
     try {
@@ -95,7 +99,9 @@ export class DisposableRemoteD1Provider {
   }
   async execute(plan: readonly BoundStatement[], approval?: unknown) {
     const session = await this.#ready();
-    requireDisposableApproval(approval, { policy: this.#policy, session, action: 'BATCH' });
+    const context = { policy: this.#policy, session, action: 'BATCH' as const, transportOrigin: this.transportOrigin as 'REMOTE_TRANSPORT' | 'FAKE_TRANSPORT' };
+    if (approval instanceof DisposableApprovalAuthority && Object.getPrototypeOf(approval) === DisposableApprovalAuthority.prototype) approval = await approval.authorize(context);
+    requireDisposableApproval(approval, context);
     return this.#batch(plan, approval); // The SAME opaque approval reaches the transport boundary.
   }
 }

@@ -1,0 +1,121 @@
+{
+  "baseline": "b77611161a464aa408f88528edd8a07f613c5271",
+  "existingPassed": 243,
+  "newPassed": 26,
+  "totalPassed": 269,
+  "failed": 0,
+  "typecheck": "PASS",
+  "build": "PASS",
+  "approvalIssuer": "implemented; positive one-time mechanism verified in fake transport scope",
+  "actualControlPlaneIssuer": "implemented; actual client not executed",
+  "actualPositiveRemoteApproval": "not demonstrated; UNKNOWN capabilities block",
+  "disposableTrialReady": false,
+  "actualRemoteActivity": 0,
+  "commitPush": false,
+  "tests": [
+    {
+      "name": "Disposable approval private issuer normal private mint validates and consumes exactly once in fixture scope",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer same approval reaches fake transport boundary and cannot execute twice",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer rejects session without consuming correct approval",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer rejects database without consuming correct approval",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer rejects account without consuming correct approval",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer rejects action without consuming correct approval",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer rejects name without consuming correct approval",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer rejects production without consuming correct approval",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer rejects remote origin without consuming correct approval",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer rejects copied without consuming correct approval",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer rejects forged without consuming correct approval",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer expired and closed-session approvals fail",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer fixture issuer cannot mint for production or remote session",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer unregistered caller session cannot mint",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer invalid expiry is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer env flags and fake control-plane cannot authorize actual issuance",
+      "status": "passed"
+    },
+    {
+      "name": "Disposable approval private issuer UNKNOWN and production authority requests fail",
+      "status": "passed"
+    },
+    {
+      "name": "Actual control-plane observer implementation with fake HTTP parses account/database identity but mock results cannot become remote authority",
+      "status": "passed"
+    },
+    {
+      "name": "Actual control-plane observer implementation with fake HTTP reads writer inventory, bookmark and permission policy without treating unknown capabilities as approved",
+      "status": "passed"
+    },
+    {
+      "name": "Actual control-plane observer implementation with fake HTTP malformed observation account becomes UNKNOWN",
+      "status": "passed"
+    },
+    {
+      "name": "Actual control-plane observer implementation with fake HTTP malformed observation database becomes UNKNOWN",
+      "status": "passed"
+    },
+    {
+      "name": "Actual control-plane observer implementation with fake HTTP malformed observation name becomes UNKNOWN",
+      "status": "passed"
+    },
+    {
+      "name": "Actual control-plane observer implementation with fake HTTP malformed observation failed response becomes UNKNOWN",
+      "status": "passed"
+    },
+    {
+      "name": "Actual control-plane observer implementation with fake HTTP malformed observation missing pagination becomes UNKNOWN",
+      "status": "passed"
+    },
+    {
+      "name": "Actual control-plane observer implementation with fake HTTP production observer construction fails before HTTP",
+      "status": "passed"
+    },
+    {
+      "name": "Actual control-plane observer implementation with fake HTTP real HTTP construction and denied production-path access perform no fetch",
+      "status": "passed"
+    }
+  ]
+}

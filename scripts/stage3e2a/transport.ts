@@ -3,7 +3,9 @@ import { readFileSync } from 'node:fs';
 import { resolve, basename } from 'node:path';
 import type { BoundStatement } from '../stage3d/adapters.ts';
 import type { D1DatabaseLike } from '../stage3e1/d1-adapter.ts';
-import { controlPlanePrecheck, type ControlPlaneObserver } from './control-plane.ts';
+import { controlPlanePrecheck, readRemoteControlPlaneValue, type ControlPlaneObserver } from './control-plane.ts';
+import { requireDisposableApproval } from './approval.ts';
+export { requireDisposableApproval } from './approval.ts';
 export type Purpose = 'DISPOSABLE_TEST' | 'PRODUCTION_T07';
 export type TargetPolicy = Readonly<{ purpose: Purpose; expectedDatabaseId: string; expectedAccountId: string; expectedName: string; deniedDatabaseIds: readonly string[]; explicitConfirmation: boolean }>;
 export type Identity = { accountId: string; databaseId: string; name: string; purpose: Purpose };
@@ -48,15 +50,8 @@ export function targetMatches(policy: TargetPolicy, observed: Identity | undefin
   // Policy + exact identity/account/naming/denylist derive purpose; self-report is only a conservative veto.
   return policy.purpose === 'DISPOSABLE_TEST' && /^aleph-t07-disposable-[a-z0-9-]+$/.test(policy.expectedName) && !!observed && observed.purpose !== 'PRODUCTION_T07' && dbId(observed.databaseId) === policy.expectedDatabaseId && accountId(observed.accountId) === policy.expectedAccountId && observed.name === policy.expectedName && !policy.deniedDatabaseIds.includes(dbId(observed.databaseId)!);
 }
-// No producer exists in this stage. Neither an env flag nor a caller-shaped object can authorize I/O.
-export type ApprovalContext = Readonly<{ policy: TargetPolicy; session: object; action: 'CONNECT' | 'BATCH' }>;
+export type ApprovalContext = Readonly<{ policy: TargetPolicy; session: object; action: 'CONNECT' | 'BATCH'; transportOrigin?: 'REMOTE_TRANSPORT' | 'FAKE_TRANSPORT' }>;
 export type DisposableExecutionApproval = Readonly<{ kind: 'DisposableExecutionApproval'; expiresAt: number; action: 'CONNECT' | 'BATCH' }>;
-const approvals = new WeakMap<object, { databaseId: string; accountId: string; session: object; expiresAt: number; action: 'CONNECT' | 'BATCH'; used: boolean }>();
-export function requireDisposableApproval(value: unknown, context?: ApprovalContext, consume = false) {
-  const record = value && typeof value === 'object' ? approvals.get(value) : undefined;
-  if (!record || !context || !Object.isFrozen(value) || record.used || record.expiresAt <= Date.now() || record.session !== context.session || record.databaseId !== context.policy.expectedDatabaseId || record.accountId !== context.policy.expectedAccountId || record.action !== context.action || context.policy.purpose !== 'DISPOSABLE_TEST') return fail('DISPOSABLE_REMOTE_TEST_NOT_APPROVED');
-  if (consume) record.used = true;
-}
 const fakeInstances = new WeakSet<object>(); const realInstances = new WeakSet<object>();
 export function transportKind(value: CloudflareD1Transport): 'FAKE_TRANSPORT' | 'REMOTE_TRANSPORT' | 'UNKNOWN' {
   if (fakeInstances.has(value) && Object.getPrototypeOf(value) === FakeCloudflareD1Transport.prototype) return 'FAKE_TRANSPORT';
@@ -81,7 +76,7 @@ export class FakeCloudflareD1Transport implements CloudflareD1Transport {
   #ready() { if (!this.#connected) fail('TRANSPORT_NOT_CONNECTED'); }
   async getInfo() { this.#ready(); return structuredClone(this.#fixture.identity); }
   async query(s: BoundStatement) { this.#ready(); return this.#query(s); }
-  async batch(s: readonly BoundStatement[]) { this.#ready(); return this.#batch(s); }
+  async batch(s: readonly BoundStatement[], approval?: unknown, context?: ApprovalContext) { this.#ready(); if (approval !== undefined) requireDisposableApproval(approval, context ? { ...context, transportOrigin: 'FAKE_TRANSPORT' } : undefined, true); return this.#batch(s); }
   async getWriters() { this.#ready(); return structuredClone(this.#fixture.writers); }
   async getRecovery() { this.#ready(); return structuredClone(this.#fixture.recovery); }
   async getBookmark() { this.#ready(); return this.#fixture.bookmark; }
@@ -100,7 +95,7 @@ export class WranglerDisposableTransport implements CloudflareD1Transport {
     if (!await controlPlanePrecheck(this.#controlPlane, input)) return fail('CONTROL_PLANE_UNKNOWN');
     const policy = normalizeTarget(input);
     if (!context || context.action !== 'CONNECT' || context.policy.expectedDatabaseId !== policy.expectedDatabaseId || context.policy.expectedAccountId !== policy.expectedAccountId || context.policy.expectedName !== policy.expectedName) return fail('DISPOSABLE_REMOTE_TEST_NOT_APPROVED');
-    requireDisposableApproval(approval, context);
+    context = { ...context, transportOrigin: 'REMOTE_TRANSPORT' }; requireDisposableApproval(approval, context);
     // Unreachable in Stage3E-2A. Never fall back to the application's Wrangler file or production binding.
     const path = resolve(this.#configPath);
     if (basename(path) !== 'disposable-proxy.json') fail('ISOLATED_PROXY_CONFIG_REQUIRED');
@@ -120,14 +115,13 @@ export class WranglerDisposableTransport implements CloudflareD1Transport {
   async query(s: BoundStatement) { return this.#database().prepare(s.sql).bind(...s.params).all(); }
   async batch(s: readonly BoundStatement[], approval?: unknown, context?: ApprovalContext) {
     if (!this.#policy || !context || context.action !== 'BATCH' || context.session !== this.#session || context.policy.expectedDatabaseId !== this.#policy.expectedDatabaseId || context.policy.expectedAccountId !== this.#policy.expectedAccountId) return fail('DISPOSABLE_REMOTE_TEST_NOT_APPROVED');
-    requireDisposableApproval(approval, context, true); return this.#database().batch(s.map(v => this.#database().prepare(v.sql).bind(...v.params)));
+    requireDisposableApproval(approval, { ...context, transportOrigin: 'REMOTE_TRANSPORT' }, true); return this.#database().batch(s.map(v => this.#database().prepare(v.sql).bind(...v.params)));
   }
-  // Binding config is not remote identity evidence. Actual control-plane probes remain unavailable.
-  async getInfo(): Promise<Identity | undefined> { return undefined; }
-  async getWriters(): Promise<WriterFacts> { return { workerDeployment: 'UNKNOWN', routes: 'UNKNOWN', scheduledWriters: 'UNKNOWN', otherBindings: 'UNKNOWN' }; }
-  async getRecovery(): Promise<RecoveryFacts> { return { timeTravelAvailable: 'UNKNOWN', retentionDays: 'UNKNOWN', bookmarkReadable: 'UNKNOWN', restorePermission: 'UNKNOWN' }; }
-  async getBookmark(): Promise<string | undefined> { return undefined; }
-  async getVerification(): Promise<VerificationFacts> { return { read: 'UNKNOWN', review: 'UNKNOWN', export: 'UNKNOWN', attackTests: 'UNKNOWN' }; }
+  async getInfo(): Promise<Identity | undefined> { return this.#policy && this.#controlPlane ? readRemoteControlPlaneValue(await this.#controlPlane.observeDatabase()) : undefined; }
+  async getWriters(): Promise<WriterFacts> { return this.#policy && this.#controlPlane ? readRemoteControlPlaneValue(await this.#controlPlane.observeDeploymentWriters()) ?? { workerDeployment: 'UNKNOWN', routes: 'UNKNOWN', scheduledWriters: 'UNKNOWN', otherBindings: 'UNKNOWN' } : { workerDeployment: 'UNKNOWN', routes: 'UNKNOWN', scheduledWriters: 'UNKNOWN', otherBindings: 'UNKNOWN' }; }
+  async getRecovery(): Promise<RecoveryFacts> { return this.#policy && this.#controlPlane ? readRemoteControlPlaneValue(await this.#controlPlane.observeRecoveryPermissions()) ?? { timeTravelAvailable: 'UNKNOWN', retentionDays: 'UNKNOWN', bookmarkReadable: 'UNKNOWN', restorePermission: 'UNKNOWN' } : { timeTravelAvailable: 'UNKNOWN', retentionDays: 'UNKNOWN', bookmarkReadable: 'UNKNOWN', restorePermission: 'UNKNOWN' }; }
+  async getBookmark(): Promise<string | undefined> { return (await this.getRecovery()).bookmarkReadable === true ? 'observed-readable' : undefined; }
+  async getVerification(): Promise<VerificationFacts> { return this.#policy && this.#controlPlane?.observeVerificationCapability ? readRemoteControlPlaneValue(await this.#controlPlane.observeVerificationCapability()) ?? { read: 'UNKNOWN', review: 'UNKNOWN', export: 'UNKNOWN', attackTests: 'UNKNOWN' } : { read: 'UNKNOWN', review: 'UNKNOWN', export: 'UNKNOWN', attackTests: 'UNKNOWN' }; }
 }
 Object.freeze(FakeCloudflareD1Transport.prototype);
 Object.freeze(WranglerDisposableTransport.prototype);
