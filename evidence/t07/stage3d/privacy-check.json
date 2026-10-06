@@ -1,0 +1,10 @@
+{
+  "pass": true,
+  "filesChecked": 16,
+  "sourceTextMatches": 0,
+  "prohibitedEvidenceKeys": 0,
+  "hardcodedSecrets": 0,
+  "remoteImplementationMatches": 0,
+  "distToolMatches": 0,
+  "limitation": "Static source-text/known-secret-pattern scan; not proof of all possible secret encodings or provider logging."
+}

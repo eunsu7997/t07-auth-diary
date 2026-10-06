@@ -1,0 +1,261 @@
+{
+  "scope": "local-synthetic-only",
+  "source": "Vitest final JSON metadata plus local Playwright list results",
+  "existingUnitApiPassed": 136,
+  "stage3dPassed": 60,
+  "unitApiTotalPassed": 196,
+  "browserRegressionPassed": 14,
+  "authBrowserPassed": 5,
+  "existingRegressionPassed": 155,
+  "totalPassed": 215,
+  "failed": 0,
+  "typecheck": "PASS",
+  "build": "PASS",
+  "transactionEngine": "real in-memory SQLite; all 17 migration triggers enabled",
+  "rollbackStateChecks": "business/auth/schema/trigger unchanged on definitive failure; lost response after commit classified COMPLETED",
+  "automaticRetry": false,
+  "realUseEvidence": false,
+  "privacyInitialAttempt": "false positive: scanner PEM pattern matched itself; fixed detector and rescanned",
+  "tests": [
+    {
+      "name": "normal SQLite batch preserves every field, FK, 17 triggers and auth; injected script remains data",
+      "status": "passed"
+    },
+    {
+      "name": "37 checks exactly match approved checklist and simulation never grants remote eligibility",
+      "status": "passed"
+    },
+    {
+      "name": "source rejection sha leaves DB unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "source rejection schema leaves DB unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "source rejection fk leaves DB unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "source rejection copy-cycle leaves DB unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "source rejection copy-source leaves DB unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "source rejection open-log leaves DB unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "source rejection duration leaves DB unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "source rejection unique leaves DB unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "preflight owner missing refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight owner two refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight account missing refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight account two refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight accountId mismatch refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight userId mismatch refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight provider mismatch refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight credential missing refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight email pair mismatch refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight session exists refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight DB nonempty refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight schema mismatch refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight trigger mismatch refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight migration mismatch refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight verification exists refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight rateLimit exists refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight source count mismatch refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight external writer true refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight external writer UNKNOWN refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight recovery UNKNOWN refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "preflight permission UNKNOWN refuses without changes",
+      "status": "passed"
+    },
+    {
+      "name": "all writer paths fail closed: productionWorkerExists",
+      "status": "passed"
+    },
+    {
+      "name": "all writer paths fail closed: routesExist",
+      "status": "passed"
+    },
+    {
+      "name": "all writer paths fail closed: otherBindingsExist",
+      "status": "passed"
+    },
+    {
+      "name": "all writer paths fail closed: scheduledWritersExist",
+      "status": "passed"
+    },
+    {
+      "name": "recovery available UNKNOWN blocks",
+      "status": "passed"
+    },
+    {
+      "name": "recovery canReadBookmark UNKNOWN blocks",
+      "status": "passed"
+    },
+    {
+      "name": "recovery canRestore UNKNOWN blocks",
+      "status": "passed"
+    },
+    {
+      "name": "in-batch first SQL guard rejects a session created after preflight",
+      "status": "passed"
+    },
+    {
+      "name": "real SQLite middle insert failure rolls back every field/auth/trigger without retry",
+      "status": "passed"
+    },
+    {
+      "name": "real SQLite execution insert failure rolls back every field/auth/trigger without retry",
+      "status": "passed"
+    },
+    {
+      "name": "real SQLite task restore failure rolls back every field/auth/trigger without retry",
+      "status": "passed"
+    },
+    {
+      "name": "real SQLite postcondition failure rolls back every field/auth/trigger without retry",
+      "status": "passed"
+    },
+    {
+      "name": "postcondition catches silent field corruption and rolls back",
+      "status": "passed"
+    },
+    {
+      "name": "duplicate import refuses without altering completed DB",
+      "status": "passed"
+    },
+    {
+      "name": "measured bind limit refuses before submission",
+      "status": "passed"
+    },
+    {
+      "name": "measured sql limit refuses before submission",
+      "status": "passed"
+    },
+    {
+      "name": "measured statements limit refuses before submission",
+      "status": "passed"
+    },
+    {
+      "name": "outcome classification is readonly and treats empty in-flight state as unknown",
+      "status": "passed"
+    },
+    {
+      "name": "lost response after commit is COMPLETED without automatic retry",
+      "status": "passed"
+    },
+    {
+      "name": "remote attempts always refuse; fake remote is memory SQLite only",
+      "status": "passed"
+    },
+    {
+      "name": "fake bootstrap has exact credential relationships and logout leaves zero sessions",
+      "status": "passed"
+    },
+    {
+      "name": "UNKNOWN ends with human intervention, never automatic retry",
+      "status": "passed"
+    },
+    {
+      "name": "first atomic guard rejects post-preflight owner drift",
+      "status": "passed"
+    },
+    {
+      "name": "first atomic guard rejects post-preflight schema drift",
+      "status": "passed"
+    },
+    {
+      "name": "first atomic guard rejects post-preflight trigger drift",
+      "status": "passed"
+    },
+    {
+      "name": "first atomic guard rejects post-preflight business drift",
+      "status": "passed"
+    },
+    {
+      "name": "first atomic guard rejects post-preflight account drift",
+      "status": "passed"
+    },
+    {
+      "name": "foreign key enforcement disabled after preflight blocks submission",
+      "status": "passed"
+    },
+    {
+      "name": "missing runtime safety flags and malformed attestations cannot pass",
+      "status": "passed"
+    }
+  ]
+}
