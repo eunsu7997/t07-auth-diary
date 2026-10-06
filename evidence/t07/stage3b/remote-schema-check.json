@@ -1,0 +1,1257 @@
+{
+  "database_name": "aleph-t07-auth-diary-db",
+  "database_id": "349229de-18bc-4543-ae96-86be096246fb",
+  "authTables": [
+    "user",
+    "session",
+    "account",
+    "verification",
+    "rateLimit"
+  ],
+  "businessTables": [
+    "plans",
+    "plan_versions",
+    "tasks",
+    "tags",
+    "task_tags",
+    "execution_logs"
+  ],
+  "tableDetails": {
+    "user": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "email",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "emailVerified",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "image",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "createdAt",
+          "type": "date",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "updatedAt",
+          "type": "date",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_user_2",
+          "unique": 1,
+          "origin": "u",
+          "partial": 0
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_user_1",
+          "unique": 1,
+          "origin": "pk",
+          "partial": 0
+        }
+      ]
+    },
+    "session": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "expiresAt",
+          "type": "date",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "token",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "createdAt",
+          "type": "date",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "updatedAt",
+          "type": "date",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "ipAddress",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "userAgent",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "userId",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "user",
+          "from": "userId",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "session_userId_idx",
+          "unique": 0,
+          "origin": "c",
+          "partial": 0
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_session_2",
+          "unique": 1,
+          "origin": "u",
+          "partial": 0
+        },
+        {
+          "seq": 2,
+          "name": "sqlite_autoindex_session_1",
+          "unique": 1,
+          "origin": "pk",
+          "partial": 0
+        }
+      ]
+    },
+    "account": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "accountId",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "providerId",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "userId",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "accessToken",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "refreshToken",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "idToken",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "accessTokenExpiresAt",
+          "type": "date",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "refreshTokenExpiresAt",
+          "type": "date",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "scope",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "password",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "createdAt",
+          "type": "date",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "updatedAt",
+          "type": "date",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "user",
+          "from": "userId",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "account_userId_idx",
+          "unique": 0,
+          "origin": "c",
+          "partial": 0
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_account_1",
+          "unique": 1,
+          "origin": "pk",
+          "partial": 0
+        }
+      ]
+    },
+    "verification": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "identifier",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "value",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "expiresAt",
+          "type": "date",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "createdAt",
+          "type": "date",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "updatedAt",
+          "type": "date",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "verification_identifier_idx",
+          "unique": 0,
+          "origin": "c",
+          "partial": 0
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_verification_1",
+          "unique": 1,
+          "origin": "pk",
+          "partial": 0
+        }
+      ]
+    },
+    "rateLimit": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "key",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "count",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "lastRequest",
+          "type": "bigint",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_rateLimit_2",
+          "unique": 1,
+          "origin": "u",
+          "partial": 0
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_rateLimit_1",
+          "unique": 1,
+          "origin": "pk",
+          "partial": 0
+        }
+      ]
+    },
+    "plans": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "current_version",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "created_at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "updated_at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "owner_user_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "user",
+          "from": "owner_user_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "plans_owner",
+          "unique": 0,
+          "origin": "c",
+          "partial": 0
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_plans_1",
+          "unique": 1,
+          "origin": "pk",
+          "partial": 0
+        }
+      ]
+    },
+    "plan_versions": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "plan_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "version",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "title",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "period_start",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "period_end",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "success_criteria",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "estimated_seconds",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "recorded_at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "plans",
+          "from": "plan_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_plan_versions_1",
+          "unique": 1,
+          "origin": "pk",
+          "partial": 0
+        }
+      ]
+    },
+    "tasks": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "plan_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "content",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "priority",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "due_date",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "estimated_seconds",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "status",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'in_progress'",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "completed_at",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "copied_from_task_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "created_at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "updated_at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "deleted_at",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "tasks",
+          "from": "copied_from_task_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "plans",
+          "from": "plan_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "tasks_due_date",
+          "unique": 0,
+          "origin": "c",
+          "partial": 0
+        },
+        {
+          "seq": 1,
+          "name": "tasks_plan_active",
+          "unique": 0,
+          "origin": "c",
+          "partial": 0
+        },
+        {
+          "seq": 2,
+          "name": "sqlite_autoindex_tasks_1",
+          "unique": 1,
+          "origin": "pk",
+          "partial": 0
+        }
+      ]
+    },
+    "tags": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "owner_user_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "user",
+          "from": "owner_user_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_tags_2",
+          "unique": 1,
+          "origin": "u",
+          "partial": 0
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_tags_1",
+          "unique": 1,
+          "origin": "pk",
+          "partial": 0
+        }
+      ]
+    },
+    "task_tags": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "task_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "tag_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 2
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "tags",
+          "from": "tag_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "tasks",
+          "from": "task_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "task_tags_tag",
+          "unique": 0,
+          "origin": "c",
+          "partial": 0
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_task_tags_1",
+          "unique": 1,
+          "origin": "pk",
+          "partial": 0
+        }
+      ]
+    },
+    "execution_logs": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "task_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "started_at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "ended_at",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "actual_seconds",
+          "type": "INTEGER",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "estimated_seconds_at_start",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "start_request_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "finish_request_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "tasks",
+          "from": "task_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "execution_one_active_per_task",
+          "unique": 1,
+          "origin": "c",
+          "partial": 1
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_execution_logs_3",
+          "unique": 1,
+          "origin": "u",
+          "partial": 0
+        },
+        {
+          "seq": 2,
+          "name": "sqlite_autoindex_execution_logs_2",
+          "unique": 1,
+          "origin": "u",
+          "partial": 0
+        },
+        {
+          "seq": 3,
+          "name": "sqlite_autoindex_execution_logs_1",
+          "unique": 1,
+          "origin": "pk",
+          "partial": 0
+        }
+      ]
+    }
+  },
+  "tableIndexTriggerSqlMatches": true,
+  "pragmaComparisons": [
+    {
+      "query": "PRAGMA foreign_key_check",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA table_info(\"user\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA foreign_key_list(\"user\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_list(\"user\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA table_info(\"session\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA foreign_key_list(\"session\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_list(\"session\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA table_info(\"account\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA foreign_key_list(\"account\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_list(\"account\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA table_info(\"verification\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA foreign_key_list(\"verification\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_list(\"verification\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA table_info(\"rateLimit\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA foreign_key_list(\"rateLimit\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_list(\"rateLimit\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA table_info(\"plans\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA foreign_key_list(\"plans\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_list(\"plans\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA table_info(\"plan_versions\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA foreign_key_list(\"plan_versions\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_list(\"plan_versions\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA table_info(\"tasks\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA foreign_key_list(\"tasks\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_list(\"tasks\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA table_info(\"tags\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA foreign_key_list(\"tags\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_list(\"tags\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA table_info(\"task_tags\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA foreign_key_list(\"task_tags\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_list(\"task_tags\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA table_info(\"execution_logs\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA foreign_key_list(\"execution_logs\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_list(\"execution_logs\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"account_userId_idx\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"execution_one_active_per_task\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"plans_owner\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"session_userId_idx\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_account_1\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_execution_logs_1\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_execution_logs_2\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_execution_logs_3\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_plan_versions_1\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_plans_1\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_rateLimit_1\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_rateLimit_2\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_session_1\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_session_2\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_tags_1\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_tags_2\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_task_tags_1\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_tasks_1\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_user_1\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_user_2\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"sqlite_autoindex_verification_1\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"task_tags_tag\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"tasks_due_date\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"tasks_plan_active\")",
+      "equal": true
+    },
+    {
+      "query": "PRAGMA index_info(\"verification_identifier_idx\")",
+      "equal": true
+    }
+  ],
+  "triggerCount": 17,
+  "remoteTriggerCount": 17,
+  "triggerNames": [
+    "copied_task_owner",
+    "execution_closed_immutable",
+    "execution_complete_task",
+    "execution_duration_guard",
+    "execution_identity_immutable",
+    "execution_preserve_delete",
+    "execution_start_guard",
+    "plan_owner_immutable",
+    "plan_versions_immutable_delete",
+    "plan_versions_immutable_update",
+    "tag_owner_immutable",
+    "task_complete_guard",
+    "task_copy_source_guard",
+    "task_delete_active_guard",
+    "task_identity_immutable",
+    "task_tag_owner_insert",
+    "task_tag_owner_update"
+  ],
+  "triggerSqlMatches": true,
+  "triggerSqlSha256": "a295bb21c89da69a232e0193cc57885060472bd55381dd0176cde50fc31c426e",
+  "foreignKeyViolations": 0,
+  "foreignKeyCheckPass": true,
+  "readOnlyVerification": true,
+  "remoteRowsWritten": 0,
+  "localSchemaSource": "All unchanged migrations applied to new in-memory LocalDatabase",
+  "passed": true
+}

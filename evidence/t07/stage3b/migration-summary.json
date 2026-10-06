@@ -1,0 +1,22 @@
+{
+  "database_id": "349229de-18bc-4543-ae96-86be096246fb",
+  "command": "wrangler d1 migrations apply aleph-t07-auth-diary-db --remote --config wrangler.jsonc",
+  "expected": [
+    "0001_initial.sql",
+    "0002_execution_guards.sql",
+    "0003_auth.sql",
+    "0004_ownership.sql",
+    "0005_auth_rate_limit.sql"
+  ],
+  "applied": [
+    "0001_initial.sql",
+    "0002_execution_guards.sql",
+    "0003_auth.sql",
+    "0004_ownership.sql",
+    "0005_auth_rate_limit.sql"
+  ],
+  "missing": [],
+  "duplicateCount": 0,
+  "migrationFilesUnchanged": true,
+  "passed": true
+}

@@ -1,0 +1,30 @@
+{
+  "actualFiveDays": false,
+  "t06DatabaseQueries": 0,
+  "t07Import": false,
+  "preMigrationBusinessAuthTables": 0,
+  "publicDeploy": false,
+  "t06Writes": 0,
+  "cloudflareAuthenticationConfirmed": true,
+  "baseline": "6785d86992b9791699bbeb2bfa286b2dd4a119eb",
+  "t06Migrations": 0,
+  "t06Deploys": 0,
+  "database_name": "aleph-t07-auth-diary-db",
+  "initialReadServedByColo": "ICN",
+  "accountSignup": false,
+  "remoteSecretsSet": false,
+  "region": "APAC",
+  "rateLimitRequests": false,
+  "created": true,
+  "d1PermissionConfirmed": true,
+  "preMigrationTables": [
+    "_cf_KV"
+  ],
+  "remoteScope": "T07 D1 create and migrations only",
+  "sameNameExistedBeforeCreate": false,
+  "configChange": "database_id only",
+  "wranglerVersion": "4.146.0",
+  "database_id": "349229de-18bc-4543-ae96-86be096246fb",
+  "betterAuthVersion": "1.7.7",
+  "commitOrPush": false
+}

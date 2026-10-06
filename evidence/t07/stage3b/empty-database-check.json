@@ -1,0 +1,19 @@
+{
+  "database_id": "349229de-18bc-4543-ae96-86be096246fb",
+  "counts": {
+    "user": 0,
+    "session": 0,
+    "account": 0,
+    "verification": 0,
+    "rateLimit": 0,
+    "plans": 0,
+    "plan_versions": 0,
+    "tasks": 0,
+    "tags": 0,
+    "task_tags": 0,
+    "execution_logs": 0
+  },
+  "allBusinessAndAuthRowsZero": true,
+  "internalMigrationDataExcluded": true,
+  "passed": true
+}

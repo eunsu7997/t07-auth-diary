@@ -9,7 +9,7 @@
   "d1_databases": [
     {
       "database_name": "aleph-t07-auth-diary-db",
-      "database_id": "LOCAL_ONLY_NOT_PROVISIONED",
+      "database_id": "349229de-18bc-4543-ae96-86be096246fb",
       "migrations_dir": "migrations",
       "binding": "DB"
     }
