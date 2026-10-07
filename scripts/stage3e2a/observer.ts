@@ -38,7 +38,7 @@ export class DisposableRemoteObserver {
       for (const id of ['TABLES', 'INDEXES', 'TRIGGERS'] as const) schema.push(...await this.#provider.readObservationQuery<SchemaRow>(id));
       const migrations = (await this.#provider.readObservationQuery<{ name: string }>('MIGRATIONS')).map(v => v.name);
       const counts: Record<string, number> = {}; const foreignKeys: Record<string, unknown[]> = {};
-      for (const t of [...tables, 'user', 'account', 'session', 'verification', 'rateLimit']) {
+      for (const t of [...tables, 'user', 'account', 'session', 'verification', 'rateLimit', '_account_deletion_scope']) {
         counts[t] = (await this.#provider.readObservationQuery<{ n: number }>(`COUNT_${t}`))[0]?.n;
         foreignKeys[t] = await this.#provider.readObservationQuery(`FK_LIST_${t}`);
       }
@@ -46,7 +46,7 @@ export class DisposableRemoteObserver {
       const fkClean = (await this.#provider.readObservationQuery('FK_CHECK')).length === 0;
       const sf = schemaFingerprint(schema); const tf = schemaFingerprint(schema, true); const triggerCount = schema.filter(r => r.type === 'trigger').length;
       const value = { migrations, schemaFingerprint: sf, triggerFingerprint: tf, triggerCount, counts, foreignKeys, fkEnabled, fkClean };
-      const valid = sf === expectedSchemaFingerprint && tf === expectedTriggerFingerprint && triggerCount === 17 && fkEnabled && fkClean && JSON.stringify(migrations) === JSON.stringify(Object.keys(APPROVED_MIGRATIONS)) && Object.values(counts).every(n => Number.isSafeInteger(n) && n >= 0);
+      const valid = sf === expectedSchemaFingerprint && tf === expectedTriggerFingerprint && triggerCount === 17 && fkEnabled && fkClean && JSON.stringify(migrations) === JSON.stringify(Object.keys(APPROVED_MIGRATIONS)) && counts._account_deletion_scope === 0 && Object.values(counts).every(n => Number.isSafeInteger(n) && n >= 0);
       return { value, state: valid ? 'PASS' : 'FAIL' };
     });
   }

@@ -3,6 +3,14 @@
 Status: AUDIT_PASS
 
 ## Current state
+- 2026-10-07 Claude 독립 감사(importer 0001~0006): AUDIT_PASS. 감사자 직접 확인: 527 PASS, importer 267 PASS, tsc/build/diff --check PASS, 비밀값 0, 실제 파일/DB 변형 probe(0006 누락·변조, 0001 변조, 0007 추가, trigger 누락·변경, marker 활성·TOCTOU) 모두 거부.
+- Current base HEAD a48d2fe61d9d46abc24f8221a9a32ac0d6888944 remains unchanged. That checkpoint was previously committed/pushed under explicit approval; this task has no commit/push approval.
+- Importer now expects exactly approved migrations 0001~0006; original 0001~0005 hashes preserved. Expected schema is derived from pinned local migration bytes, never learned from the target. Marker table/FK and all 17 triggers included.
+- Account deletion scope must be empty in preflight, in-batch before/after guards, observer, and outcome classification. Old-five/missing/extra/tampered migrations and changed marker/trigger schema reject. Remote gates unchanged.
+- TypeScript/build/privacy/diff check PASS; full tests 527 PASS / 0 FAIL; direct importer 267 PASS / 0 FAIL. Synthetic roundtrip/data preservation retained. No actual import or remote requests.
+- Latest result in CODEX-RESULT.md. Existing automatic/disposable/rule/privacy experimental changes remain held and untouched. Stage3E1 historical plan summary preserved; new test summary is ignored .data/importer-six/plan-summary.json.
+
+## Historical prior checkpoint state
 - 2026-10-07 Claude 최종 재감사(C134 FIX 2건): AUDIT_PASS. 감사자 직접 확인: 503 PASS(C134 23, ownership 48, production protection 12), tsc/build/diff --check PASS, 비밀값 0, checkpoint 목록 40=24+16 일치.
 - Latest narrow fixes: /api/account/delete uses the existing Better Auth database rateLimit adapter/atomic incrementOne, namespaced hashed authenticated-user + trusted-IP key, 5 attempts/60 seconds. Attempt 6 returns 429 before password verification/deletion batch. Login/signup/change-password rules unchanged.
 - README current deletion policy corrected; STAGE2-1 unsupported deletion described only as historical. No other historical documents changed in this task.
@@ -17,7 +25,7 @@ Status: AUDIT_PASS
 - 2026-10-07 Claude 독립 감사 완료: AUDIT_FIX_REQUIRED (항목 1·2 PASS, C134·낡은 문서·checkpoint 분리 FIX). 원본 480 PASS, sibling 없는 복사본 480 PASS, 제외 후 구성 457 PASS, tsc PASS를 감사자가 직접 확인.
 
 ## Single next action
-사용자 결정 대기: CHECKPOINT-CANDIDATE.md 포함 24개만 checkpoint로 commit할지 명시 승인(현재 정책상 commit/push 금지, 승인 추론 금지). 이후 별도 작업: import ↔ 0006 importer baseline 갱신과 별도 감사(빈 운영 D1에 0006 적용 → import 순서). 원격 실행 없음.
+사용자 결정 대기: importer 0001~0006 변경을 checkpoint로 commit할지 명시 승인(현재 승인 없음, 추론 금지). 이후 단계(각각 별도 사용자 승인 필요): 빈 T07 운영 D1에 0006 원격 적용 → 원격 schema 관측 → T06→T07 import. 원격 실행 없음.
 
 ## Safety and Git
 - No code/config/document commit/push. Current recorded 2026-10-07 policy supersedes prior standing handoff sync: no status commit/push either. This task did not reinstate synchronization.

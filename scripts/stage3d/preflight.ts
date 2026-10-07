@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { tables, isLoaded, type Source, type Counts } from './source.ts';
-import type { Inspection, Owner } from './adapters.ts';
+import { APPROVED_MIGRATIONS, type Inspection, type Owner } from './adapters.ts';
 export type CheckState = 'PASS' | 'FAIL' | 'UNKNOWN';
 export type Known = boolean | 'UNKNOWN';
 export type RecoveryCapability = { available: Known; retentionDays: number | 'UNKNOWN'; canReadBookmark: Known; canRestore: Known };
@@ -28,10 +28,10 @@ export function recoverySafe(r: RecoveryCapability): Known {
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
 export function runPreflight(source: Source, actual: Inspection, policy: Policy) {
   const a = (key: string): Known => policy.attestations[key] ?? 'UNKNOWN';
-  const empty = tables.every(t => actual.counts[t] === 0);
+  const empty = tables.every(t => actual.counts[t] === 0) && actual.accountDeletionScopes === 0;
   const owner = actual.users.length === 1 && actual.users[0].id === policy.owner.id && actual.users[0].email === policy.owner.email;
   const account = actual.accounts.length === 1 && actual.accounts[0].providerId === 'credential' && actual.accounts[0].userId === policy.owner.id && actual.accounts[0].accountId === policy.owner.id && actual.accounts[0].credentialPresent;
-  const migrations = same(actual.migrations, policy.baseline.migrations) && actual.migrations.length === 5 && same(actual.migrationHashes, policy.baseline.migrationHashes);
+  const migrations = same(actual.migrations, Object.keys(APPROVED_MIGRATIONS)) && same(actual.migrations, policy.baseline.migrations) && same(actual.migrationHashes, APPROVED_MIGRATIONS) && same(actual.migrationHashes, policy.baseline.migrationHashes);
   const schema = actual.schemaFingerprint === policy.baseline.schemaFingerprint;
   const triggers = actual.triggerFingerprint === policy.baseline.triggerFingerprint && actual.schema.filter(r => r.type === 'trigger').length === 17;
   const writer = externalWriterSafe(policy.safety); const recovery = recoverySafe(policy.recovery);

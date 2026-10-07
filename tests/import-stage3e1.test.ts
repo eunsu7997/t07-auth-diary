@@ -1,4 +1,3 @@
-import './historical-import-schema.ts';
 import { beforeEach, afterEach, beforeAll, afterAll, expect, it, vi, describe } from 'vitest';
 import { Socket } from 'node:net';
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
@@ -9,6 +8,13 @@ import { FakeRemoteSafetyObserver, LocalSafetyObserver, observeSafety, checkTarg
 import { CloudflareD1Provider, LocalD1FixtureProvider, D1PreparationAdapter, FakeLoopbackOwnerBootstrap, normalizeSql, schemaFingerprint, migrationRegistry, remoteBootstrapEligible } from '../scripts/stage3e1/d1-adapter.ts';
 import { preparedPreflight, prepareDisposablePlan, executeRemoteTest, detectUnsupportedSql, type PreparationPolicy } from '../scripts/stage3e1/prepare-plan.ts';
 let db: LocalImportDatabase; let adapter: D1PreparationAdapter; let bootstrap: FakeLoopbackOwnerBootstrap; let policy: PreparationPolicy;
+it.each(['missing applied 0006', 'altered deletion trigger', 'active deletion marker'])('0006 D1 preflight rejects %s', async fault => {
+  if (fault === 'missing applied 0006') db.local.sqlite.exec("DELETE FROM d1_migrations WHERE name='0006_account_deletion.sql'");
+  if (fault === 'altered deletion trigger') db.local.sqlite.exec("DROP TRIGGER execution_preserve_delete; CREATE TRIGGER execution_preserve_delete BEFORE DELETE ON execution_logs BEGIN SELECT RAISE(ABORT,'changed'); END;");
+  if (fault === 'active deletion marker') db.local.sqlite.prepare('INSERT INTO _account_deletion_scope VALUES(?)').run(owner.id);
+  const result = await preparedPreflight(source, adapter, policy);
+  expect(result.checks.some(c => ['P10', 'P11', 'P12', 'P13'].includes(c.id) && c.state === 'FAIL')).toBe(true);
+});
 const owner = { id: 'stage3d-fixture-owner', email: 'stage3d@example.invalid' };
 const f = encoded(); const source = loadBytes(f.bytes, f.sha);
 const FIXTURE_DATABASE_ID = crypto.randomUUID();
@@ -85,7 +91,7 @@ it('external writer UNKNOWN blocks and forged observation is untrusted', async (
   expect(checkTarget({ ...policy.target, targetObserved: { status: 'Observed', value: fixture().target!, origin: 'FAKE_TEST', observedAt: Date.now() } }).identity).toBe('UNKNOWN');
 });
 it('D1 registry fixture and direct small PRAGMA reads exclude local registry/table-valued functions', async () => {
-  const schema = await adapter.inspectSchema(); expect(schema.migrations.length).toBe(5);
+  const schema = await adapter.inspectSchema(); expect(schema.migrations.length).toBe(6);
   expect(migrationRegistry('d1')).toBe('d1_migrations'); expect(migrationRegistry('local')).toBe('_migrations');
   expect(schema.schema.some(r => r.name === '_migrations')).toBe(false);
   expect(adapter.queries.some(q => q === "PRAGMA foreign_key_list('tasks')")).toBe(true);
@@ -113,8 +119,8 @@ it('prepared D1 candidate uses observed rates and simple task UPDATE, preserving
   policy.rateBaseline = (await bootstrap.inspectOwner()).rateLimitBaselineSummary;
   const beforeSchema = await adapter.inspectSchema(); const beforeRates = await adapter.rateRows();
   const plan = await prepareDisposablePlan(source, adapter, policy);
-  mkdirSync('evidence/t07/stage3e1', { recursive: true });
-  writeFileSync('evidence/t07/stage3e1/disposable-plan-summary.json', JSON.stringify({ scope: 'synthetic fixture candidate only; not executed remotely',
+  mkdirSync('.data/importer-six', { recursive: true });
+  writeFileSync('.data/importer-six/plan-summary.json', JSON.stringify({ scope: 'synthetic fixture candidate only; not executed remotely',
     executionApproved: plan.executionApproved, sourceSha256: plan.sourceSha, generator: plan.metrics, steps: plan.steps,
     unresolvedChecks: plan.unresolvedChecks, forcedFailureStatements: plan.forcedFailureBatch.length,
     targetIdentity: 'UNKNOWN for actual Cloudflare target; opaque synthetic identity used in tests', rateBaseline: 'post-fake-logout captured; keys/values omitted' }, null, 2) + '\n');

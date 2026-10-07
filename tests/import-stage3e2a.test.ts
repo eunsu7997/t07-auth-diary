@@ -1,4 +1,3 @@
-import './historical-import-schema.ts';
 import { beforeAll, afterAll, beforeEach, afterEach, describe, it, expect, vi } from 'vitest';
 import { Socket } from 'node:net';
 import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
@@ -16,6 +15,17 @@ const policy = (): TargetPolicy => ({ purpose: 'DISPOSABLE_TEST', expectedDataba
 const fixture = (p: TargetPolicy): FakeTransportFixture => ({ identity: { purpose: p.purpose, accountId: p.expectedAccountId, databaseId: p.expectedDatabaseId, name: p.expectedName }, writers: { workerDeployment: false, routes: false, scheduledWriters: false, otherBindings: false }, recovery: { timeTravelAvailable: true, retentionDays: 7, bookmarkReadable: true, restorePermission: true }, verification: { read: true, review: true, export: true, attackTests: true }, bookmark: 'synthetic-fixture-bookmark' });
 let db: LocalImportDatabase; let p: TargetPolicy; let data: FakeTransportFixture; let adapter: D1PreparationAdapter; let database: Awaited<ReturnType<LocalD1FixtureProvider['getDatabase']>>;
 const owner = { id: 'stage3d-fixture-owner', email: 'stage3d@example.invalid' };
+it.each(['missing applied 0006', 'active deletion marker'])('0006 observer rejects %s', async fault => {
+  const expected = await adapter.inspectSchema();
+  if (fault === 'missing applied 0006') db.local.sqlite.exec("DELETE FROM d1_migrations WHERE name='0006_account_deletion.sql'");
+  else {
+    const bootstrap = new FakeLoopbackAuthAdapter(db); await bootstrap.signup(); await bootstrap.logout();
+    db.local.sqlite.prepare('INSERT INTO _account_deletion_scope VALUES(?)').run(owner.id);
+  }
+  const { observer } = await connected();
+  const result = await observer.schema(expected.schemaFingerprint, expected.triggerFingerprint);
+  expect(testOnlyPass(result)).toBe(false); expect(remoteEligible(result)).toBe(false);
+});
 let network = { fetch: 0, socket: 0 };
 let fetchSpy: ReturnType<typeof vi.spyOn>; let socketSpy: ReturnType<typeof vi.spyOn>;
 beforeAll(() => {
@@ -110,8 +120,9 @@ describe('Stage3E2A observations', () => {
     const expected = await adapter.inspectSchema(); const { observer } = await connected();
     const value = await observer.schema(expected.schemaFingerprint, expected.triggerFingerprint);
     expect(testOnlyPass(value)).toBe(true); const metadata = readObservation(value)!;
-    expect(metadata.migrations).toHaveLength(5); expect(metadata.triggerCount).toBe(17); expect(metadata.fkClean).toBe(true); expect(metadata.fkEnabled).toBe(true);
-    expect(Object.keys(metadata.counts)).toHaveLength(tables.length + 5);
+    expect(metadata.migrations).toHaveLength(6); expect(metadata.triggerCount).toBe(17); expect(metadata.fkClean).toBe(true); expect(metadata.fkEnabled).toBe(true);
+    expect(Object.keys(metadata.counts)).toHaveLength(tables.length + 6);
+    expect(metadata.counts._account_deletion_scope).toBe(0);
     expect(testOnlyPass(await observer.schema('wrong', expected.triggerFingerprint))).toBe(false);
   });
   it.each(['workerDeployment', 'routes', 'scheduledWriters', 'otherBindings'] as const)('writer %s UNKNOWN fails closed', async field => {

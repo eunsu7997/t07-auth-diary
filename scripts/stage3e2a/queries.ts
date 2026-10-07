@@ -12,7 +12,7 @@ const registry = new Map<string, { sql: string; columns: readonly string[]; para
     EXISTS(SELECT 1 FROM account WHERE providerId='credential' AND userId=? AND accountId=? AND password IS NOT NULL AND length(password)>0) AS accountMatches`, columns: ['userCount', 'accountCount', 'ownerMatches', 'accountMatches'], params: 4 }],
 ]);
 for (const [id, type] of [['TABLES', 'table'], ['INDEXES', 'index'], ['TRIGGERS', 'trigger']]) registry.set(id, { sql: `SELECT type,name,tbl_name,sql FROM sqlite_master WHERE type='${type}' AND name NOT LIKE 'sqlite_%' ORDER BY name`, columns: ['type', 'name', 'tbl_name', 'sql'] });
-for (const table of [...tables, 'user', 'account', 'session', 'verification', 'rateLimit']) {
+for (const table of [...tables, 'user', 'account', 'session', 'verification', 'rateLimit', '_account_deletion_scope']) {
   registry.set('COUNT_' + table, { sql: `SELECT count(*) AS n FROM ${table}`, columns: ['n'] });
   registry.set('FK_LIST_' + table, { sql: `PRAGMA foreign_key_list('${table}')`, columns: ['id', 'seq', 'table', 'from', 'to', 'on_update', 'on_delete', 'match'] });
 }

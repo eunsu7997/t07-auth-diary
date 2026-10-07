@@ -40,8 +40,11 @@ beforeEach(async () => {
   a = await fixture('delete-a'); b = await fixture('keep-b');
 });
 afterEach(() => { vi.restoreAllMocks(); db.close(); });
-it('the real importer rejects the new schema until its migration baseline is separately audited', () => {
-  expect(() => trustedBaseline()).toThrow('MIGRATION_HASH_MISMATCH');
+it('the importer baseline includes the full account-deletion schema', () => {
+  const baseline = trustedBaseline();
+  expect(baseline.migrations.length).toBe(6);
+  expect(baseline.schema.some(row => row.name === '_account_deletion_scope')).toBe(true);
+  expect(baseline.accountDeletionScopes).toBe(0);
 });
 function request(cookie?: string, body: unknown = { password: a.password }, origin: string | null = base, ip = '192.0.2.1') {
   return app.request(base + '/api/account/delete', { method: 'POST', headers: {

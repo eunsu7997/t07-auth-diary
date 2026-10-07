@@ -10,7 +10,7 @@ export type Inspection = {
   identifier: string; schema: SchemaRow[]; schemaFingerprint: string; triggerFingerprint: string;
   migrations: string[]; migrationHashes: Record<string, string>; counts: Counts; business: Record<string, Row[]>;
   users: Owner[]; accounts: { userId: string; accountId: string; providerId: string; credentialPresent: boolean }[];
-  sessions: number; verification: number; rateLimit: number; fkClean: boolean; foreignKeys: boolean;
+  sessions: number; verification: number; rateLimit: number; accountDeletionScopes: number; fkClean: boolean; foreignKeys: boolean;
   // Digest only for comparisons; never expose auth rows/credential contents.
   authFingerprint: string; settled: boolean;
 };
@@ -28,6 +28,7 @@ export const APPROVED_MIGRATIONS = {
   '0003_auth.sql': 'a6e8f988bdc954a9d8c8e02824584921f2d52d92d7493ebd2dff2e5aa948f694',
   '0004_ownership.sql': '349669b16ea17b3fe13c31ebceed8e7aa1f144fb35967451a883946823b664dc',
   '0005_auth_rate_limit.sql': 'a527d321edb786d679418c12a17a800c77180f7d6d7f60ab3c2464d7a167c650',
+  '0006_account_deletion.sql': '9ebd50b7af9fa7250c78e6bf4fcb5c7a124583ca8bebc5fab6fefd35d85929d5',
 };
 export function migrationHashes() {
   return Object.fromEntries(readdirSync(resolve(projectRoot, 'migrations')).filter(n => n.endsWith('.sql')).sort()
@@ -63,7 +64,7 @@ export class LocalImportDatabase implements ImportDatabase {
       migrations: sql.prepare('SELECT name FROM _migrations ORDER BY name').all().map(r => String(r.name)), migrationHashes: migrationHashes(),
       counts: Object.fromEntries(tables.map(t => [t, n(t)])) as Counts, business,
       users: sql.prepare('SELECT id,email FROM user ORDER BY id').all() as Owner[], accounts,
-      sessions: n('session'), verification: n('verification'), rateLimit: n('rateLimit'),
+      sessions: n('session'), verification: n('verification'), rateLimit: n('rateLimit'), accountDeletionScopes: n('_account_deletion_scope'),
       fkClean: sql.prepare('PRAGMA foreign_key_check').all().length === 0,
       foreignKeys: sql.prepare('PRAGMA foreign_keys').get()?.foreign_keys === 1,
       authFingerprint, settled: true };

@@ -46,7 +46,7 @@ export class D1PreparationAdapter {
     const schema: SchemaRow[] = [];
     for (const type of ['table', 'index', 'trigger']) schema.push(...await this.read<SchemaRow>("SELECT type,name,tbl_name,sql FROM sqlite_master WHERE type=? AND name NOT LIKE 'sqlite_%' ORDER BY name", [type]));
     const foreignKeys: Record<string, unknown[]> = {};
-    for (const table of [...tables, 'account', 'session']) foreignKeys[table] = await this.read(`PRAGMA foreign_key_list('${table}')`);
+    for (const table of [...tables, 'account', 'session', '_account_deletion_scope']) foreignKeys[table] = await this.read(`PRAGMA foreign_key_list('${table}')`);
     const migrations = await this.read<{ name: string }>('SELECT name FROM d1_migrations ORDER BY name');
     return { schema, foreignKeys, migrations: migrations.map(r => r.name), schemaFingerprint: schemaFingerprint(schema), triggerFingerprint: schemaFingerprint(schema, true),
       fkClean: (await this.read('PRAGMA foreign_key_check')).length === 0 };

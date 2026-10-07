@@ -2,6 +2,49 @@
 
 Status: NEEDS_AUDIT
 Date: 2026-10-07 Asia/Seoul.
+Scope: importer migration 0001~0006 compatibility only; base HEAD a48d2fe61d9d46abc24f8221a9a32ac0d6888944.
+
+## Implementation
+- Existing APPROVED_MIGRATIONS keeps all five original hashes; adds normalized 0006 hash 9ebd50b7af9fa7250c78e6bf4fcb5c7a124583ca8bebc5fab6fefd35d85929d5. trustedBaseline still rejects any name/byte mismatch before creating its memory reference.
+- Local preflight compares exact six names and pinned hashes, not merely count. D1 preparation and observer use the same six-name list; schema fingerprints include _account_deletion_scope and updated deletion/copy-identity triggers. Trigger count remains 17. Expected schema comes from the locally pinned migrations, never target-derived approval.
+- The marker's FK is included in schema inspection. Marker count must be zero in preflight/observer, initial/final SQL guards and outcome classification. A post-preflight marker aborts the synthetic import batch; no business writes survive.
+- Three existing importer suites now exercise the real six-migration schema instead of importing the prior five-migration filesystem mock. Roundtrip/data-preservation/rollback assertions retained. The historical helper remains untouched and unused. C134 baseline test updated to six-migration acceptance, with new negative tests covering every migration's byte integrity.
+- Historical Stage3E1 plan-summary evidence is preserved. Updated test generator metrics go to ignored .data/importer-six/plan-summary.json. No historic evidence counters/results were rewritten to claim current remote success.
+
+## Changed files in this task
+- scripts/stage3d/adapters.ts
+- scripts/stage3d/preflight.ts
+- scripts/stage3d/import-plan.ts
+- scripts/stage3e1/d1-adapter.ts
+- scripts/stage3e1/prepare-plan.ts
+- scripts/stage3e2a/observer.ts
+- scripts/stage3e2a/queries.ts
+- tests/account-deletion.test.ts
+- tests/import-stage3d.test.ts
+- tests/import-stage3e1.test.ts
+- tests/import-stage3e2a.test.ts
+- tests/importer-migrations.test.ts
+- handoff/CURRENT.md
+- handoff/CODEX-RESULT.md
+
+## Verification
+- npx.cmd --no-install tsc --noEmit PASS; npm.cmd run build PASS; npm test 527 PASS / 0 FAIL; direct importer suites 267 PASS / 0 FAIL; git diff --check PASS.
+- Added 24 tests: migration names/hash/normalization, valid empty-business six-schema preflight with synthetic owner, altered/missing marker or trigger, applied-name mismatch, active marker before/after preflight, D1 preflight and fake observer rejection, unknown outcome classification. Existing 0001~0005 hash protections unchanged.
+- Transparent intermediate direct run: 260 PASS / 1 FAIL because the metadata table-count assertion still expected 11; updated to 12 with explicit marker count=0 assertion. No tests deleted.
+- Privacy: staged index empty; full tracked diff/new test scan found zero known secret formats, nonfixture emails or matches to two local private env values (checked in memory, values never printed).
+- Test hooks report fetch/socket/Cloudflare/real D1/proxy sessions zero. No actual import/signup, remote query, deployment, real five-day records, automation/delegation, Git staging/commit/push. T06 working tree clean; wrangler/migrations/application runtime unchanged by this task. Preexisting held changes preserved.
+- Correct six-schema passing local preflight is not remote execution approval. Existing remote eligibility/approval/provenance gates unchanged. A remote five-migration schema will intentionally fail until a separately approved 0006 application.
+
+## Next action
+importer 0001~0006 Claude 독립 감사.
+
+---
+## Archived previous checkpoint implementation result
+
+# Latest Codex Result
+
+Status: NEEDS_AUDIT
+Date: 2026-10-07 Asia/Seoul.
 Scope: Claude FIX 1 account-deletion password-attempt limit + FIX 2 README/STAGE2-1 wording only.
 
 ## Rate limit

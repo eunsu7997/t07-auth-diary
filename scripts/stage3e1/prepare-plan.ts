@@ -19,7 +19,7 @@ export async function preparedPreflight(source: Source, adapter: D1PreparationAd
   const target = checkTarget(policy.target); const observed = observedChecks(policy.observations);
   const counts: Record<string, number> = {};
   for (const table of tables) counts[table] = (await adapter.read<{ n: number }>(`SELECT count(*) AS n FROM ${table}`))[0].n;
-  const empty = Object.values(counts).every(n => n === 0);
+  const empty = Object.values(counts).every(n => n === 0) && (await adapter.read<{ n: number }>('SELECT count(*) AS n FROM _account_deletion_scope'))[0].n === 0;
   const verification = (await adapter.read<{ n: number }>('SELECT count(*) AS n FROM verification'))[0].n;
   const fkEnabled = (await adapter.read<{ foreign_keys: number }>('PRAGMA foreign_keys'))[0]?.foreign_keys === 1;
   const schema = metadata.schemaFingerprint === schemaFingerprint([...policy.expectedSchema]);
@@ -51,7 +51,7 @@ function rateGuard(baseline: RateBaseline) {
 }
 function schemaGuard(rows: SchemaRow[]) {
   const raw = rows.map(r => ({ ...r, sql: r.sql?.replace(/\r\n/g, '\n').trim() ?? null })); const json = JSON.stringify(raw);
-  return guard(`(SELECT count(*) FROM sqlite_master WHERE name NOT LIKE 'sqlite_%')=json_array_length(?) AND NOT EXISTS(SELECT 1 FROM json_each(?) e WHERE NOT EXISTS(SELECT 1 FROM sqlite_master m WHERE m.type=json_extract(e.value,'$.type') AND m.name=json_extract(e.value,'$.name') AND m.tbl_name=json_extract(e.value,'$.tbl_name') AND trim(replace(m.sql,char(13)||char(10),char(10))) IS json_extract(e.value,'$.sql')))`, [json, json]);
+  return guard(`(SELECT count(*) FROM _account_deletion_scope)=0 AND (SELECT count(*) FROM sqlite_master WHERE name NOT LIKE 'sqlite_%')=json_array_length(?) AND NOT EXISTS(SELECT 1 FROM json_each(?) e WHERE NOT EXISTS(SELECT 1 FROM sqlite_master m WHERE m.type=json_extract(e.value,'$.type') AND m.name=json_extract(e.value,'$.name') AND m.tbl_name=json_extract(e.value,'$.tbl_name') AND trim(replace(m.sql,char(13)||char(10),char(10))) IS json_extract(e.value,'$.sql')))`, [json, json]);
 }
 function insert(table: typeof tables[number], rows: Row[], owner: string): BoundStatement[] {
   const columns = Object.keys(contract.$defs[table].properties); const owned = table === 'plans' || table === 'tags'; const fields = [...columns, ...(owned ? ['owner_user_id'] : [])];

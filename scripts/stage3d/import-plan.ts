@@ -19,6 +19,7 @@ export function enforceLimits(statements: readonly BoundStatement[]) {
 const guard = (db: ImportDatabase, condition: string, params: BoundStatement['params'] = []) =>
   db.prepare(`SELECT CASE WHEN (${condition}) THEN 1 ELSE abs(-9223372036854775808) END AS guard_ok`, params);
 const schemaCondition = `
+ (SELECT count(*) FROM _account_deletion_scope)=0 AND
  (SELECT count(*) FROM sqlite_master WHERE name NOT LIKE 'sqlite_%') = json_array_length(?)
  AND NOT EXISTS (SELECT 1 FROM json_each(?) e WHERE NOT EXISTS (
  SELECT 1 FROM sqlite_master m WHERE m.type=json_extract(e.value,'$.type') AND m.name=json_extract(e.value,'$.name')
@@ -93,7 +94,7 @@ export async function executeLocalPlan(db: ImportDatabase, plan: ImportPlan) {
 export type Outcome = 'NOT_EXECUTED' | 'COMPLETED' | 'UNEXPECTED_PARTIAL_OR_UNKNOWN';
 const canonical = (rows: Row[]) => JSON.stringify(rows.map(r => Object.fromEntries(Object.entries(r).sort(([a], [b]) => a.localeCompare(b)))).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))));
 export function classifyOutcome(snapshot: Inspection, before: Inspection, source: Source, owner: string): Outcome {
-  if (!snapshot.settled || !snapshot.fkClean || !snapshot.foreignKeys || snapshot.identifier !== before.identifier || snapshot.schemaFingerprint !== before.schemaFingerprint ||
+  if (snapshot.accountDeletionScopes !== 0 || before.accountDeletionScopes !== 0 || !snapshot.settled || !snapshot.fkClean || !snapshot.foreignKeys || snapshot.identifier !== before.identifier || snapshot.schemaFingerprint !== before.schemaFingerprint ||
       snapshot.triggerFingerprint !== before.triggerFingerprint || snapshot.authFingerprint !== before.authFingerprint || JSON.stringify(snapshot.migrations) !== JSON.stringify(before.migrations) ||
       JSON.stringify(snapshot.migrationHashes) !== JSON.stringify(before.migrationHashes)) return 'UNEXPECTED_PARTIAL_OR_UNKNOWN';
   if (tables.every(t => snapshot.counts[t] === 0) && tables.every(t => before.counts[t] === 0)) return 'NOT_EXECUTED';

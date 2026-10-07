@@ -1,29 +1,35 @@
 AUDIT_PASS
 
-# T07 Claude 최종 재감사 — C134 FIX 2건 (2026-10-07)
+# T07 Claude 독립 감사 — importer migration 0001~0006 (2026-10-07)
 
-범위: 직전 FIX 1(계정 삭제 비밀번호 시도 제한)·FIX 2(README/STAGE2-1 문구)와 C134 회귀. HEAD f8425c8 + working tree. 원격·deploy·import·signup·commit/push·파일 수정 없음(이 파일과 CURRENT.md만 기록).
+범위: base HEAD a48d2fe + working tree의 importer 변경(adapters/preflight/import-plan/d1-adapter/prepare-plan/observer/queries)과 관련 테스트. 원격·실제 import·deploy·signup·commit/push·파일 수정 없음(이 파일과 CURRENT.md만 기록). 독립 변형 검사는 scratch 복사본에서 실제 파일/DB를 변경해 수행.
 
-## 1. rate limit — PASS
-- account-deletion.ts:8-40: Better Auth 1.7.7 context.adapter의 rateLimit 모델과 incrementOne 재사용. incrementOne은 adapter native 또는 Better Auth atomic fallback(조건부 updateMany + snapshot guard, 경합 시 예외). 창 의미는 Better Auth limiter(rate-limiter/index.mjs:37-57)와 동일(>=60s 초기화, count>=max 거부, 허용 시 lastRequest 갱신). 저장소 오류·16회 경합 → 예외로 fail-closed.
-- 키: 'account-delete:' + SHA-256([userId, getIP(trusted cf-connecting-ip)]), IP 없으면 사용자별 fallback 버킷. login/signup 카운터와 분리.
-- 5회 허용(생성 1 + count<5일 때 2~5), 6번째 거부. app.ts 순서: Origin → body(strict) → 세션 → 제한 → 비밀번호 조회·verify → 삭제 batch. 429 + Retry-After는 verify/batch 이전.
-- 테스트(account-deletion.test.ts:65-104): 6번째(정답 비밀번호) 429·verify/batch spy 0회·fingerprint 불변·A 세션 유지; 같은 IP에서 A 제한 중 B 삭제 200, A 유지; 사용자+IP 키 분리; 60초 후 재허용; 동시 6요청 중 정확히 1개 429.
-- auth.ts(sign-in 10/60, sign-up·change-password 5/60), 0001~0005, wrangler.jsonc는 HEAD 대비 변경 없음.
-- 낮음(비차단): 사용자+IP 키라 IP를 바꾸면 IP마다 5회/60초. 기존 로그인 제한과 같은 설계 한계(STAGE2-1 기록).
+## [1] trusted baseline — PASS
+- APPROVED_MIGRATIONS 0001~0005 pin은 f8425c8과 동일하고 실제 파일(CRLF→LF) hash와 일치. 0006 pin(9ebd50b7…)이 migrations/0006_account_deletion.sql과 정확히 일치. migrations/ 디렉터리는 HEAD 대비 변경 없음.
+- trustedBaseline은 디렉터리 전체 {이름: hash}를 정확 비교. 실제 파일 변형 결과: 0006 누락·0006 한 글자 변조·0006 끝 공백 추가·0001 한 글자 변조·0007 추가 → 모두 MIGRATION_HASH_MISMATCH. 전체 CRLF 변환만 허용.
 
-## 2. C134 회귀 — PASS
-잘못된 비밀번호 400·무변경, 비로그인 401, Origin 누락/타 출처 403, user_id 주입 400, A 삭제 시 A 계정·전 세션·소유 자료 제거 + B 불변 + 쿠키 만료 + foreign_key_check 0, 늦은 실패·조용한 skip 전체 rollback, 일반 경로 삭제/수정 금지와 A marker의 B 범위 차단 유지, marker 잔존 0. 화면 문구(AccountDeletionForm.tsx)와 README 현재 정책이 실제 기능과 일치.
+## [2] expected schema — PASS
+- 기대 schema/trigger fingerprint는 로컬 pinned migration으로 만든 메모리 DB에서만 도출(대상에서 학습 안 함, 기존 설계 유지). _account_deletion_scope와 user FK ON DELETE CASCADE, 재정의된 3개 trigger 포함, trigger 17개 유지.
+- 실제 DB 변형 결과 preflight 거부: trigger 1개 누락(P11,P12), copy-identity trigger를 0004 형태로 되돌림(P11,P12), CASCADE 없는 marker 테이블(P11), 예상 밖 테이블(P11), 예상 밖 trigger(P11,P12). 일반 경로 append-only/delete guard 유지(account-deletion 23 PASS).
 
-## 3. 문서 — PASS
-README.md "현재 정책"이 실제 삭제 기능·전 세션 무효화·복구 불가·JSON 다운로드 권장을 설명. STAGE2-1.md:47은 "Stage 2.1 당시에는 … 지원하지 않았습니다"로 역사 서술만. T07-CARD-CHECK C134 행도 구현과 일치. 추적 문서에 현재형 "삭제 미지원" 문장 없음(.data/ 검증 복사본은 git-ignored).
+## [3] active marker / TOCTOU — PASS
+- Stage3D: preflight empty에 marker=0(P13), import batch 첫 guard와 마지막 guard(import-plan.ts:31-36, :82)에 marker=0, classifyOutcome에서 before/after marker≠0 → UNEXPECTED_PARTIAL_OR_UNKNOWN.
+- E1: preparedPreflight empty에 marker=0, batch 앞(prepare-plan.ts:80)·끝(:93) schemaGuard에 marker=0. E2A: observer counts._account_deletion_scope === 0, queries에 COUNT/FK_LIST 추가.
+- 실측: marker 1행 → preflight REJECTED(P13,P35); plan 생성 후 marker 삽입 → batch ABORTED, 업무 행 0; import 성공 후 marker 삽입 → UNEXPECTED_PARTIAL_OR_UNKNOWN. 같은 원자 batch 앞뒤 guard라 preflight↔실행 사이 우회 없음.
 
-## 직접 실행
-- tsc --noEmit PASS, npm run build PASS, vitest 16 files / 503 PASS, git diff --check PASS, 실행 전후 git status 동일.
-- 개별: account-deletion 23 PASS, ownership 48 PASS, production-protection 12 PASS.
-- 비밀값: 전체 diff(추적+미추적) 키 형식 0, 쿠키/세션 토큰/scrypt hash 0, 비fixture 이메일 0, 로컬 .env.local/.dev.vars 값 3개 대조 0(값 미출력).
-- CHECKPOINT-CANDIDATE.md: 변경 40 = 포함 24 + 보류 16, 중복·누락 0.
+## [4] 단계 일관성 — PASS
+adapters(pin, inspection), preflight(정확 6개 이름+hash), import-plan(guard·outcome), d1-adapter(marker FK 수집), prepare-plan(empty·schemaGuard), observer(APPROVED_MIGRATIONS 키 6개·marker 0), queries(marker COUNT/FK) 모두 같은 0001~0006 기준. "length 5" 잔존 없음. trigger 17 조건은 0006 후에도 맞음.
 
-## 남은 별도 작업(이번 판정 범위 밖)
-- import ↔ 0006: importer baseline(APPROVED_MIGRATIONS, migrations 5개 조건, schema/trigger fingerprint)을 0001~0006으로 갱신하고 별도 감사 후, 빈 운영 D1에 0006 적용 → import 순서. 현재는 fail-closed로 import 거부.
-- checkpoint commit은 사용자 명시 승인 필요.
+## [5] 기존 import 보존 — PASS
+import-stage3d.test.ts는 0001~0005 mock import 한 줄만 제거 — 필드·ID·copy·request·timestamp·log·auth 보존, 실패 rollback, 첫 guard drift 거부, nonempty 거부 등 기존 단언이 이제 실제 6개 migration schema에서 실행되어 통과. E1/E2A 변경은 5→6, 카운트 +5→+6, marker 0 단언 추가뿐(삭제 없음). ownership 48 PASS.
+
+## [6] 직접 실행
+- tsc PASS, build PASS, vitest 17 files / 527 PASS, git diff --check PASS, 실행 전후 git status 동일.
+- importer: stage3d 60, stage3e1 93, stage3e2a 95, importer-migrations 19 (= 267) PASS. account-deletion 23, ownership 48 PASS.
+- scratch 독립 probe 2개 PASS(위 [1]~[3] 수치).
+- 비밀값: 전체 diff(추적+미추적) 키 형식 0, 쿠키/세션 토큰/scrypt hash 0, 비fixture 이메일 0, 로컬 env 값 3개 대조 0(값 미출력).
+
+## 낮음(비차단)
+- tests/historical-import-schema.ts는 이제 어떤 테스트도 import하지 않는 사용 안 하는 helper.
+- E1/E2A의 기대 schema는 호출자가 전달(운영 CLI 연결 없음) — 기존 설계 그대로, 실제 원격 단계 감사 때 provenance 재확인 필요.
+- 원격 T07 D1이 0001~0005 상태면 importer는 의도대로 거부. 0006 원격 적용과 import는 각각 별도 사용자 승인 필요.
