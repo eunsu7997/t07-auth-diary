@@ -1,8 +1,8 @@
-# T07 플랜두씨 다이어리 — Stage 2.1 로컬 보안 보강
+# T07 플랜두씨 다이어리 — 로컬 과제 카드 감사 수정
 
 Stage 2는 커밋 `a0a2ba27aebea1ec86d2e28508a951b28c3a9456`으로 origin/codex/t07-auth에 push되었습니다. 로그인 세션에 따른 모든 업무 API 소유권 격리가 구현되어 있습니다. Stage 2.1은 사용자가 전달한 Claude Code 재감사에서 코드/문서 PASS, 체크포인트 commit 가능 YES 판정을 받았으며 사용자 승인에 따른 체크포인트 commit/push 대상입니다. 공개 배포와 실제 5일 기록은 아직 수행하지 않았습니다.
 
-현재 범위와 보안 한계는 [STAGE2-1.md](STAGE2-1.md), 감사 판정은 [resolution](evidence/t07/stage2-1/claude-audit-resolution.md)을 봅니다. [STAGE2.md](STAGE2.md)와 [STAGE1.md](STAGE1.md)는 당시 구현/검증 기록입니다.
+Stage 2.1 당시 범위와 보안 한계는 [STAGE2-1.md](STAGE2-1.md), 당시 감사 판정은 [resolution](evidence/t07/stage2-1/claude-audit-resolution.md)을 봅니다. [STAGE2.md](STAGE2.md)와 [STAGE1.md](STAGE1.md)도 당시 구현/검증 기록입니다. 현재 로컬 점검은 [T07-CARD-CHECK.md](T07-CARD-CHECK.md), 다음 감사 범위는 handoff/CURRENT.md를 따릅니다.
 
 ## 현재 T07 실행
 
@@ -10,7 +10,7 @@ Node 24 이상, package-lock.json 고정 버전을 사용합니다. T07 작업 �
 
 BETTER_AUTH_SECRET은 ignored .env.local에만 두며 로컬 loader가 없을 때 랜덤으로 생성합니다. BETTER_AUTH_URL은 인증 출처와 일치해야 하며 개발은 5177, production bundle 로컬 실행은 3007입니다. VITE_*에 인증 secret을 두지 않습니다. 향후 운영에서는 Worker secret을 사용합니다. 로컬 workerd는 ignored .dev.vars와 HTTPS localhost:8787, T07 전용 local D1만 사용합니다.
 
-Worker aleph-t07-auth-diary / D1 aleph-t07-auth-diary-db는 대상 분리용 설정이며 실제 원격 DB는 아직 없습니다. 원격 생성/migration/deploy 명령은 계속 차단합니다. 공개 배포·실제 import·5일 사용·규칙 변경은 수행하지 않았습니다. 자동 fixture는 실제 사용 증거가 아닙니다.
+git history와 Stage3B evidence에는 T07 D1 aleph-t07-auth-diary-db 생성 및 0001~0005 migration 적용이 기록되어 있고 wrangler.jsonc의 UUID도 그 기록과 일치합니다. 이번 작업에서는 원격 조회하지 않았으므로 현재 Cloudflare DB의 존재·스키마·행 수를 재검증한 것이 아닙니다. 공개 배포·실제 원격 import·5일 사용·규칙 변경은 이번 작업에서 수행하지 않았습니다. 원격 명령은 계속 차단하며 T06 Worker/D1을 보존합니다. 자동 fixture는 실제 사용 증거가 아닙니다. 0006 계정 삭제 migration은 이번 로컬 구현이며 원격 적용하지 않았습니다.
 
 ## 현재 정책
 
@@ -18,7 +18,7 @@ Worker aleph-t07-auth-diary / D1 aleph-t07-auth-diary-db는 대상 분리용 설
 - 사용자별 tag, plans, 실행, review/export 격리. soft-delete된 archived task도 현재 계약상 review/export 범위에 포함됩니다.
 - 로그인 10회/60초, 가입 및 비밀번호 변경 5회/60초. IP별 DB 카운터이며 NAT 공유/분산 IP 공격의 한계는 STAGE2-1에 적었습니다.
 - 서버 이름 trim·1~100자, 새 비밀번호 최소 12자. HttpOnly/Secure(HTTPS)/SameSite=Lax 세션 쿠키, 브라우저 token storage 없음.
-- 현재 이 과제 버전에서는 계정 삭제 기능을 지원하지 않습니다.
+- 현재 비밀번호를 재확인하면 내 계정과 소유 계획·할 일·계획 버전·실행 기록·태그 및 모든 로그인 세션을 함께 삭제합니다. 삭제한 자료는 복구할 수 없으므로 삭제 전에 “전체 JSON 다운로드”를 권장합니다. 삭제 재확인은 로그인 사용자와 요청 IP별 5회/60초로 제한하며 초과하면 429로 거부합니다. 원격 적용·배포는 이번에 하지 않았습니다.
 - 이메일 소유 확인/이메일 비밀번호 복구/MFA/OAuth는 미지원입니다. 실제 이메일 소유자를 증명하지 못하고 비밀번호 단일 요소에 의존합니다.
 - Better Auth 정상 token 응답은 유지하지만 로그/evidence는 원문 token을 저장하지 않습니다. 업무 export에 인증/rateLimit 데이터는 없습니다.
 

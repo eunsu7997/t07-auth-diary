@@ -1,5 +1,7 @@
 # T07 Stage 2.1 — 보안 보강 개발 기록
 
+2026-10-07 현재 상태 보충: 이 문서의 구현·테스트 수치는 Stage 2.1 당시 기록입니다. 이후 git history 및 Stage3B evidence에는 T07 D1 생성과 0001~0005 migration 적용이 기록되었습니다. 이번 문서 수정에서는 원격 조회하지 않았으며 현재 Cloudflare 상태를 재검증한 것이 아닙니다. 최신 로컬 점검은 T07-CARD-CHECK.md와 handoff/CURRENT.md를 봅니다. 이번 0006 migration은 로컬에서만 검증하며 원격 적용하지 않았습니다.
+
 기준 커밋: `a0a2ba27aebea1ec86d2e28508a951b28c3a9456` (Stage 2 커밋/push 완료). Stage 2.1은 Claude Code 재감사에서 코드/문서 PASS 및 체크포인트 commit 가능 YES 판정을 받았으며, 사용자 승인에 따라 체크포인트 commit/push 대상으로 확정되었습니다. 치명적/높음/중간은 각각 0건이며 낮음 항목은 감사 대응 문서에 남깁니다. 사용자가 전달한 Claude Code 독립 감사 결과를 바탕으로 M1/M2와 L1/L2를 수정했습니다. 이 문서는 개발 기록이며 최종 제출 설명서나 실제 5일 사용 증거가 아닙니다.
 
 ## M1: 명시적 rate limit
@@ -42,7 +44,7 @@ HTML, JS, CSS, API와 SPA deep link에 아래를 확인합니다.
 
 표시 이름은 Better Auth 공식 databaseHooks의 user.create.before에서 trim 후 1~100자를 강제하고 user.update.before에도 같은 규칙을 적용합니다. 빈 값/101자/11자 비밀번호의 직접 API 호출을 거부합니다. 공식 `minPasswordLength:12`, `maxPasswordLength:128`을 사용하고 문자 종류 강제/주기적 변경 정책은 추가하지 않았습니다. 가입 UI도 최소 12자로 맞췄고 기존 8자 비밀번호 계정의 로그인 UI는 막지 않습니다.
 
-현재 이 과제 버전에서는 계정 삭제 기능을 지원하지 않습니다. 로그인 후 안내 영역에 이 사실을 표시하며 삭제 API를 새로 만들지 않습니다. 이메일 소유 확인·이메일 비밀번호 재설정·MFA·OAuth도 구현하지 않았습니다. 이메일 실제 소유자 증명 및 분실 복구가 없고 비밀번호 단일 요소에 의존하며 소셜 로그인도 없습니다. 기존 계정 삭제 cascade/FK를 실제 제공 기능으로 설명하지 않습니다.
+Stage 2.1 당시에는 계정 삭제 기능을 지원하지 않았습니다. 당시 로그인 후 안내 영역에 이 사실을 표시했고 삭제 API를 만들지 않았습니다. 당시 이메일 소유 확인·이메일 비밀번호 재설정·MFA·OAuth도 구현하지 않았습니다. 당시 이메일 실제 소유자 증명 및 분실 복구가 없고 비밀번호 단일 요소에 의존하며 소셜 로그인도 없었습니다. 당시 계정 삭제 cascade/FK는 실제 제공 기능이 아니었습니다. 이후의 현재 로컬 계정 삭제 기능은 README.md와 handoff/CURRENT.md를 봅니다.
 
 Better Auth 가입/로그인 token 응답 구조는 patch하지 않았습니다. 로그는 인증 payload/토큰을 출력하지 않으며 trace/video/HAR 캡처는 비활성입니다. `scripts/evidence-redact.mjs`는 구조화된 JSON의 token/password/secret/cookie/credential/authorization와 HAR의 민감 헤더·JSON content.text를 제거합니다. 원문 응답/HAR를 임의로 저장하지 말고 allowlist의 상태/boolean/count 증거를 우선합니다. 재귀 제거가 임의 자연어에 숨긴 비밀까지 찾는다고 주장하지 않습니다. 샘플 증거는 자동 fixture이며 token/cookie는 [REDACTED]입니다. 업무 export는 인증/rateLimit 테이블과 token을 제외합니다.
 
@@ -54,4 +56,4 @@ Better Auth 가입/로그인 token 응답 구조는 patch하지 않았습니다.
 
 로컬 실행: `npm run dev` → 127.0.0.1:5177 (API 3007), `npm run build` 뒤 `npm start` → 127.0.0.1:3007. `npm test`, `npm run test:e2e`, `npm run test:auth:browser`, `npm run typecheck`, `npm run build`로 검증합니다. 로컬 Worker만 `wrangler dev --local --ip 127.0.0.1 --port 8787 --local-protocol https`로 실행하고 두 verify-stage2-1-*-worker 스크립트를 사용합니다.
 
-Stage 2 evidence는 역사적 결과로 원본 그대로 보존했습니다. Stage 2.1 결과·판정은 새 경로에 보관합니다. T06 폴더/remote/Worker/운영 DB를 수정하지 않습니다. 원격 T07 D1 생성/migration, 공개 배포, 실제 T06 JSON import, 실제 5일 사용/Day 2 규칙 변경/최종 제출 문서는 아직 수행하지 않았습니다. Claude Code 재감사와 사용자 체크포인트 승인은 완료되었습니다. 남은 낮음 항목은 이번에 코드 수정 없이 향후 개선으로 기록합니다.
+Stage 2 evidence는 역사적 결과로 원본 그대로 보존했습니다. Stage 2.1 결과·판정은 새 경로에 보관합니다. T06 폴더/remote/Worker/운영 DB를 수정하지 않습니다. Stage 2.1 당시에는 원격 T07 D1 생성/migration, 공개 배포, 실제 T06 JSON import, 실제 5일 사용/Day 2 규칙 변경/최종 제출 문서를 수행하지 않았습니다. 이후 D1 생성 및 0001~0005 적용 기록은 위 현재 상태 보충과 Stage3B evidence를 따릅니다. 당시 Claude Code 재감사와 사용자 체크포인트 승인은 완료되었습니다. 당시 남은 낮음 항목은 향후 개선으로 기록합니다.

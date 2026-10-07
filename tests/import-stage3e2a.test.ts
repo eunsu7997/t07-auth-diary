@@ -1,3 +1,4 @@
+import './historical-import-schema.ts';
 import { beforeAll, afterAll, beforeEach, afterEach, describe, it, expect, vi } from 'vitest';
 import { Socket } from 'node:net';
 import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';

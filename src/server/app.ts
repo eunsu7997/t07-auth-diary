@@ -1,6 +1,8 @@
 import { Hono } from 'hono';
 import { bodyLimit } from 'hono/body-limit';
-import { ZodError, type ZodType } from 'zod';
+import { z, ZodError, type ZodType } from 'zod';
+import { deleteCookie } from 'hono/cookie';
+import { consumeAccountDeletionAttempt, deleteOwnedAccount } from './account-deletion.ts';
 import { planSchema, planUpdateSchema, taskSchema, taskQuerySchema, requestIdSchema, emptySchema, reviewQuerySchema, copySchema } from '../shared/validation.ts';
 import { AppError, Diary } from './services.ts';
 import type { Database } from './db.ts';
@@ -63,6 +65,35 @@ export function createApp(database: Database | ((bindings: Bindings) => Database
     const session = await authFor(c.env)!.api.getSession({ headers: c.req.raw.headers });
     if (!session) return c.json({ error: '로그인이 필요합니다.' }, 401);
     return c.json({ user: { id: session.user.id, name: session.user.name, email: session.user.email }, expiresAt: session.session.expiresAt });
+  });
+  app.post('/api/account/delete', async c => {
+    const auth = authFor(c.env)!;
+    const canonicalOrigin = new URL(auth.options.baseURL as string).origin;
+    if (c.req.header('Origin') !== canonicalOrigin || c.req.header('Sec-Fetch-Site') === 'cross-site') {
+      return c.json({ error: '같은 사이트에서 계정 삭제를 요청하세요.' }, 403);
+    }
+    const { password } = await input(c.req, z.object({ password: z.string().min(1).max(128) }).strict());
+    const session = await auth.api.getSession({ headers: c.req.raw.headers });
+    if (!session || session.user.id !== c.get('userId')) return c.json({ error: '로그인이 필요합니다.' }, 401);
+    const limit = await consumeAccountDeletionAttempt(auth, session.user.id, c.req.raw);
+    if (!limit.allowed) {
+      c.header('Retry-After', String(limit.retryAfter));
+      return c.json({ error: '계정 삭제 시도가 너무 많습니다. 잠시 후 다시 시도하세요.' }, 429);
+    }
+    const db = typeof database === 'function' ? database(c.env) : database;
+    const [credential] = await db.all<{ password: string | null }>(
+      "SELECT password FROM account WHERE userId=? AND providerId='credential'", [session.user.id]);
+    const context = await auth.$context;
+    if (!credential?.password || !await context.password.verify({ hash: credential.password, password })) {
+      return c.json({ error: '현재 비밀번호를 확인하세요.' }, 400);
+    }
+    await deleteOwnedAccount(db, session.user.id, session.session.id, credential.password);
+    // Use installed Better Auth's actual cookie names/attributes, including HTTPS prefix.
+    // Session cache and account cookie storage are disabled in our auth configuration.
+    for (const cookie of Object.values(context.authCookies)) {
+      deleteCookie(c, cookie.name, { ...cookie.attributes, expires: new Date(0) });
+    }
+    return c.json({ deleted: true });
   });
   app.get('/api/health', async c => {
     await (typeof database === 'function' ? database(c.env) : database).all('SELECT 1 AS connected');

@@ -1,3 +1,4 @@
+import './historical-import-schema.ts';
 import { beforeEach, afterEach, expect, it } from 'vitest';
 import { digest, loadBytes, tables, type Source } from '../scripts/stage3d/source.ts';
 import { LocalImportDatabase, FakeRemoteImportDatabase, FakeLoopbackAuthAdapter, openRemoteImportDatabase, type BoundStatement, type Owner } from '../scripts/stage3d/adapters.ts';

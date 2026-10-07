@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import App from './App';
+import AccountDeletionForm from './AccountDeletionForm';
 import { authClient, LOGIN_FAILURE } from './auth-client';
 
 type Identity = { user: { id: string; name: string; email: string }; expiresAt: string };
@@ -62,7 +63,7 @@ export default function AuthGate() {
   if (loading) return <main><p role="status">로그인 상태 확인 중…</p></main>;
   if (identity) return <>
     <section className="panel" aria-label="로그인 상태"><span>{identity.user.name} · 로그인됨</span> <button disabled={busy} onClick={() => void logout()}>로그아웃</button>
-      <p>현재 이 과제 버전에서는 계정 삭제 기능을 지원하지 않습니다.</p>
+      <AccountDeletionForm onDeleted={() => { ++sessionGeneration.current; setIdentity(null); setSignup(false); setPassword(''); setError('계정과 내 자료를 삭제했습니다.'); }} />
       <p>로컬 2단계 테스트 환경: 현재 로그인한 계정의 자료만 표시합니다. 테스트 기록은 실제 5일 사용 증거가 아닙니다.</p>
       {error ? <p role="alert">{error}</p> : null}
     </section><App key={identity.user.id} />

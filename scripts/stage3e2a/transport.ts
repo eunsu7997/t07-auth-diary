@@ -1,6 +1,7 @@
 // Offline preparation only. Import and construction perform no network I/O.
-import { readFileSync } from 'node:fs';
+import { readFileSync, lstatSync } from 'node:fs';
 import { resolve, basename } from 'node:path';
+import { parseConfigFileTextToJson } from 'typescript';
 import type { BoundStatement } from '../stage3d/adapters.ts';
 import type { D1DatabaseLike } from '../stage3e1/d1-adapter.ts';
 import { controlPlanePrecheck, readRemoteControlPlaneValue, type ControlPlaneObserver } from './control-plane.ts';
@@ -38,12 +39,30 @@ export function normalizeTarget(policy: TargetPolicy): TargetPolicy {
 }
 function productionBindingIds() {
   try {
-    return ['../../wrangler.jsonc', '../../../t06/wrangler.jsonc'].flatMap(relative => {
+    // Mandatory repository snapshot: T06 identity recorded in DEPLOYMENT.md.
+    // A missing sibling never removes this protection.
+    const snapshot = JSON.parse(readFileSync(new URL('../production-protection.json', import.meta.url), 'utf8')) as { source?: string; database_name?: string; database_id?: string };
+    const snapshotId = dbId(snapshot.database_id);
+    if (snapshot.source !== 'DEPLOYMENT.md:T06' || snapshot.database_name !== 'aleph-t06-pds-diary-db' || !snapshotId) return fail('PRODUCTION_PROTECTION_UNKNOWN');
+    const paths = ['../../wrangler.jsonc'];
+    try {
+      if (!lstatSync(new URL('../../../t06/', import.meta.url)).isDirectory()) return fail('PRODUCTION_PROTECTION_UNKNOWN');
+      paths.push('../../../t06/wrangler.jsonc');
+    } catch (error) {
+      // Only an absent folder is optional. Missing config inside an existing folder,
+      // access errors, corrupt configs/snapshot and unknown state still fail closed.
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') return fail('PRODUCTION_PROTECTION_UNKNOWN');
+    }
+    return [snapshotId, ...paths.flatMap(relative => {
       const text = readFileSync(new URL(relative, import.meta.url), 'utf8');
-      const ids = [...text.matchAll(/"database_id"\s*:\s*"([^"]+)"/g)].map(m => dbId(m[1]));
+      const parsed = parseConfigFileTextToJson('protected-binding.jsonc', text);
+      if (parsed.error) return fail('PRODUCTION_PROTECTION_UNKNOWN');
+      const config = parsed.config as { d1_databases?: { database_id?: unknown }[] };
+      if (!Array.isArray(config.d1_databases)) return fail('PRODUCTION_PROTECTION_UNKNOWN');
+      const ids = config.d1_databases.map(binding => dbId(binding.database_id));
       if (!ids.length || ids.some(v => !v)) return fail('PRODUCTION_PROTECTION_UNKNOWN');
       return ids as string[];
-    });
+    })];
   } catch { return fail('PRODUCTION_PROTECTION_UNKNOWN'); }
 }
 export function targetMatches(policy: TargetPolicy, observed: Identity | undefined) {
