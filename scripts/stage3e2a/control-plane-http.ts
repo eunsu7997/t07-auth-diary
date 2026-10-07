@@ -1,4 +1,5 @@
 import { normalizeTarget, type TargetPolicy } from './transport.ts';
+import { TrustedObservationSupervisor } from '../capability/supervisor.ts';
 export interface ControlPlaneHttp { get(path: string): Promise<unknown> }
 const real = new WeakSet<object>(), fake = new WeakSet<object>();
 export function httpOrigin(client: ControlPlaneHttp): 'REMOTE_CONTROL_PLANE' | 'FAKE_CONTROL_PLANE' | 'UNKNOWN' {
@@ -18,16 +19,9 @@ export class CloudflareReadonlyHttp implements ControlPlaneHttp {
     const route = url.pathname.replace(/^\/client\/v4/, '');
     const allowed = route === account || route === database || route === `${database}/time_travel/bookmark` || route === `${account}/workers/scripts` || new RegExp(`^${account}/workers/scripts/[a-zA-Z0-9_-]+/(settings|deployments|schedules)$`).test(route) || route === `${account}/tokens/verify` || new RegExp(`^${account}/tokens/[a-f0-9]{32}$`).test(route) || route === '/zones' && url.searchParams.get('account.id') === p.expectedAccountId || [...this.#zones].some(id => route === `/zones/${id}/workers/routes`);
     if (url.origin !== 'https://api.cloudflare.com' || !allowed || url.username || url.password || url.hash) throw new Error('CONTROL_PLANE_PATH_DENIED');
-    // Credential callback is explicit; no env flag or import/construction performs I/O.
-    const credential = await this.#credential(); if (!credential || /[\r\n]/.test(credential)) throw new Error('CONTROL_PLANE_CREDENTIAL_UNAVAILABLE');
-    try {
-      const response = await fetch(url, { method: 'GET', redirect: 'error', headers: { Authorization: `Bearer ${credential}` }, signal: AbortSignal.timeout(10000) });
-      if (!response.ok) throw new Error('CONTROL_PLANE_READ_FAILED');
-      const body = await response.json() as { success?: boolean; result?: unknown };
-      if (body.success !== true) throw new Error('CONTROL_PLANE_READ_FAILED');
-      if (route === '/zones' && Array.isArray(body.result)) for (const zone of body.result as { id?: string; account?: { id?: string } }[]) if (zone.account?.id === p.expectedAccountId && /^[a-f0-9]{32}$/.test(zone.id ?? '')) this.#zones.add(zone.id!);
-      return body;
-    } catch { throw new Error('CONTROL_PLANE_READ_FAILED'); }
+    // Actual requests are delegated to a fixed runner; this stage has no remote issuer.
+    // Never invoke the credential callback during local-only preparation.
+    return new TrustedObservationSupervisor(p).observe({ kind: 'GET', path: url.pathname + url.search });
   }
 }
 Object.freeze(CloudflareReadonlyHttp.prototype); Object.freeze(FakeControlPlaneHttp.prototype);
