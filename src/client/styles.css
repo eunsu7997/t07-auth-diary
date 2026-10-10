@@ -593,9 +593,9 @@ progress::-moz-progress-bar { background: var(--ring-b); border-radius: 999px; }
 .see-insights { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 14px; align-items: stretch; }
 .compare { display: grid; gap: 10px; align-content: start; padding: 18px; border-radius: 22px; background: var(--surface); border: 1px solid var(--border); }
 .compare-title { font-size: 12.5px; font-weight: 800; color: var(--text-2); }
-.compare-row { display: grid; grid-template-columns: 40px minmax(0, 1fr) 72px; gap: 10px; align-items: center; font-size: 13px; font-weight: 650; }
+.compare-row { display: grid; grid-template-columns: 40px minmax(0, 1fr) 112px; gap: 10px; align-items: center; font-size: 13px; font-weight: 650; }
 .compare-row svg, .day-bars svg { width: 100%; height: 12px; display: block; }
-.compare-row b { text-align: right; font-variant-numeric: tabular-nums; }
+.compare-row b { text-align: right; font-variant-numeric: tabular-nums; word-break: keep-all; }
 .track { fill: var(--ring-track); }
 .compare-row.estimate .bar { fill: var(--blue-deep); }
 .compare-row.actual .bar { fill: var(--primary); }
@@ -743,7 +743,7 @@ progress::-moz-progress-bar { background: var(--ring-b); border-radius: 999px; }
   .running-meta { grid-column: 1; }
   .exec-actions .btn { flex: 1 1 auto; }
   .plan-list { grid-template-columns: minmax(0, 1fr); }
-  .compare-row { grid-template-columns: 34px minmax(0, 1fr) 60px; }
+  .compare-row { grid-template-columns: 34px minmax(0, 1fr) 96px; }
   .day-bars li { grid-template-columns: 40px minmax(0, 1fr); }
   .day-value { grid-column: 2; }
   .auth-card { padding: 22px; border-radius: 26px; }

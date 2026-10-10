@@ -74,11 +74,3 @@ export function BrandMark() {
     <circle cx="16" cy="17" r="2.2" className="brand-core" />
   </svg>;
 }
-
-/** Duration in Korean units without rounding away seconds (display only). */
-export function duration(total: number) {
-  const s = Math.max(0, Math.round(total));
-  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
-  const parts = [h ? `${h}시간` : '', m ? `${m}분` : '', sec ? `${sec}초` : ''].filter(Boolean);
-  return parts.length ? parts.join(' ') : '0분';
-}

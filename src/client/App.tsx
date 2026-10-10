@@ -6,10 +6,10 @@ import SeePanel from './SeePanel';
 import CopyPlanForm from './CopyPlanForm';
 import LiveBar from './LiveBar';
 import Dashboard, { type SeeSnapshot } from './Dashboard';
+import { formatDuration } from './time-format';
 import { BrandMark, Icon, planPhase, seoulToday, type IconName } from './ui';
 
 const priorities = { high: '높음', medium: '보통', low: '낮음' };
-const time = (seconds: number) => `${Number((seconds / 60).toFixed(2))}분`;
 const timestamp = (value: string) => new Intl.DateTimeFormat('ko-KR', { timeZone: 'Asia/Seoul', dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
 const reducedMotion = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 function reveal(element: HTMLElement | null, focus: HTMLElement | null) {
@@ -324,12 +324,12 @@ export default function App({ accountControls, accountNotice, accountPanel, user
                 <p className="criteria-label"><Icon name="target" />성공 기준</p>
                 <p className="preserve">{plan.success_criteria}</p>
                 <dl className="plan-stats">
-                  <div className="lavender"><dt><span className="bento-icon"><Icon name="clock" /></span>계획 예상 시간</dt><dd>{time(plan.estimated_seconds)}</dd></div>
+                  <div className="lavender"><dt><span className="bento-icon"><Icon name="clock" /></span>계획 예상 시간</dt><dd>{formatDuration(plan.estimated_seconds)}</dd></div>
                   <div className="blue"><dt><span className="bento-icon blue"><Icon name="layers" /></span>현재 버전</dt><dd>{plan.current_version}</dd></div>
                   <div className="mint"><dt><span className="bento-icon mint"><Icon name="check" /></span>완료한 할 일</dt><dd>{copyTasks.length}개</dd></div>
                 </dl>
                 <details className="history"><summary>수정 이력 ({versions.length}개 버전)</summary>
-                  <ol className="timeline">{versions.map(v => <li key={v.version}><article className="version" data-testid={`version-${v.version}`}><h3>버전 {v.version}{v.version === 1 ? ' · 최초 계획' : ''}</h3><p className="muted">{timestamp(v.recorded_at)} · 한국 시간</p><strong className="preserve">{v.title}</strong><p>{v.period_start} ~ {v.period_end}</p><p className="preserve">{v.success_criteria}</p><p className="muted">계획 예상 시간: {time(v.estimated_seconds)}</p></article></li>)}</ol>
+                  <ol className="timeline">{versions.map(v => <li key={v.version}><article className="version" data-testid={`version-${v.version}`}><h3>버전 {v.version}{v.version === 1 ? ' · 최초 계획' : ''}</h3><p className="muted">{timestamp(v.recorded_at)} · 한국 시간</p><strong className="preserve">{v.title}</strong><p>{v.period_start} ~ {v.period_end}</p><p className="preserve">{v.success_criteria}</p><p className="muted">계획 예상 시간: {formatDuration(v.estimated_seconds)}</p></article></li>)}</ol>
                 </details>
                 <div className="plan-foot">
                   <p className="id">계획 ID: <code>{plan.id}</code></p>
@@ -369,7 +369,7 @@ export default function App({ accountControls, accountNotice, accountPanel, user
                   <ul className="task-meta">
                     <li className={`status-chip ${t.status === 'completed' ? 'done' : running ? 'is-running' : ''}`}>{t.status === 'completed' ? <Icon name="check" /> : running ? <span className="live-dot" aria-hidden="true" /> : <Icon name="circle" />}{t.status === 'completed' ? '완료' : '진행 중'}</li>
                     <li className={overdue ? 'overdue' : undefined}><Icon name="calendar" />마감일 {t.due_date ?? '미지정'}{overdue ? <strong> · 기한 지남</strong> : null}</li>
-                    <li><Icon name="clock" />할 일 예상 시간 {time(t.estimated_seconds)}</li>
+                    <li><Icon name="clock" />할 일 예상 시간 {formatDuration(t.estimated_seconds)}</li>
                   </ul>
                   {t.tags.length ? <div className="tags">{t.tags.map(tag => <span key={tag.id}>{tag.name}</span>)}</div> : null}
                   <ExecutionControls task={t} logs={executions.filter(log => log.task_id === t.id)} busy={pending} run={mutate} />

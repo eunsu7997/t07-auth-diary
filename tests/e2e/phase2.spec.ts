@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import type { DatabaseExport, ExecutionLog } from '../../src/shared/types';
+import { formatDuration } from '../../src/client/time-format';
 
 const planInput = { title: '2차 UI 테스트', period_start: '2026-10-01', period_end: '2026-10-09', success_criteria: '브라우저 자동 검증', estimated_seconds: 7200 };
 async function create(request: APIRequestContext, title: string, content = '2차 UI 할 일', due: string | null = '2026-10-02') {
@@ -31,7 +32,7 @@ test('start is saved immediately and restored after reload; finish records real 
   expect(closed.actual_seconds).toBe(Math.floor((Date.parse(closed.ended_at!) - Date.parse(closed.started_at)) / 1000));
   expect(closed.actual_seconds).toBeGreaterThanOrEqual(1);
   const stored = await (await request.get(`/api/tasks/${task.id}`)).json(); expect(stored.estimated_seconds).toBe(600);
-  await page.getByText('실행 기록 (1개)', { exact: true }).click(); await expect(page.getByTestId('execution-record')).toContainText(`${closed.actual_seconds}초`);
+  await page.getByText('실행 기록 (1개)', { exact: true }).click(); await expect(page.getByTestId('execution-record')).toContainText(formatDuration(closed.actual_seconds!));
   await page.screenshot({ path: 'evidence/t07/stage2-1/browser/phase2-execution.png', fullPage: true });
 });
 
@@ -69,10 +70,12 @@ test('UI review shows actual DB totals and clicking a number reveals supporting 
   const review = await (await request.get(`/api/review?plan_id=${plan.id}`)).json();
   await select(page, plan.title); await page.getByLabel('돌아보기 범위').selectOption('selected');
   await expect(page.getByTestId('metric-plans')).toContainText('1'); await expect(page.getByTestId('metric-delayed')).toContainText('1');
-  await expect(page.getByTestId('metric-estimated')).toContainText('600초'); await expect(page.getByTestId('metric-actual')).toContainText(`${review.actual_seconds}초`);
-  await expect(page.getByTestId('metric-difference')).toContainText(`${review.actual_seconds - 600}초`); await expect(page.getByTestId('plan-estimate')).toContainText('7200초');
+  await expect(page.getByTestId('metric-estimated')).toContainText('10분'); await expect(page.getByTestId('metric-actual')).toContainText(formatDuration(review.actual_seconds));
+  await expect(page.getByTestId('metric-difference')).toContainText(formatDuration(review.actual_seconds - 600, { signed: true })); await expect(page.getByTestId('plan-estimate')).toContainText('2시간');
   await page.getByTestId('metric-delayed').click(); await expect(page.locator('#evidence-delayed')).toContainText('지연 근거 할 일'); await expect(page.locator('#evidence-delayed')).toBeVisible();
   await page.getByTestId('metric-actual').click(); await expect(page.locator('#evidence-actual')).toContainText(open.id);
+  await expect(page.locator('#evidence-actual')).toContainText(`${formatDuration(review.actual_seconds)} (${review.actual_seconds}초)`);
+  await expect(page.locator('#evidence-difference')).toContainText(`(${review.actual_seconds - 600}초)`);
   await page.screenshot({ path: 'evidence/t07/stage2-1/browser/phase2-review.png', fullPage: true });
 });
 

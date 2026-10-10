@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ExecutionLog, Task } from '../shared/types';
 import { api } from './api';
+import { formatDuration } from './time-format';
 import { clock, Icon } from './ui';
 
 type Run = (operation: () => Promise<void>, message: string) => Promise<boolean>;
@@ -36,7 +37,7 @@ export default function ExecutionControls({ task, logs, busy, run }: { task: Tas
     {active ? <div className="running" data-testid="active-execution">
       <p className="running-label"><span className="live-dot" aria-hidden="true" />실행 중</p>
       <p className="running-clock" aria-hidden="true">{clock(elapsed)}</p>
-      <p className="running-meta">시작 {stamp(active.started_at)} · 경과 {elapsed}초</p>
+      <p className="running-meta">시작 {stamp(active.started_at)} · 경과 {formatDuration(elapsed)}</p>
     </div> : null}
     <div className="actions exec-actions">
       {active ? <button className="btn btn-finish" disabled={busy} onClick={() => finish(active)}><Icon name="stop" />완료</button>
@@ -46,7 +47,7 @@ export default function ExecutionControls({ task, logs, busy, run }: { task: Tas
     <details className="execution-history"><summary>실행 기록 ({logs.length}개)</summary>
       {logs.length ? <ol>{logs.map(log => <li key={log.id} data-testid="execution-record" className={log.ended_at ? undefined : 'open'}>
         <p className="exec-times"><span>시작: {stamp(log.started_at)}</span><span>종료: {log.ended_at ? stamp(log.ended_at) : '진행 중'}</span></p>
-        <p className="exec-durations"><span>실제 걸린 시간: <strong>{log.actual_seconds === null ? '완료 후 확정' : `${log.actual_seconds}초`}</strong></span><span>시작 당시 예상 시간: {log.estimated_seconds_at_start}초</span></p>
+        <p className="exec-durations"><span>실제 걸린 시간: <strong>{log.actual_seconds === null ? '완료 후 확정' : formatDuration(log.actual_seconds)}</strong></span><span>시작 당시 예상 시간: {formatDuration(log.estimated_seconds_at_start)}</span></p>
         <p className="id">실행 ID: <code>{log.id}</code></p>
       </li>)}</ol> : <p className="muted">아직 실행 기록이 없습니다.</p>}
     </details>

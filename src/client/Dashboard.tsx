@@ -1,7 +1,8 @@
 import { useEffect, useId, useState, type ReactNode } from 'react';
 import type { ExecutionLog, Plan, Review, Task } from '../shared/types';
 import { fiveDaySummary } from './five-day-summary';
-import { clock, duration, Icon, planPhase } from './ui';
+import { formatDuration } from './time-format';
+import { clock, Icon, planPhase } from './ui';
 
 // Display-only dashboard. Every number is derived from data the app already fetched
 // (selected-plan tasks/executions and the See panel's /review response). Nothing is stored.
@@ -150,10 +151,10 @@ export default function Dashboard({ plan, plansCount, loading, tasks, executions
               <span className="day-tile-week">{weekdayOf.format(new Date(`${d.date}T00:00:00Z`))}</span>
               <span className="day-tile-date">{d.date.slice(5).replace('-', '.')}</span>
               <svg className="day-tile-bar" viewBox="0 0 10 40" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect className="track" width="10" height="40" rx="5" />{h ? <rect className="bar" y={40 - h} width="10" height={h} rx="5" /> : null}</svg>
-              <span className="day-tile-value">{duration(d.seconds)}</span>
+              <span className="day-tile-value">{formatDuration(d.seconds)}</span>
             </li>;
           })}</ol>
-          <dl className="five-sum"><div><dt>5일 합계</dt><dd>{duration(fiveDays.total)}</dd></div><div><dt>일평균</dt><dd>{duration(fiveDays.average)}</dd></div></dl>
+          <dl className="five-sum"><div><dt>5일 합계</dt><dd>{formatDuration(fiveDays.total)}</dd></div><div><dt>일평균</dt><dd>{formatDuration(fiveDays.average)}</dd></div></dl>
         </> : <div className="bento-empty compact"><p><strong>{review ? '날짜 5개가 아직 선택되지 않았어요.' : '기록을 불러오는 중…'}</strong></p><p className="muted small">돌아보기에서 실제로 사용한 서로 다른 날짜 5개를 고르면 날짜별 작업시간이 여기에 표시됩니다.</p><a className="btn btn-soft btn-sm" href="#see">날짜 선택하러 가기<Icon name="chevron" /></a></div>}
       </article>
     </div>
@@ -162,13 +163,13 @@ export default function Dashboard({ plan, plansCount, loading, tasks, executions
     <div className="mini-cards">
       <article className="card mini-card">
         <div className="mini-head"><span className="bento-icon"><Icon name="clock" /></span><h3>오늘 실제 작업시간</h3><a className="mini-link" href="#see" aria-label="오늘 실제 작업시간 근거 보기"><Icon name="chevron" /></a></div>
-        {todayWork ? <><p className="mini-number">{duration(todayWork.seconds)}</p><p className="mini-sub">{todayWork.count ? `오늘 종료한 실행 ${todayWork.count}건` : '오늘 종료한 실행이 아직 없어요.'}</p></> : loadingText}
+        {todayWork ? <><p className="mini-number">{formatDuration(todayWork.seconds)}</p><p className="mini-sub">{todayWork.count ? `오늘 종료한 실행 ${todayWork.count}건` : '오늘 종료한 실행이 아직 없어요.'}</p></> : loadingText}
       </article>
       <article className="card mini-card">
         <div className="mini-head"><span className="bento-icon blue"><Icon name="chart" /></span><h3>예상 vs 실제</h3><a className="mini-link" href="#see" aria-label="예상과 실제 시간 근거 보기"><Icon name="chevron" /></a></div>
         {review ? ratio !== null ? <div className="gauge-wrap">
           <Ring ratio={ratio} size={92} stroke={9} className={ratio > 1 ? 'ring-gauge is-over' : 'ring-gauge'}><span className="gauge-pct">{Math.round(ratio * 100)}<small>%</small></span></Ring>
-          <dl className="gauge-legend"><div><dt>예상</dt><dd>{duration(review.task_estimated_seconds)}</dd></div><div><dt>실제</dt><dd>{duration(review.actual_seconds)}</dd></div></dl>
+          <dl className="gauge-legend"><div><dt>예상</dt><dd>{formatDuration(review.task_estimated_seconds)}</dd></div><div><dt>실제</dt><dd>{formatDuration(review.actual_seconds)}</dd></div></dl>
         </div> : <p className="mini-sub">할 일 예상 시간 합계가 0이라 비율을 계산하지 않아요.</p> : loadingText}
       </article>
       <article className="card mini-card">
