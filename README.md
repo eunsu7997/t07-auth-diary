@@ -1,6 +1,6 @@
-# T07 플랜두씨 다이어리 — 로컬 과제 카드 감사 수정
+# T07 플랜두씨 다이어리 — 공개 배포된 인증 Plan-Do-See 일기
 
-Better Auth 이메일/비밀번호 인증으로 로그인한 사용자만 자기 자료(계획·할 일·실행 기록·돌아보기·내보내기)를 사용합니다. 모든 업무 API는 서버 세션의 사용자 ID로 소유자를 격리합니다. Cloudflare Worker + D1로 공개 배포되어 운영 중이며, 5일 실사용 기록을 진행 중입니다. 배포 버전은 제출 보고서에 기록합니다.
+Better Auth 이메일/비밀번호 인증으로 로그인한 사용자만 자기 자료(계획·할 일·실행 기록·돌아보기·내보내기)를 사용합니다. 모든 업무 API는 서버 세션의 사용자 ID로 소유자를 격리합니다. Cloudflare Worker + D1로 공개 배포되어 운영 중입니다. 5일 실사용 기록은 제출 보고서에 정리합니다. 배포 버전은 제출 보고서에 기록합니다.
 
 개발 이력: 단계별 구현·감사 기록은 [STAGE1.md](STAGE1.md), [STAGE2.md](STAGE2.md), [STAGE2-1.md](STAGE2-1.md)와 `evidence/`에 당시 기록으로 보존합니다.
 
@@ -8,7 +8,7 @@ Better Auth 이메일/비밀번호 인증으로 로그인한 사용자만 자기
 
 Node 24 이상, package-lock.json 고정 버전을 사용합니다. T07 작업 폴더에서 `npm ci`, `npm run dev`로 실행합니다. 개발 화면은 http://127.0.0.1:5177, API는 3007입니다. `npm run build` 후 `npm start`는 http://127.0.0.1:3007 입니다. 기본 DB는 .data/t07.sqlite, 지정 변수는 T07_DB_PATH와 T07_PORT입니다.
 
-BETTER_AUTH_SECRET은 ignored .env.local에만 두며 로컬 loader가 없을 때 랜덤으로 생성합니다. BETTER_AUTH_URL은 인증 출처와 일치해야 하며 개발은 5177, production bundle 로컬 실행은 3007입니다. VITE_*에 인증 secret을 두지 않습니다. 향후 운영에서는 Worker secret을 사용합니다. 로컬 workerd는 ignored .dev.vars와 HTTPS localhost:8787, T07 전용 local D1만 사용합니다.
+BETTER_AUTH_SECRET은 ignored .env.local에만 두며 로컬 loader가 없을 때 랜덤으로 생성합니다. BETTER_AUTH_URL은 인증 출처와 일치해야 하며 개발은 5177, production bundle 로컬 실행은 3007입니다. VITE_*에 인증 secret을 두지 않습니다. 운영에서는 Worker secret을 사용합니다. 로컬 workerd는 ignored .dev.vars와 HTTPS localhost:8787, T07 전용 local D1만 사용합니다.
 
 운영은 Cloudflare Worker `aleph-t07-auth-diary`(https://aleph-t07-auth-diary.aleph-t04-eunsu.workers.dev)와 T07 전용 D1 `aleph-t07-auth-diary-db`를 사용하며, 원격 D1에는 migration 0001~0006(0006: 계정 삭제)이 적용되어 있습니다. 운영 비밀값은 Worker secret으로만 두고 저장소에 기록하지 않습니다. T06 Worker/D1은 별도로 보존합니다. 배포·롤백 절차는 [DEPLOYMENT.md](DEPLOYMENT.md)를 봅니다.
 
@@ -18,7 +18,7 @@ BETTER_AUTH_SECRET은 ignored .env.local에만 두며 로컬 loader가 없을 �
 - 사용자별 tag, plans, 실행, review/export 격리. soft-delete된 archived task도 현재 계약상 review/export 범위에 포함됩니다.
 - 로그인 10회/60초, 가입 및 비밀번호 변경 5회/60초. IP별 DB 카운터이며 NAT 공유/분산 IP 공격의 한계는 STAGE2-1에 적었습니다.
 - 서버 이름 trim·1~100자, 새 비밀번호 최소 12자. HttpOnly/Secure(HTTPS)/SameSite=Lax 세션 쿠키, 브라우저 token storage 없음.
-- 현재 비밀번호를 재확인하면 내 계정과 소유 계획·할 일·계획 버전·실행 기록·태그 및 모든 로그인 세션을 함께 삭제합니다. 삭제한 자료는 복구할 수 없으므로 삭제 전에 “전체 JSON 다운로드”를 권장합니다. 삭제 재확인은 로그인 사용자와 요청 IP별 5회/60초로 제한하며 초과하면 429로 거부합니다. 원격 적용·배포는 이번에 하지 않았습니다.
+- 현재 비밀번호를 재확인하면 내 계정과 소유 계획·할 일·계획 버전·실행 기록·태그 및 모든 로그인 세션을 함께 삭제합니다. 삭제한 자료는 복구할 수 없으므로 삭제 전에 “전체 JSON 다운로드”를 권장합니다. 삭제 재확인은 로그인 사용자와 요청 IP별 5회/60초로 제한하며 초과하면 429로 거부합니다.
 - 이메일 소유 확인/이메일 비밀번호 복구/MFA/OAuth는 미지원입니다. 실제 이메일 소유자를 증명하지 못하고 비밀번호 단일 요소에 의존합니다.
 - Better Auth 정상 token 응답은 유지하지만 로그/evidence는 원문 token을 저장하지 않습니다. 업무 export에 인증/rateLimit 데이터는 없습니다.
 
