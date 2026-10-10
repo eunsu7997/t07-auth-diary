@@ -1,8 +1,8 @@
 # T07 플랜두씨 다이어리 — 로컬 과제 카드 감사 수정
 
-Stage 2는 커밋 `a0a2ba27aebea1ec86d2e28508a951b28c3a9456`으로 origin/codex/t07-auth에 push되었습니다. 로그인 세션에 따른 모든 업무 API 소유권 격리가 구현되어 있습니다. Stage 2.1은 사용자가 전달한 Claude Code 재감사에서 코드/문서 PASS, 체크포인트 commit 가능 YES 판정을 받았으며 사용자 승인에 따른 체크포인트 commit/push 대상입니다. 공개 배포와 실제 5일 기록은 아직 수행하지 않았습니다.
+Better Auth 이메일/비밀번호 인증으로 로그인한 사용자만 자기 자료(계획·할 일·실행 기록·돌아보기·내보내기)를 사용합니다. 모든 업무 API는 서버 세션의 사용자 ID로 소유자를 격리합니다. Cloudflare Worker + D1로 공개 배포되어 운영 중이며, 5일 실사용 기록을 진행 중입니다. 배포 버전은 제출 보고서에 기록합니다.
 
-Stage 2.1 당시 범위와 보안 한계는 [STAGE2-1.md](STAGE2-1.md), 당시 감사 판정은 [resolution](evidence/t07/stage2-1/claude-audit-resolution.md)을 봅니다. [STAGE2.md](STAGE2.md)와 [STAGE1.md](STAGE1.md)도 당시 구현/검증 기록입니다. 현재 로컬 점검은 [T07-CARD-CHECK.md](T07-CARD-CHECK.md), 다음 감사 범위는 handoff/CURRENT.md를 따릅니다.
+개발 이력: 단계별 구현·감사 기록은 [STAGE1.md](STAGE1.md), [STAGE2.md](STAGE2.md), [STAGE2-1.md](STAGE2-1.md)와 `evidence/`에 당시 기록으로 보존합니다.
 
 ## 현재 T07 실행
 
@@ -10,7 +10,7 @@ Node 24 이상, package-lock.json 고정 버전을 사용합니다. T07 작업 �
 
 BETTER_AUTH_SECRET은 ignored .env.local에만 두며 로컬 loader가 없을 때 랜덤으로 생성합니다. BETTER_AUTH_URL은 인증 출처와 일치해야 하며 개발은 5177, production bundle 로컬 실행은 3007입니다. VITE_*에 인증 secret을 두지 않습니다. 향후 운영에서는 Worker secret을 사용합니다. 로컬 workerd는 ignored .dev.vars와 HTTPS localhost:8787, T07 전용 local D1만 사용합니다.
 
-git history와 Stage3B evidence에는 T07 D1 aleph-t07-auth-diary-db 생성 및 0001~0005 migration 적용이 기록되어 있고 wrangler.jsonc의 UUID도 그 기록과 일치합니다. 이번 작업에서는 원격 조회하지 않았으므로 현재 Cloudflare DB의 존재·스키마·행 수를 재검증한 것이 아닙니다. 공개 배포·실제 원격 import·5일 사용·규칙 변경은 이번 작업에서 수행하지 않았습니다. 원격 명령은 계속 차단하며 T06 Worker/D1을 보존합니다. 자동 fixture는 실제 사용 증거가 아닙니다. 0006 계정 삭제 migration은 이번 로컬 구현이며 원격 적용하지 않았습니다.
+운영은 Cloudflare Worker `aleph-t07-auth-diary`(https://aleph-t07-auth-diary.aleph-t04-eunsu.workers.dev)와 T07 전용 D1 `aleph-t07-auth-diary-db`를 사용하며, 원격 D1에는 migration 0001~0006(0006: 계정 삭제)이 적용되어 있습니다. 운영 비밀값은 Worker secret으로만 두고 저장소에 기록하지 않습니다. T06 Worker/D1은 별도로 보존합니다. 배포·롤백 절차는 [DEPLOYMENT.md](DEPLOYMENT.md)를 봅니다.
 
 ## 현재 정책
 
