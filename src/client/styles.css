@@ -372,7 +372,7 @@ fieldset { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: 1
 .check-text { min-width: 0; font-size: 14px; font-weight: 600; line-height: 1.4; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .check-tag { font-size: 11.5px; font-weight: 750; padding: 2px 8px; border-radius: 999px; background: var(--blue); color: var(--blue-ink); white-space: nowrap; }
 .check-item.is-done .check-box { background: var(--primary); border-color: var(--primary); }
-.check-item.is-done .check-text { color: var(--text-2); text-decoration: line-through; text-decoration-color: var(--border-strong); }
+.check-item.is-done .check-text { color: var(--text-3); }
 .check-item.is-done .check-tag { background: var(--lavender); color: var(--lavender-ink); }
 .check-item.is-running { background: var(--pink); }
 .check-item.is-running .check-box { border-color: var(--pink-deep); }
@@ -526,7 +526,7 @@ progress::-moz-progress-bar { background: var(--ring-b); border-radius: 999px; }
 .task-card[data-priority="high"]::before { background: var(--pink-deep); }
 .task-card[data-priority="low"]::before { background: var(--mint-deep); }
 .task-card[data-status="completed"] { background: linear-gradient(180deg, var(--mint), var(--surface-glass) 110px); }
-.task-card[data-status="completed"] h3 { color: var(--text-2); text-decoration: line-through; text-decoration-color: var(--border-strong); }
+.task-card[data-status="completed"] h3 { color: var(--text-3); }
 .task-card[data-running="true"] { background: linear-gradient(165deg, var(--lavender), var(--surface-glass) 70%); border-color: var(--lavender-deep); box-shadow: 0 0 0 4px var(--primary-soft), var(--shadow-card); }
 .task-head { grid-area: head; display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 10px; align-items: start; }
 .task-head h3 { font-size: 16.5px; font-weight: 750; line-height: 1.5; padding-top: 1px; }
