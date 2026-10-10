@@ -80,7 +80,7 @@ export default function AuthGate() {
           <div className="account-profile">
             <span className="avatar avatar-lg" aria-hidden="true">{initial}</span>
             <div><p className="account-profile-name">{identity.user.name}</p><p className="muted">{identity.user.email}</p></div>
-            <p className="muted small">로컬 2단계 테스트 환경: 현재 로그인한 계정의 자료만 표시합니다. 테스트 기록은 실제 5일 사용 증거가 아닙니다.</p>
+            <p className="muted small">현재 로그인한 계정의 자료만 표시합니다.</p>
           </div>
           <AccountDeletionForm onDeleted={() => { ++sessionGeneration.current; setIdentity(null); setSignup(false); setPassword(''); setError('계정과 내 자료를 삭제했습니다.'); }} />
         </div>
@@ -117,7 +117,7 @@ export default function AuthGate() {
           <p className="auth-switch">{signup ? '이미 계정이 있나요?' : '처음 사용하시나요?'}<button type="button" className="link-btn" onClick={() => { setSignup(!signup); setPassword(''); setError(''); setShowPassword(false); }}>{signup ? '로그인으로' : '가입 화면으로'}</button></p>
         </fieldset></form>{error ? <p role="alert" className="banner banner-error">{error}</p> : null}
         <div className="auth-foot">
-          <p className="auth-note"><Icon name="info" />테스트 계정은 실제 사용 증거가 아닙니다.</p>
+          <p className="auth-note"><Icon name="info" />로그인한 계정의 자료만 볼 수 있습니다.</p>
           <button className="btn btn-ghost btn-sm session-retry" onClick={() => void check()}>세션 다시 확인</button>
         </div>
       </section>
