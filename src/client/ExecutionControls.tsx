@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ExecutionLog, Task } from '../shared/types';
 import { api } from './api';
+import { clock, Icon } from './ui';
 
 type Run = (operation: () => Promise<void>, message: string) => Promise<boolean>;
 const stamp = (value: string) => new Intl.DateTimeFormat('ko-KR', { timeZone: 'Asia/Seoul', dateStyle: 'medium', timeStyle: 'medium' }).format(new Date(value));
@@ -30,17 +31,22 @@ export default function ExecutionControls({ task, logs, busy, run }: { task: Tas
       await api(`/tasks/${task.id}/executions/${log.id}/finish`, { method: 'POST', body: JSON.stringify({ request_id: id }) });
     }, '종료 시각과 실제 시간을 저장했습니다. 예상 시간은 그대로 유지됩니다.');
   }
+  const elapsed = active ? Math.max(0, Math.floor((now - Date.parse(active.started_at)) / 1000)) : 0;
   return <div className="execution-controls">
-    {active ? <p className="running" data-testid="active-execution">실행 중 · 시작 {stamp(active.started_at)} · 경과 {Math.max(0, Math.floor((now - Date.parse(active.started_at)) / 1000))}초</p> : null}
-    <div className="actions">
-      {active ? <button className="primary" disabled={busy} onClick={() => finish(active)}>완료</button>
-        : task.status === 'completed' ? <button disabled={busy} onClick={() => void run(async () => { await api(`/tasks/${task.id}/reopen`, { method: 'POST', body: '{}' }); }, '진행 중으로 되돌렸습니다. 이전 실행 기록은 보존됩니다.')}>진행 중으로 되돌리기</button>
-          : <button className="primary" disabled={busy} onClick={start}>시작</button>}
+    {active ? <div className="running" data-testid="active-execution">
+      <p className="running-label"><span className="live-dot" aria-hidden="true" />실행 중</p>
+      <p className="running-clock" aria-hidden="true">{clock(elapsed)}</p>
+      <p className="running-meta">시작 {stamp(active.started_at)} · 경과 {elapsed}초</p>
+    </div> : null}
+    <div className="actions exec-actions">
+      {active ? <button className="btn btn-finish" disabled={busy} onClick={() => finish(active)}><Icon name="stop" />완료</button>
+        : task.status === 'completed' ? <button className="btn btn-secondary" disabled={busy} onClick={() => void run(async () => { await api(`/tasks/${task.id}/reopen`, { method: 'POST', body: '{}' }); }, '진행 중으로 되돌렸습니다. 이전 실행 기록은 보존됩니다.')}><Icon name="rotate" />진행 중으로 되돌리기</button>
+          : <button className="btn btn-start" disabled={busy} onClick={start}><Icon name="play" />시작</button>}
     </div>
     <details className="execution-history"><summary>실행 기록 ({logs.length}개)</summary>
-      {logs.length ? <ol>{logs.map(log => <li key={log.id} data-testid="execution-record">
-        <p>시작: {stamp(log.started_at)}<br />종료: {log.ended_at ? stamp(log.ended_at) : '진행 중'}</p>
-        <p>실제 걸린 시간: {log.actual_seconds === null ? '완료 후 확정' : `${log.actual_seconds}초`} · 시작 당시 예상 시간: {log.estimated_seconds_at_start}초</p>
+      {logs.length ? <ol>{logs.map(log => <li key={log.id} data-testid="execution-record" className={log.ended_at ? undefined : 'open'}>
+        <p className="exec-times"><span>시작: {stamp(log.started_at)}</span><span>종료: {log.ended_at ? stamp(log.ended_at) : '진행 중'}</span></p>
+        <p className="exec-durations"><span>실제 걸린 시간: <strong>{log.actual_seconds === null ? '완료 후 확정' : `${log.actual_seconds}초`}</strong></span><span>시작 당시 예상 시간: {log.estimated_seconds_at_start}초</span></p>
         <p className="id">실행 ID: <code>{log.id}</code></p>
       </li>)}</ol> : <p className="muted">아직 실행 기록이 없습니다.</p>}
     </details>

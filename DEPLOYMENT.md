@@ -1,24 +1,26 @@
-# T07 현재 배포 계획 — 아직 공개 배포하지 않음
+# T07 배포 상태와 다음 UI 재배포 준비
 
-2026-10-07 로컬 문서 점검: 기존 Stage 2.1의 LOCAL_ONLY_NOT_PROVISIONED 설명은 오래된 상태입니다. git commit dbb70a0의 wrangler.jsonc 변경과 evidence/t07/stage3b/STAGE3B.md, provisioning-summary.json, migration-summary.json에는 T07 전용 D1 생성 및 0001~0005 적용이 기록되어 있고, 현재 wrangler.jsonc의 UUID는 그 기록과 일치합니다. 대상 이름은 aleph-t07-auth-diary / aleph-t07-auth-diary-db입니다. 이번 작업에서는 원격 조회하지 않았으므로 현재 DB의 존재·스키마·행 수·Cloudflare 상태를 새로 검증했다고 주장하지 않습니다. UUID와 workers_dev=false는 변경하지 않았습니다. T06 운영 DB와 Worker는 보존합니다.
+2026-10-10 기준: 사용자가 전달한 Claude Code 읽기 전용 점검 결과에 따르면 T07 원격 D1에는 migrations 0001~0006이 적용되었고, workers.dev 공개 앱은 운영 중이며 현재 활성 버전은 2026-10-08 배포입니다. 이번 작업에서는 원격 조회나 배포를 실행하지 않았습니다. 이 상태는 전달받은 독립 점검 결과이며 새로 관측한 원격 결과가 아닙니다.
 
-향후 별도 승인 단계에서는 T07 전용 D1의 당시 0001~0005 적용 기록과 현재 상태를 구분해 재검증하고, 새 0006 계정 삭제 migration의 별도 감사·적용 승인 여부를 확인합니다. 이번에는 0006을 원격 적용하지 않았습니다. HTTPS 출처의 BETTER_AUTH_URL, Worker BETTER_AUTH_SECRET, Static Assets run_worker_first=true 및 보안 헤더, cf-connecting-ip 기반 database rate limit도 별도 승인 단계에서 재검증합니다. 운영 Worker는 테스트 프로필을 선택하지 않습니다. 실제 원격 import/5일 사용은 이번 작업에서 하지 않았습니다. [STAGE2-1.md](STAGE2-1.md)는 당시 보안 설계 기록이며 현재 작업 상태는 handoff/CURRENT.md와 [T07-CARD-CHECK.md](T07-CARD-CHECK.md)를 봅니다.
+과거 Stage3B Git/evidence의 0001~0005 provisioning 기록은 당시 이력입니다. 0006 미적용·공개 배포 전이라는 기존 문구는 현재 상태 설명으로 사용하지 않습니다. [STAGE2-1.md](STAGE2-1.md) 등 역사 문서는 당시 기록으로 보존합니다. 실제 5일 사용 기록은 사용자가 직접 남깁니다.
 
-## 공개 HTTPS 주소 준비 — 변경안만, 미적용
+## 현재 저장소 설정과 이번 변경
 
-현재 workers_dev=false이고 routes/custom domain도 설정에 없습니다. workers.dev를 최종 공개 주소로 사용하려면 별도 승인 후 workers_dev=true로 변경해야 합니다. custom domain을 선택한다면 해당 route와 DNS/인증서 준비가 별도로 필요합니다. 설정만으로 현재 공개 URL의 가용성을 주장하지 않습니다. 새 시크릿 창에서 인증 없이 첫 로그인/가입 화면까지 열려야 하며, 자료 API는 비로그인 시 계속 거부해야 합니다. [Cloudflare workers.dev 공식 설정](https://developers.cloudflare.com/workers/configuration/routing/workers-dev/)
+- Worker는 T07 전용 이름과 기존 account/D1 binding을 유지합니다. D1 UUID 전체값은 이 문서에 새로 기록하지 않습니다. T06 운영 DB와 Worker는 변경하지 않습니다.
+- workers_dev=true는 공개 workers.dev 운영 상태와 일치합니다. preview_urls=false를 유지합니다. 최종 HTTPS origin과 BETTER_AUTH_URL이 일치해야 합니다.
+- BETTER_AUTH_SECRET은 이미 설정된 Worker secret을 사용합니다. 소스·wrangler.jsonc·Git·VITE_*에 값이 들어가면 안 됩니다. 이번 작업에서는 secret을 변경하지 않습니다.
+- assets.run_worker_first=true로 자산 요청도 Worker 보안 헤더 미들웨어를 거칩니다. 실제 파일 전송은 src/server/worker.ts의 ASSETS.fetch에 위임합니다. 존재하지 않는 자산의 SPA fallback에도 CSP와 nosniff를 적용합니다. MIME/상태/헤더는 로컬 Wrangler에서 검증하고, 결과는 handoff/CURRENT.md에 기록합니다.
+- 이번 UI 재배포에는 src/client 전체, 계정 삭제 안내 브라우저 테스트, 이 문서, wrangler.jsonc만 포함합니다. importer/disposable/automation 및 확장 기능 실험은 제외합니다.
 
-배포 전 확인 순서(이번에는 실행 금지):
+## 승인 후 배포 순서와 복구
 
-1. 독립 감사와 사용자 배포 승인을 받은 뒤 T07 Worker/account/D1 identity를 확인하고 T06 보호 대상을 재확인합니다. 과거 Stage3B 기록을 현재 원격 검증으로 대체하지 않습니다.
-2. 최종 공개 HTTPS origin을 확정합니다. BETTER_AUTH_URL은 그 origin과 scheme/host/port가 정확히 같아야 합니다. localhost, T06 URL 또는 /api/auth 경로를 넣지 않습니다. 현재 Worker 코드는 HTTPS 여부만 검사하므로 배포 체크리스트에서 origin 일치를 별도로 검증합니다.
-3. BETTER_AUTH_SECRET은 Worker secret으로 설정합니다. 소스·wrangler.jsonc·Git·VITE_*에 평문을 넣지 않습니다. 이번 작업에서는 값을 만들거나 secret 설정 명령을 실행하지 않습니다. [Better Auth 환경 설정](https://better-auth.com/docs/installation)
-4. DB/schema 준비, pending gate, 실제 import 승인 여부를 각각 확인합니다. 로컬 fixture는 운영 DB로 옮기지 않습니다. 승인된 URL 설정 변경 후 TypeScript/build/테스트·보안 헤더·쿠키 정책을 검증합니다.
-5. 승인된 배포 뒤 새 시크릿 창에서 로그인/가입 첫 화면, 비로그인 자료 API 거부, 세션 흐름과 사용자 격리를 확인합니다. 로그에 비밀값을 남기지 않습니다. 실제 5일 사용은 사용자가 별도로 수행합니다.
+정확한 검증 커밋과 로컬 테스트 결과·사용자 배포 승인을 확인한 뒤 handoff/CURRENT.md의 명령 순서를 사용합니다. 현재 디렉터리의 t07-prod 프로필을 사용하며 자격증명 값은 출력하지 않습니다. 배포 전 활성 Worker version ID를 별도로 확보해 롤백 대상으로 보관해야 합니다. 날짜만으로 버전을 추정하지 않습니다.
+
+배포는 Worker/UI만 대상으로 하며 D1 migration/import/secret 변경은 포함하지 않습니다. 문제가 있으면 별도 승인 후 wrangler rollback <배포-전-version-id>로 Worker 코드·정적 자산·설정을 복구합니다. rollback은 D1 데이터와 migration을 되돌리지 않습니다. 이번 작업에서는 배포·롤백을 실행하지 않습니다.
 
 ## 저장소 단독 clone의 운영 DB 보호
 
-scripts/production-protection.json은 아래 T06 역사 기록에 있는 운영 D1 identity만 복제한 필수 보호 snapshot입니다. transport의 denylist는 이 snapshot + 현재 T07 wrangler binding + 존재하는 T06 sibling binding의 합집합입니다. T06 폴더가 없을 때도 T06 snapshot과 T07 binding을 계속 거부합니다. 폴더가 있으면 추가 binding도 읽어 더 엄격하게 보호합니다. snapshot/현재 설정의 누락·잘못된 UUID, 접근 오류, 존재하는 sibling의 설정 누락 등 알 수 없는 상태는 PRODUCTION_PROTECTION_UNKNOWN으로 거부합니다. 폴더 ENOENT만 optional이며 T06 파일/DB를 수정하지 않습니다.
+scripts/production-protection.json의 T06 역사 snapshot과 현재 T07 binding은 필수 보호 대상입니다. 존재하는 T06 sibling의 binding은 추가 보호로만 사용합니다. sibling이 없어도 필수 snapshot과 현재 T07 DB를 거부하며, 누락·잘못된 설정·접근 오류 등 알 수 없는 상태는 fail-closed입니다. 이번 변경은 이 보호 로직을 수정하지 않습니다.
 
 # T06 역사 배포 기록 — 아래 명령을 T07에서 재실행하지 마세요
 

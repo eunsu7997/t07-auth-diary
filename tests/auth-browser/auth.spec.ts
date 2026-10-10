@@ -72,9 +72,18 @@ test('expired server session returns the browser to login after a rejected diary
   await expect(page.getByRole('heading', { name: '로그인', exact: true })).toBeVisible();
 });
 
-test('authenticated account help clearly states account deletion is unsupported', async ({ page, context }) => {
+test('authenticated account explains permanent data deletion and requires confirmation', async ({ page, context }) => {
   const response=await context.request.post('/api/auth/sign-up/email',{data:{email:`notice-${random(8)}@example.invalid`,name:'Temporary notice fixture',password:random(30)}});
   expect(response.ok()).toBe(true);await page.goto('/');
-  await expect(page.getByText('현재 이 과제 버전에서는 계정 삭제 기능을 지원하지 않습니다.',{exact:true})).toBeVisible();
-  await expect(page.getByRole('button',{name:'계정 삭제',exact:true})).toHaveCount(0);
+  const deletion = page.locator('[aria-label="계정 삭제"]');
+  await expect(deletion.getByText('내 계정을 삭제하면 내 계획·할 일·계획 버전·실행 기록과 계정 자료가 함께 삭제되며 복구할 수 없습니다. 모든 로그인 세션도 무효화됩니다.', {exact:true})).toBeVisible();
+  await expect(deletion.getByText('삭제 전에 화면 상단의 “전체 JSON 다운로드”로 내 자료를 파일 하나에 보관하는 것을 권장합니다. 로그아웃만으로는 자료가 삭제되지 않습니다.', {exact:true})).toBeVisible();
+  await expect(deletion.getByLabel('삭제 확인용 현재 비밀번호')).toBeVisible();
+  const button = deletion.getByRole('button', {name:'계정과 내 자료 영구 삭제',exact:true});
+  const confirmation = deletion.getByRole('checkbox', {name:'내 자료가 함께 삭제되고 복구할 수 없음을 확인했습니다.'});
+  await expect(confirmation).not.toBeChecked();
+  await expect(button).toBeDisabled();
+  await confirmation.check();await expect(button).toBeEnabled();
+  await confirmation.uncheck();await expect(button).toBeDisabled();
+  // No deletion is submitted: this browser test verifies disclosure and the UI gate.
 });

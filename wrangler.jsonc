@@ -1,7 +1,15 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
+  "account_id": "2e386f93c2c283b8384904c68419daa4",
   "compatibility_date": "2026-10-02",
-  "workers_dev": false,
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": {
+    "BETTER_AUTH_URL": "https://aleph-t07-auth-diary.aleph-t04-eunsu.workers.dev"
+  },
+  "secrets": {
+    "required": ["BETTER_AUTH_SECRET"]
+  },
   "main": "src/server/worker.ts",
   "compatibility_flags": [
     "nodejs_compat"
